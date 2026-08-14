@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📈 个人AI投研系统 · Vibe-Research · 互动学习</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--primary:#b8860b;--secondary:#8a6d1a;--success:#48bb78;--warning:#ecc94b;--danger:#f56565;--info:#2563eb;--bg:#f5f3ee;--card-bg:#fff;--text:#1a202c;--text-light:#718096;--border:#e2e8f0;--radius:16px;--radius-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.navbar{background:linear-gradient(135deg,#b8860b,#8a6d1a);padding:.7rem 0;position:sticky;top:0;z-index:1000;box-shadow:0 2px 20px rgba(184,134,11,.3)}
+.navbar .container{max-width:1100px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between}
+.navbar-brand{color:#fff;text-decoration:none;font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.navbar-brand a{color:#fff;text-decoration:none}
+.navbar-nav{display:flex;gap:.2rem}
+.navbar-nav a{color:rgba(255,255,255,.85);text-decoration:none;padding:.35rem .7rem;border-radius:8px;font-size:.82rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.3rem}
+.navbar-nav a:hover,.navbar-nav a.active{background:rgba(255,255,255,.2);color:#fff}
+.container{max-width:1100px;margin:0 auto;padding:1rem}
+.hero{background:linear-gradient(135deg,#b8860b20,#8a6d1a20);border-radius:var(--radius);padding:2rem;margin-bottom:1.5rem;text-align:center}
+.hero h1{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#b8860b,#8a6d1a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text-light);margin-top:.3rem;font-size:.9rem}
+.hero .meta{display:flex;justify-content:center;gap:1.2rem;margin-top:.8rem;flex-wrap:wrap}
+.hero .meta span{background:var(--card-bg);padding:.25rem .9rem;border-radius:20px;font-size:.82rem;color:var(--text-light);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tab-nav{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap;overflow-x:auto}
+.tab-btn{padding:.55rem 1.1rem;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--card-bg);cursor:pointer;font-size:.85rem;font-weight:500;transition:all .2s;color:var(--text-light);display:flex;align-items:center;gap:.35rem;white-space:nowrap}
+.tab-btn:hover,.tab-btn.active{border-color:#b8860b;color:#b8860b}
+.tab-content{display:none}.tab-content.active{display:block;animation:fadeInUp .35s ease}
+.card{background:var(--card-bg);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-title{font-size:1.05rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.knowledge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.knowledge-card{background:var(--card-bg);border-radius:var(--radius);padding:1.2rem;box-shadow:0 1px 3px rgba(0,0,0,.05);border-left:4px solid var(--primary);transition:transform .2s}
+.knowledge-card:hover{transform:translateY(-2px)}
+.knowledge-card h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.knowledge-card ul{list-style:none;font-size:.88rem;color:#4a5568}
+.knowledge-card ul li{padding:.15rem 0;padding-left:1.2rem;position:relative}
+.knowledge-card ul li::before{content:'·';position:absolute;left:0;font-weight:700;color:var(--primary)}
+.knowledge-card .hl{background:#fef9c3;padding:.05rem .3rem;border-radius:3px;font-weight:600}
+.knowledge-card .formula{background:var(--bg);padding:.4rem .6rem;border-radius:6px;font-family:'Times New Roman',serif;font-size:1.05rem;text-align:center;margin:.3rem 0;color:#8a6d1a;font-weight:700}
+.knowledge-card.c1{border-color:#b8860b}.knowledge-card.c2{border-color:#e67e22}.knowledge-card.c3{border-color:#2ecc71}.knowledge-card.c4{border-color:#2563eb}.knowledge-card.c5{border-color:#9b59b6}
+.graph-demo{background:var(--card-bg);border-radius:var(--radius);padding:1.2rem;margin:1rem 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.graph-title{font-size:.95rem;font-weight:700;margin-bottom:.6rem;color:#8a6d1a}
+.svg-graph{display:block;margin:0 auto;max-width:100%}
+.graph-label{text-align:center;font-size:.8rem;color:var(--text-light);margin-top:.5rem}
+.quiz-progress{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.progress-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#b8860b,#8a6d1a);border-radius:4px;transition:width .5s ease}
+.quiz-stats{font-size:.88rem;color:var(--text-light);white-space:nowrap}
+.question-card{background:var(--card-bg);border-radius:var(--radius);padding:1.8rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q-num{display:inline-block;background:linear-gradient(135deg,#b8860b,#8a6d1a);color:#fff;width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;font-size:.82rem;font-weight:700;margin-bottom:.8rem}
+.q-text{font-size:1rem;font-weight:600;margin-bottom:1rem;line-height:1.8}
+.options{display:flex;flex-direction:column;gap:.6rem}
+.option{padding:.65rem 1rem;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;font-size:.9rem;display:flex;align-items:center;gap:.5rem}
+.option:hover:not(.disabled){border-color:#b8860b;background:#b8860b10}
+.option .letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:600;flex-shrink:0}
+.option.correct{border-color:var(--success);background:#48bb7815}
+.option.correct .letter{background:var(--success);color:#fff}
+.option.wrong{border-color:var(--danger);background:#f5656515}
+.option.wrong .letter{background:var(--danger);color:#fff}
+.option.disabled{cursor:default;opacity:.7}
+.option.show-correct{border-color:var(--success);background:#48bb7810}
+.option.show-correct .letter{background:var(--success);color:#fff}
+.explanation{margin-top:1rem;padding:.8rem 1rem;border-radius:var(--radius-sm);background:#fffbf0;border-left:4px solid var(--primary);font-size:.88rem;display:none;line-height:1.8}
+.explanation.show{display:block}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:1.2rem;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn{padding:.5rem 1.3rem;border:none;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.35rem}
+.btn-primary{background:linear-gradient(135deg,#b8860b,#8a6d1a);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(184,134,11,.4)}
+.btn-success{background:var(--success);color:#fff}
+.btn-outline{background:0 0;border:2px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:#b8860b;color:#b8860b}
+.result-card{text-align:center;padding:2.5rem}
+.result-card .big-icon{font-size:3.5rem;margin-bottom:.8rem}
+.result-card h2{font-size:1.4rem;margin-bottom:.3rem}
+.result-card .score{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,#b8860b,#8a6d1a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:.8rem 0}
+.result-stat{display:inline-block;background:var(--card-bg);padding:.4rem 1rem;border-radius:20px;margin:.2rem;font-size:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.flashcard-container{perspective:1000px;margin-bottom:1rem}
+.flashcard{position:relative;width:100%;min-height:220px;cursor:pointer;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;min-height:220px;backface-visibility:hidden;border-radius:var(--radius);padding:1.8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.flashcard-front{background:linear-gradient(135deg,#b8860b,#8a6d1a);color:#fff}
+.flashcard-front h3{font-size:1.2rem;margin-bottom:.4rem;text-align:center}
+.flashcard-front p{opacity:.8;font-size:.88rem}
+.flashcard-back{background:var(--card-bg);transform:rotateY(180deg);border:2px solid var(--border)}
+.flashcard-back h4{color:#8a6d1a;margin-bottom:.6rem;text-align:center}
+.flashcard-back p{font-size:.95rem;line-height:1.9;color:var(--text);text-align:center}
+.flashcard-back .f-formula{font-family:'Times New Roman',serif;font-size:1.1rem;font-weight:700;color:#8a6d1a}
+.flashcard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem}
+.flashcard-counter{font-size:.85rem;color:var(--text-light)}
+.error-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.error-card{background:var(--card-bg);border-radius:var(--radius);padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.05);border-left:4px solid var(--danger);transition:transform .2s}
+.error-card:hover{transform:translateY(-2px)}
+.error-card .num{background:var(--danger);color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:.78rem;font-weight:700;margin-bottom:.5rem;display:inline-block}
+.error-card h4{font-size:.92rem;margin-bottom:.4rem}
+.error-card .ex-wrong{background:#f5656515;border-left:3px solid var(--danger);padding:.4rem .7rem;border-radius:6px;font-size:.82rem;margin-top:.4rem;color:var(--danger)}
+.error-card .ex-right{background:#48bb7815;border-left:3px solid var(--success);padding:.4rem .7rem;border-radius:6px;font-size:.82rem;margin-top:.3rem;color:#276749}
+.import-btn{margin-top:1rem;text-align:center}
+.teacher-talk{background:linear-gradient(135deg,#b8860b10,#8a6d1a10);border-radius:var(--radius);padding:1.5rem;margin:1rem 0;border-left:4px solid #b8860b}
+.teacher-talk h4{color:#8a6d1a;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.teacher-talk p{font-size:.9rem;line-height:1.9}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.hero h1{font-size:1.3rem}.knowledge-grid{grid-template-columns:1fr}.error-grid{grid-template-columns:1fr}.flashcard-face{min-height:180px;padding:1.2rem}}
+
+.quiz-mode-bar{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.8rem;padding:.5rem .6rem;background:var(--bg,#f7f7fb);border:1px solid var(--border,#e2e8f0);border-radius:var(--radius-sm,10px)}
+.qm-btn{border:1.5px solid var(--border,#e2e8f0);background:transparent;color:var(--text,#2d3748);padding:.3rem .75rem;border-radius:20px;font-size:.78rem;cursor:pointer;transition:all .2s;line-height:1.4}
+.qm-btn.qm-active{background:var(--primary,#b8860b);color:#fff;border-color:var(--primary,#b8860b);font-weight:600}
+#quizModeInfo{margin-left:auto;font-size:.74rem;color:var(--text-light,#718096);white-space:nowrap}
+.done-badge{display:inline-block;font-size:.64rem;font-weight:700;padding:.12rem .45rem;border-radius:10px;margin-left:.35rem;vertical-align:middle;line-height:1.4}
+.done-badge.ok{background:#48bb7818;color:#2f855a;border:1px solid #48bb7855}
+.done-badge.no{background:#b8860b18;color:#8a6d1a;border:1px solid #b8860b55}
+@media(max-width:768px){#quizModeInfo{display:none}}
+
+.toast{position:fixed;top:1.2rem;left:50%;transform:translateX(-50%);z-index:9999;padding:.6rem 1.2rem;border-radius:10px;font-size:.85rem;font-weight:600;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.18);opacity:1;transition:opacity .3s;pointer-events:none;max-width:86vw;text-align:center}
+.toast-success{background:var(--success,#48bb78)}
+.toast-warning{background:var(--warning,#ed8936)}
+.toast-info{background:#b8860b}</head><body>
+
+<nav class="navbar"><div class="container">
+  <a class="navbar-brand" href="https://github.com/simonlin1212/Vibe-Research" target="_blank"><i class="fas fa-github" style="font-size:.9rem;opacity:.9"></i> 个人AI投研系统 · Vibe-Research</a>
+  <div class="navbar-nav">
+    <a class="active" onclick="switchTab('knowledge')"><i class="fas fa-sitemap"></i><span>系统图谱</span></a>
+    <a onclick="switchTab('quiz')"><i class="fas fa-pen"></i><span>闯关测验</span></a>
+    <a onclick="initRetryMode()" style="color:#f39c12"><i class="fas fa-bug"></i><span>错题重练</span></a>
+    <a onclick="switchTab('flashcard')"><i class="fas fa-layer-group"></i><span>知识卡牌</span></a>
+    <a onclick="switchTab('errors')"><i class="fas fa-exclamation-triangle"></i><span>认知误区</span></a>
+  </div>
+</div></nav>
+
+<div class="container">
+  <div class="hero fade-in-up">
+    <h1><i class="fas fa-project-diagram"></i> 个人AI投研系统 · Vibe-Research</h1>
+    <p>开源 AI 投研 · A股/美股/港股 全覆盖 | 数据→AI→决策 投研闭环</p>
+    <div class="meta">
+      <span><i class="fas fa-check-circle" style="color:var(--success)"></i> 14道测验题</span>
+      <span><i class="fas fa-layer-group"></i> 16张知识卡</span>
+      <span><i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i> 8大认知误区</span>
+      <span><i class="fas fa-microphone"></i> 点击卡片翻转</span>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('knowledge')"><i class="fas fa-sitemap"></i> 系统图谱</button>
+    <button class="tab-btn" onclick="switchTab('quiz')"><i class="fas fa-pen"></i> 闯关测验</button>
+    <button class="tab-btn" onclick="switchTab('flashcard')"><i class="fas fa-layer-group"></i> 知识卡牌</button>
+    <button class="tab-btn" onclick="switchTab('errors')"><i class="fas fa-exclamation-triangle"></i> 认知误区</button>
+  </div>
+
+  <div id="tab-knowledge" class="tab-content active">
+    <div class="section-header"><i class="fas fa-sitemap" style="color:#b8860b"></i> Vibe-Research · 个人AI投研系统全景</div>
+
+        <div class="knowledge-grid">
+      <div class="knowledge-card c1"><h3><i class="fas fa-bullseye" style="color:#b8860b"></i> Vibe-Research 是什么</h3><ul>
+        <li><strong class="hl">开源 AI 投研系统</strong>，覆盖 A股/美股/港股</li>
+        <li>整合行情、财报、研报、公告、资金流、资讯</li>
+        <li>支持每日复盘、自选股、多空辩论、持仓分析</li>
+        <li>⭐ 新库已 <strong class="hl">1.1k star</strong></li>
+      </ul></div>
+      <div class="knowledge-card c2"><h3><i class="fas fa-database" style="color:#b8860b"></i> 六大数据源</h3><ul>
+        <li><strong class="hl">行情</strong>：价格、成交量、涨跌</li>
+        <li><strong class="hl">财报</strong>：营收、利润、现金流</li>
+        <li><strong class="hl">研报</strong>：券商观点与评级</li>
+        <li><strong class="hl">公告</strong>：重大事项披露</li>
+        <li><strong class="hl">资金流</strong>：主力资金动向</li>
+        <li><strong class="hl">资讯</strong>：新闻与舆情</li>
+      </ul></div>
+      <div class="knowledge-card c3"><h3><i class="fas fa-cogs" style="color:#b8860b"></i> 四大核心功能</h3><ul>
+        <li><strong class="hl">每日复盘</strong>：收盘后自动汇总</li>
+        <li><strong class="hl">自选股管理</strong>：集中跟踪标的</li>
+        <li><strong class="hl">多空辩论</strong>：正反观点 PK</li>
+        <li><strong class="hl">持仓分析</strong>：审视持仓结构</li>
+        <li>⭐ 数据自动准备好，AI 帮你系统化分析</li>
+      </ul></div>
+      <div class="knowledge-card c4"><h3><i class="fas fa-robot" style="color:#b8860b"></i> AI 模型接入</h3><ul>
+        <li>可接入 <strong class="hl">Claude、Codex</strong> 等主流 AI</li>
+        <li>AI 负责：<strong class="hl">高效、系统的投资研究</strong></li>
+        <li>人负责：<strong class="hl">最终买卖决策</strong></li>
+        <li>⚠️ 不提供买卖建议，只准备数据</li>
+      </ul></div>
+      <div class="knowledge-card c5"><h3><i class="fas fa-user-tie" style="color:#b8860b"></i> 作者 @linsizhen</h3><ul>
+        <li>开源老玩家，多个知名项目：</li>
+        <li><strong class="hl">a-stock-data</strong> 7.7k ⭐</li>
+        <li><strong class="hl">TradingAgents</strong> 2.6k ⭐</li>
+        <li><strong class="hl">global-stock-data</strong> 1.2k ⭐</li>
+        <li>Vibe-Research 1.1k ⭐ 持续增长</li>
+      </ul></div>
+      <div class="knowledge-card c1"><h3><i class="fas fa-compass" style="color:#b8860b"></i> 定位：数据准备工具</h3><ul>
+        <li>核心理念：<strong class="hl">把数据准备好</strong></li>
+        <li>让 AI 帮你完成更<strong class="hl">高效、系统</strong>的投资研究</li>
+        <li>⚠️ <strong class="hl">不提供买卖建议</strong></li>
+        <li>决策权始终在自己手里</li>
+      </ul></div>
+      <div class="knowledge-card c2"><h3><i class="fas fa-lightbulb" style="color:#b8860b"></i> 工具观</h3><ul>
+        <li>现在<strong class="hl">一定要学会使用工具</strong></li>
+        <li>事半功倍，别做重复劳动</li>
+        <li><strong class="hl">90% 好工具都是免费的</strong></li>
+        <li>不一定要用收费工具，也能达到好效果</li>
+      </ul></div>
+      <div class="knowledge-card c3"><h3><i class="fas fa-rocket" style="color:#b8860b"></i> 快速上手</h3><ul>
+        <li>仓库：<strong class="hl">github.com/simonlin1212/Vibe-Research</strong></li>
+        <li>Step1：克隆仓库</li>
+        <li>Step2：接入 Claude/Codex API</li>
+        <li>Step3：添加自选股 → 开始每日复盘</li>
+      </ul></div>
+    </div>
+
+    <!-- 投研系统架构图 -->
+    <div class="graph-demo">
+      <div class="graph-title"><i class="fas fa-project-diagram" style="color:#b8860b"></i> 个人AI投研闭环：数据 → AI 分析 → 人决策</div>
+      <svg class="svg-graph" viewBox="0 0 720 240" width="720" height="240">
+        <!-- 数据层 -->
+        <rect x="15" y="20" width="210" height="200" rx="10" fill="#b8860b08" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="120" y="42" font-size="12" fill="#8a6d1a" font-weight="700" text-anchor="middle">📦 数据层 · 六大数据源</text>
+        <rect x="30" y="58" width="180" height="26" rx="6" fill="#b8860b18" stroke="#b8860b" stroke-width="1"/>
+        <text x="120" y="76" font-size="11" fill="#8a6d1a" text-anchor="middle">行情 · 财报 · 研报</text>
+        <rect x="30" y="92" width="180" height="26" rx="6" fill="#b8860b18" stroke="#b8860b" stroke-width="1"/>
+        <text x="120" y="110" font-size="11" fill="#8a6d1a" text-anchor="middle">公告 · 资金流 · 资讯</text>
+        <rect x="30" y="126" width="180" height="26" rx="6" fill="#e67e2218" stroke="#e67e22" stroke-width="1"/>
+        <text x="120" y="144" font-size="11" fill="#e67e22" text-anchor="middle">每日复盘 · 自选股管理</text>
+        <rect x="30" y="160" width="180" height="26" rx="6" fill="#e67e2218" stroke="#e67e22" stroke-width="1"/>
+        <text x="120" y="178" font-size="11" fill="#e67e22" text-anchor="middle">多空辩论 · 持仓分析</text>
+        <text x="120" y="205" font-size="10" fill="#718096" text-anchor="middle">Vibe-Research 整合准备</text>
+        <!-- AI 层 -->
+        <rect x="270" y="55" width="180" height="130" rx="10" fill="#2563eb08" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="360" y="78" font-size="12" fill="#2563eb" font-weight="700" text-anchor="middle">🤖 AI 分析层</text>
+        <rect x="285" y="92" width="150" height="26" rx="6" fill="#2563eb18" stroke="#2563eb" stroke-width="1"/>
+        <text x="360" y="110" font-size="11" fill="#2563eb" text-anchor="middle">Claude · Codex 接入</text>
+        <rect x="285" y="126" width="150" height="26" rx="6" fill="#2563eb18" stroke="#2563eb" stroke-width="1"/>
+        <text x="360" y="144" font-size="11" fill="#2563eb" text-anchor="middle">高效 · 系统的投研</text>
+        <text x="360" y="172" font-size="10" fill="#718096" text-anchor="middle">不提供买卖建议</text>
+        <!-- 决策层 -->
+        <rect x="495" y="55" width="200" height="130" rx="10" fill="#2ecc7108" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="595" y="78" font-size="12" fill="#2ecc71" font-weight="700" text-anchor="middle">🧠 人决策层</text>
+        <rect x="510" y="92" width="170" height="26" rx="6" fill="#2ecc7118" stroke="#2ecc71" stroke-width="1"/>
+        <text x="595" y="110" font-size="11" fill="#2ecc71" text-anchor="middle">多空辩论辅助判断</text>
+        <rect x="510" y="126" width="170" height="26" rx="6" fill="#2ecc7118" stroke="#2ecc71" stroke-width="1"/>
+        <text x="595" y="144" font-size="11" fill="#2ecc71" text-anchor="middle">持仓风险自查</text>
+        <rect x="510" y="160" width="170" height="26" rx="6" fill="#2ecc7118" stroke="#2ecc71" stroke-width="1"/>
+        <text x="595" y="178" font-size="11" fill="#2ecc71" text-anchor="middle">最终买卖决策在人</text>
+        <!-- 箭头 -->
+        <line x1="225" y1="120" x2="265" y2="120" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowvr)"/>
+        <line x1="450" y1="120" x2="490" y2="120" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowvr)"/>
+        <defs><marker id="arrowvr" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#b8860b"/></marker></defs>
+      </svg>
+      <div class="graph-label">↑ Vibe-Research 帮你完成「数据准备 + AI 研究」，把决策时间留给自己</div>
+    </div>
+
+    <div class="teacher-talk">
+      <h4><i class="fas fa-microphone"></i> 🎙️ 投研课堂要点 · Vibe-Research</h4>
+      <p>
+        <strong>一句话理解</strong> — 开源 AI 投研系统，覆盖 A股/美股/港股，整合行情/财报/研报/公告/资金流/资讯六大类数据<br>
+        <strong>核心功能</strong> — 每日复盘、自选股管理、多空辩论、持仓分析；可接入 Claude、Codex 等 AI 模型<br>
+        <strong>定位边界</strong> — <strong>不提供买卖建议</strong>，只把数据准备好，让 AI 帮你完成更高效、更系统的投资研究<br>
+        <strong>作者生态</strong> — @linsizhen：a-stock-data 7.7k⭐、TradingAgents 2.6k⭐、global-stock-data 1.2k⭐、Vibe-Research 1.1k⭐<br>
+        <strong>工具观</strong> — 一定要学会使用工具，事半功倍；<strong>90% 好工具都是免费的</strong><br>
+        <strong><em>💬 金句：\"AI 投研 ≠ AI 决策：数据交给工具，研究交给 AI，决策留给自己。\"</em></strong><br>
+        <strong><em>💬 金句：\"市面 90% 的好工具都是免费的，先学会用，再谈效果。\"</em></strong>
+      </p>
+    </div>
+
+  </div><div id="tab-quiz" class="tab-content">
+    <div class="quiz-mode-bar" id="quizModeBar">
+    <button class="qm-btn qm-active" data-m="all" onclick="setQuizMode('all')">📋 全部</button>
+    <button class="qm-btn" data-m="todo" onclick="setQuizMode('todo')">🆕 未做</button>
+    <button class="qm-btn" data-m="wrong" onclick="setQuizMode('wrong')">❌ 错题</button>
+    <span id="quizModeInfo"></span>
+  </div>
+    <div class="quiz-progress">
+      <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="quiz-stats" id="quizStats">0 / 14</div>
+    </div>
+    <div id="quizArea"></div>
+  </div>
+
+  <div id="tab-flashcard" class="tab-content">
+    <p style="color:var(--text-light);margin-bottom:.8rem"><i class="fas fa-lightbulb" style="color:var(--warning)"></i> 点击卡片翻转查看答案 · 共16张知识卡</p>
+    <div id="flashcardArea"></div>
+  </div>
+
+  <div id="tab-errors" class="tab-content">
+    <div class="section-header" style="font-weight:700;margin-bottom:.8rem"><i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i> 高频认知误区自检</div>
+    <p style="color:var(--text-light);margin-bottom:.8rem">点击每条标记"已掌握" ✅</p>
+    <div id="errorChecklist"></div>
+    <div style="margin-top:1rem"><button class="btn btn-outline" onclick="resetEC()"><i class="fas fa-undo"></i> 重置</button><span id="ecProgress" style="margin-left:.8rem;font-size:.85rem;color:var(--text-light)"></span></div>
+  </div>
+</div>
+
+<div class="footer" style="text-align:center;padding:1.5rem;color:var(--text-light);font-size:.82rem"><i class="fas fa-heart" style="color:var(--danger)"></i> 个人AI投研系统互动页 · 基于公众号《挖到宝了！A股、美股、港股，一个 AI 全盯住》整理</div>
+
+<script>
+const questions = [
+  {"q":"Vibe-Research 是什么？","opts":["A. 开源的 AI 投研系统","B. 收费的量化交易软件","C. 仅提供行情的 App","D. 券商官方工具"],"ans":0,"exp":"Vibe-Research 是<strong>开源 AI 投研系统</strong>，覆盖 A股/美股/港股，整合六大类数据，新库已达 1.1k star。"},
+  {"q":"Vibe-Research 覆盖哪些市场？","opts":["A. 仅A股","B. 仅美股","C. A股、美股、港股","D. 全球所有市场"],"ans":2,"exp":"它<strong>覆盖 A股、美股和港股</strong>三大市场，一个系统全盯住。"},
+  {"q":"Vibe-Research 的作者是谁？","opts":["A. 老马呀","B. OpenAI 官方","C. @linsizhen","D. 华为团队"],"ans":2,"exp":"作者是<strong>@linsizhen</strong>，之前的 a-stock-data（7.7k⭐）、TradingAgents（2.6k⭐）都是他的项目。"},
+  {"q":"Vibe-Research 整合了哪几类数据？","opts":["A. 只有行情数据","B. 只有财报和研报","C. 只有资讯和公告","D. 行情、财报、研报、公告、资金流、资讯"],"ans":3,"exp":"整合<strong>行情、财报、研报、公告、资金流、资讯</strong>六大数据，是 AI 分析的基础。"},
+  {"q":"Vibe-Research 支持的核心功能有哪些？","opts":["A. 只有每日复盘","B. 每日复盘、自选股管理、多空辩论、持仓分析","C. 只有持仓分析","D. 只有自选股管理"],"ans":1,"exp":"四大核心功能：<strong>每日复盘、自选股管理、多空辩论、持仓分析</strong>。"},
+  {"q":"Vibe-Research 可以接入哪些 AI 模型？","opts":["A. Claude、Codex 等","B. 只能接 GPT 官方","C. 不能接入任何 AI","D. 只能接国产模型"],"ans":0,"exp":"可接入 <strong>Claude、Codex</strong> 等主流 AI 模型，让 AI 帮你完成更高效、系统的投资研究。"},
+  {"q":"Vibe-Research 提供买卖建议吗？","opts":["A. 提供，AI 直接告诉你买卖","B. 提供，但需要付费解锁","C. 不提供，只把数据准备好","D. 部分股票提供"],"ans":2,"exp":"<strong>不提供买卖建议</strong>。它把数据准备好，让你的 AI 帮你完成更高效、更系统的投资研究，决策权在人。"},
+  {"q":"Vibe-Research 目前的 star 数约是？","opts":["A. 7.7k","B. 2.6k","C. 1.1k","D. 1.2k"],"ans":2,"exp":"Vibe-Research 是<strong>新库，已彪到 1.1k star</strong>。"},
+  {"q":"作者之前的 a-stock-data 项目有多少 star？","opts":["A. 1.1k","B. 2.6k","C. 7.7k","D. 1.2k"],"ans":2,"exp":"<strong>a-stock-data 7.7k ⭐</strong>，是作者的知名项目之一。"},
+  {"q":"作者之前的 TradingAgents 项目有多少 star？","opts":["A. 2.6k","B. 1.1k","C. 7.7k","D. 1.2k"],"ans":0,"exp":"<strong>TradingAgents 2.6k ⭐</strong>。"},
+  {"q":"global-stock-data 项目有多少 star？","opts":["A. 1.1k","B. 1.2k","C. 7.7k","D. 2.6k"],"ans":1,"exp":"<strong>global-stock-data 1.2k ⭐</strong>。"},
+  {"q":"Vibe-Research 的仓库地址是？","opts":["A. github.com/openai/Vibe","B. github.com/simonlin1212/Vibe-Research","C. github.com/linsizhen/a-stock-data","D. github.com/tradingagents/Vibe"],"ans":1,"exp":"仓库：<strong>github.com/simonlin1212/Vibe-Research</strong>。"},
+  {"q":"文章的核心工具观是什么？","opts":["A. 好工具都要付费","B. 工具会让人变懒","C. 只有专业机构才用工具","D. 一定要学会使用工具，90%好工具免费"],"ans":3,"exp":"核心观点：<strong>现在一定要学会使用工具，事半功倍；市面上 90% 的好工具都是免费的</strong>。"},
+  {"q":"使用 Vibe-Research 的正确姿势是？","opts":["A. 让 AI 全权替你买卖股票","B. AI 做系统化研究，人做最终决策","C. 只用来查行情","D. 买了就能躺着赚钱"],"ans":1,"exp":"正确姿势：<strong>AI 帮你完成高效系统的投资研究，最终买卖决策留给自己</strong>——数据交给工具，研究交给 AI，决策留给自己。"}
+];
+const flashcards = [
+{front:'Vibe-Research',back:'<strong>开源 AI 投研系统</strong><br>覆盖 A股/美股/港股<br>整合六大类数据<br>新库已达 <strong>1.1k star</strong>'},
+{front:'六大数据源',back:'<strong>行情 · 财报 · 研报</strong><br><strong>公告 · 资金流 · 资讯</strong><br>数据齐全=AI 分析的基础'},
+{front:'每日复盘',back:'收盘后 <strong>AI 自动汇总</strong><br>当日市场表现与持仓变化<br>节省人工翻数据的时间'},
+{front:'自选股管理',back:'集中<strong>跟踪自选标的</strong><br>行情、公告、资金流一屏掌握<br>减少漏看信息'},
+{front:'多空辩论',back:'AI 分别站在<strong>多方与空方</strong><br>正反观点交锋<br>帮你看清多空逻辑再决策'},
+{front:'持仓分析',back:'审视<strong>持仓结构</strong><br>识别集中度与风险点<br>辅助仓位管理决策'},
+{front:'AI 接入',back:'可接入 <strong>Claude、Codex</strong> 等<br>AI 负责高效系统的投研<br><strong>不提供买卖建议</strong>'},
+{front:'@linsizhen',back:'开源老玩家<br>a-stock-data <strong>7.7k⭐</strong><br>TradingAgents <strong>2.6k⭐</strong><br>global-stock-data <strong>1.2k⭐</strong>'},
+{front:'a-stock-data',back:'A股数据开源库<br><strong>7.7k star</strong><br>作者早期知名项目'},
+{front:'TradingAgents',back:'交易智能体框架<br><strong>2.6k star</strong><br>AI 交易研究'},
+{front:'global-stock-data',back:'全球股票数据<br><strong>1.2k star</strong><br>多市场数据支持'},
+{front:'定位边界',back:'<strong>数据准备工具</strong><br>不提供买卖建议<br>把数据准备好，让 AI 帮你研究'},
+{front:'投研闭环',back:'<strong>数据 → AI 分析 → 人决策</strong><br>数据交给工具<br>研究交给 AI<br>决策留给自己'},
+{front:'工具观',back:'<strong>一定要学会使用工具</strong><br>事半功倍<br><strong>90% 好工具免费</strong><br>不一定要用收费工具'},
+{front:'快速上手',back:'① 克隆仓库<br>② 接入 Claude/Codex<br>③ 添加自选股<br>④ 开始每日复盘'},
+{front:'风险意识',back:'AI 只是<strong>研究助手</strong><br>最终买卖决策和责任<br><strong>永远在自己</strong>'}
+];
+const errors = [
+{title:'AI投研=自动交易 ❌',wrong:'让 AI 全权替我做买卖决策',right:'Vibe-Research <strong>不提供买卖建议</strong>，只准备数据、辅助研究；最终决策和责任永远在人。'},
+{title:'只支持A股 ❌',wrong:'开源投研工具一般只做A股',right:'Vibe-Research <strong>覆盖 A股、美股、港股</strong> 三大市场，一个系统全盯住。'},
+{title:'好工具必须付费 ❌',wrong:'免费工具效果都不行',right:'文章核心观点：<strong>市面上 90% 的好工具都是免费的</strong>，开源工具同样能达到好效果。'},
+{title:'只有行情数据 ❌',wrong:'投研系统 = 行情软件',right:'Vibe-Research 整合 <strong>行情、财报、研报、公告、资金流、资讯</strong> 六大数据，远超单一行情。'},
+{title:'功能只有复盘 ❌',wrong:'这类系统主要就做每日复盘',right:'四大功能：<strong>每日复盘、自选股管理、多空辩论、持仓分析</strong>，形成完整投研闭环。'},
+{title:'AI会替我赚钱 ❌',wrong:'接入 AI 就等于躺赚',right:'AI 只做<strong>高效、系统的研究</strong>，辅助多空判断；买卖决策、风险承担都在人。'},
+{title:'一个库就够 ❌',wrong:'只装 Vibe-Research 就万事大吉',right:'作者生态还有 <strong>a-stock-data、TradingAgents、global-stock-data</strong>，按需组合使用效果更好。'},
+{title:'工具越贵越专业 ❌',wrong:'贵的工具才靠谱',right:'判断工具看<strong>是否解决你的问题</strong>，不看价格；开源免费工具往往更新更快、更透明。'}
+];
+
+function toast(msg,type){type=type||'info';const el=document.createElement('div');el.className='toast toast-'+type;el.textContent=msg;document.body.appendChild(el);setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),350);},2600);}
+const WRONG_HISTORY_KEY='quiz_vibe_research';
+let retryMode=false,wrongIds=[];
+
+function loadWrongHistory(){
+  try{return JSON.parse(localStorage.getItem(WRONG_HISTORY_KEY)||'[]');}catch(e){return [];}
+}
+function saveWrongHistoryItem(idx){
+  let h=loadWrongHistory();
+  const found=h.find(x=>x.idx===idx);
+  if(found){found.count++;found.lastWrong=Date.now();}
+  else h.push({idx,count:1,lastWrong:Date.now()});
+  localStorage.setItem(WRONG_HISTORY_KEY,JSON.stringify(h));
+}
+
+let curQ=0,quizAns=new Array(questions.length).fill(-1),shuffled=[];
+
+/* ===== 已做标记 + 未做/错题筛选 ===== */
+var QUIZ_MODE='all';
+var QUIZ_PROG_KEY='quiz_progress_vibe_research';
+function getQuizProg(){try{return JSON.parse(localStorage.getItem(QUIZ_PROG_KEY)||'{}')}catch(e){return {}}}
+function saveQuizProg(idx,res){var p=getQuizProg();p[idx]=res;localStorage.setItem(QUIZ_PROG_KEY,JSON.stringify(p));updateModeInfo();}
+function updateModeInfo(){var p=getQuizProg();var keys=Object.keys(p);var wrong=0;keys.forEach(function(k){if(p[k]==='wrong')wrong++;});var el=document.getElementById('quizModeInfo');if(el)el.textContent='已做 '+keys.length+'/'+questions.length+' · 错题 '+wrong;}
+function setQuizMode(m){QUIZ_MODE=m;document.querySelectorAll('.qm-btn').forEach(function(b){b.classList.toggle('qm-active',b.getAttribute('data-m')===m)});initQ();if(shuffled.length)renderQ();}
+function quizFilterIds(){var ids=[...Array(questions.length).keys()];if(QUIZ_MODE==='all')return ids;var p=getQuizProg();if(QUIZ_MODE==='todo')return ids.filter(function(i){return !(i in p)});return ids.filter(function(i){return p[i]==='wrong'})}
+function showQuizEmpty(){var el=document.getElementById('quizArea');if(!el)return;var msg=QUIZ_MODE==='wrong'?'🎉 没有错题，全部掌握！':'🎉 所有题都已做过！切换「全部」可重新练习。';el.innerHTML='<div class="question-card fade-in-up" style="text-align:center;padding:2rem"><div style="font-size:2rem;margin-bottom:.5rem">'+(QUIZ_MODE==='wrong'?'🎉':'✅')+'</div><p style="color:var(--text-light)">'+msg+'</p><div style="margin-top:1rem"><button class="btn btn-outline" onclick="setQuizMode(&#39;all&#39;)">📋 切换全部</button></div></div>';}
+function initQ(){curQ=0;quizAns=new Array(questions.length).fill(-1);var ids=quizFilterIds();if(!ids.length){showQuizEmpty();shuffled=[];retryMode=false;return;}shuffled=shuffle(ids);retryMode=false;updateModeInfo();}
+function initRetryMode(){
+  const h=loadWrongHistory();
+  if(!h.length){alert('还没有错题记录，先做一遍测验吧！');return;}
+  wrongIds=h.map(x=>x.idx);
+  curQ=0;retryMode=true;
+  quizAns=new Array(questions.length).fill(-1);
+  shuffled=shuffle([...wrongIds]);
+  switchTab('quiz');
+  renderQ();
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+function switchTab(n){document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');document.querySelectorAll('.tab-btn').forEach(e=>{var icons={knowledge:'fa-sitemap',quiz:'fa-pen',flashcard:'fa-layer-group',errors:'fa-exclamation-triangle'};if(e.innerHTML.includes(icons[n]))e.classList.add('active');});}
+function renderQ(){const idx=shuffled[curQ];const q=questions[idx];const total=retryMode?wrongIds.length:questions.length;const ansd=quizAns.filter(a=>a>=0).length;const doneAll=retryMode?shuffled.every(i=>quizAns[i]>=0):(ansd===questions.length);
+let h=``;const _dp=getQuizProg()[idx];const _db=_dp?`<span class="done-badge ${_dp==='ok'?'ok':'no'}">${_dp==='ok'?'✅已做':'❌已做'}</span>`:'';if(retryMode)h+=`<div style="margin-bottom:.6rem;padding:.3rem .6rem;background:#b8860b10;border-radius:6px;font-size:.78rem;color:var(--danger);display:inline-block"><i class="fas fa-redo"></i> 错题重练模式 · 共${total}题</div>`;
+h+=`<div class="question-card fade-in-up"><div class="q-num">${retryMode?shuffled.indexOf(idx)+1:curQ+1}</div>${_db}<div class="q-text">${q.q}</div><div class="options">`;
+q.opts.forEach((o,oi)=>{let c=[];if(quizAns[idx]>=0){c.push('disabled');if(oi===q.ans)c.push('correct');if(oi===quizAns[idx]&&oi!==q.ans)c.push('wrong');if(oi===q.ans&&quizAns[idx]!==q.ans)c.push('show-correct');}
+h+=`<div class="option ${c.join(' ')}" onclick="selA(${oi})"><span class="letter">${'ABCD'[oi]}</span><span>${o.substring(2)}</span></div>`;});
+h+=`</div><div class="explanation ${quizAns[idx]>=0?'show':''}"><strong><i class="fas fa-lightbulb"></i> 解析：</strong><br>${q.exp}</div>
+|<div class="quiz-nav"><button class="btn btn-outline" onclick="prevQ()" ${(retryMode?shuffled.indexOf(idx):curQ)===0?'disabled':''}><i class="fas fa-arrow-left"></i> 上一题</button>
+|<span style="font-size:.85rem;color:var(--text-light);align-self:center">${ansd}/${total}</span>
+|<button class="btn btn-primary" onclick="nextQ()" ${(retryMode?shuffled.indexOf(idx):curQ)===total-1&&quizAns[idx]<0?'disabled':''}>${(retryMode?shuffled.indexOf(idx):curQ)===total-1&&quizAns[idx]>=0?'查看结果':'下一题'} <i class="fas fa-arrow-right"></i></button></div></div>`;
+document.getElementById('quizArea').innerHTML=h;
+document.getElementById('progressFill').style.width=`${(ansd/total)*100}%`;
+document.getElementById('quizStats').textContent=`已完成 ${ansd} / ${total}`;}
+function selA(oi){const idx=shuffled[curQ];if(quizAns[idx]>=0)return;quizAns[idx]=oi;saveQuizProg(idx,oi===questions[idx].ans?'ok':'wrong');
+  if(oi!==questions[idx].ans){saveWrongHistoryItem(idx);if(autoImportWB(idx,oi))toast('📥 已自动加入错题库','success');else toast('📥 错题已在错题库中','info');}
+renderQ();}
+function prevQ(){if(curQ>0){curQ--;renderQ();}}
+function nextQ(){const idx=shuffled[curQ];const total=retryMode?wrongIds.length:questions.length;const isLast=(retryMode?shuffled.indexOf(idx):curQ)===total-1;if(isLast){if(quizAns[idx]>=0){document.getElementById('quizArea').innerHTML=showResult();}return;}curQ++;renderQ();}
+function showResult(){const total=retryMode?wrongIds.length:questions.length;let correct=0;const wl=[];const h=loadWrongHistory();
+(retryMode?wrongIds:questions.map((_,i)=>i)).forEach(i=>{const ai=quizAns[i];if(ai===questions[i].ans)correct++;else wl.push({idx:i,q:questions[i]});});const pct=Math.round(correct/total*100);const face=pct>=90?'🎉':pct>=70?'👍':pct>=50?'💪':'📚';const msg=retryMode?(pct>=90?'错题全部攻克！':pct>=70?'大部分已掌握！':pct>=50?'还需巩固！':'仍需努力'):(pct>=90?'太棒了！':pct>=70?'不错！':pct>=50?'继续加油':'需要多复习');
+return `<div class="question-card result-card fade-in-up"><div class="big-icon">${face}</div><h2>${retryMode?'错题重练结果':'测验结果'}</h2><div class="score">${correct}/${total}</div>
+|<div><span class="result-stat"><i class="fas fa-check-circle" style="color:var(--success)"></i> 正确 ${correct} 题</span>
+|<span class="result-stat"><i class="fas fa-times-circle" style="color:var(--danger)"></i> 错误 ${total-correct} 题</span></div>
+|${retryMode?`<div style="margin:.5rem 0"><span class="result-stat"><i class="fas fa-history"></i> 错题重做次数 ${h.reduce((a,x)=>a+x.count,0)}次</span></div>`:''}
+|${wl.length?`<div style="text-align:left;margin-top:1rem;padding:.8rem;background:var(--bg);border-radius:var(--radius-sm)"><p style="font-weight:600;margin-bottom:.5rem;font-size:.85rem">📝 需要复习：</p>${wl.map(w=>`<div style="padding:.2rem 0;font-size:.82rem;border-bottom:1px solid var(--border)">✗ ${w.q.q.substring(0,50)}…<br><small style="color:var(--text-light)">正确答案：${w.q.opts[w.q.ans]}</small></div>`).join('')}</div>`:''}
+|<div style="margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+|<button class="btn btn-primary" onclick="initQ();renderQ();"><i class="fas fa-redo"></i> 重新测验</button>
+|${wl.length?`<button class="btn btn-warning" onclick="initRetryMode()" style="background:#e67e22;color:#fff"><i class="fas fa-bug"></i> 错题重练 (${wl.length}题)</button>`:''}
+|<button class="btn btn-success" onclick="importWB()"><i class="fas fa-database"></i> 导入错题到错题库</button>
+|<button class="btn btn-outline" onclick="switchTab('flashcard')"><i class="fas fa-layer-group"></i> 复习知识卡</button>
+|<button class="btn btn-outline" onclick="switchTab('errors')"><i class="fas fa-exclamation-triangle"></i> 认知误区</button>
+|${retryMode?`<button class="btn btn-sm btn-outline" onclick="initQ();renderQ()"><i class="fas fa-times"></i> 退出重练模式</button>`:''}</div></div>`;}
+
+const IMPORT_KEY='wrong_bank_import';
+function autoImportWB(idx, myAns){
+  const q=questions[idx];
+  const item={subject:'投研',chapter:'Vibe-Research 个人AI投研系统',content:q.q,correct_answer:q.opts[q.ans],my_answer:q.opts[myAns],error_reason:'概念不清',source:'练习',difficulty:3,tags:'Vibe-Research,AI投研,开源工具,投研系统'};
+  const ex=JSON.parse(localStorage.getItem(IMPORT_KEY)||'[]');
+  if(ex.some(x=>x.content===item.content))return false;
+  ex.push(item);
+  localStorage.setItem(IMPORT_KEY,JSON.stringify(ex));
+  return true;
+}
+function importWB(){const w=[];shuffled.forEach((oi)=>{const ua=quizAns[oi];if(ua>=0&&ua!==questions[oi].ans)w.push({idx:oi,q:questions[oi],uc:ua});});if(!w.length){alert('🎉 没有错题');return;}if(!confirm(`导入 ${w.length} 道错题？`))return;
+const items=w.map(w=>({subject:'投研',chapter:'Vibe-Research 个人AI投研系统',content:w.q.q,correct_answer:w.q.opts[w.q.ans],my_answer:w.q.opts[w.uc]||'未作答',error_reason:'概念不清',source:'练习',difficulty:3,tags:'Vibe-Research,AI投研,开源工具,投研系统'}));
+const ex=JSON.parse(localStorage.getItem(IMPORT_KEY)||'[]');localStorage.setItem(IMPORT_KEY,JSON.stringify([...ex,...items]));
+alert(`✅ 已准备 ${items.length} 道错题！`);if(confirm('打开错题库？'))window.open('wrong_bank.html','_blank');}
+
+let fIdx=0;
+function renderFC(dir){if(dir==='next'&&fIdx<flashcards.length-1)fIdx++;else if(dir==='prev'&&fIdx>0)fIdx--;const fc=flashcards[fIdx];
+document.getElementById('flashcardArea').innerHTML=`<div class="flashcard-container fade-in-up"><div class="flashcard" id="fc" onclick="toggleFC()"><div class="flashcard-face flashcard-front"><i class="fas fa-question-circle" style="font-size:1.8rem;opacity:.5;margin-bottom:.8rem"></i><h3>${fc.front}</h3><p>👆 点击翻转</p></div><div class="flashcard-face flashcard-back"><i class="fas fa-lightbulb" style="font-size:1.3rem;color:var(--warning);margin-bottom:.4rem"></i><h4>${fc.front}</h4><p>${fc.back}</p></div></div></div>
+|<div class="flashcard-nav"><button class="btn btn-outline" onclick="renderFC('prev')" ${fIdx===0?'disabled':''}><i class="fas fa-arrow-left"></i> 上一张</button><span class="flashcard-counter">${fIdx+1}/${flashcards.length}</span><button class="btn btn-primary" onclick="renderFC('next')" ${fIdx===flashcards.length-1?'disabled':''}>下一张 <i class="fas fa-arrow-right"></i></button></div>`;}
+function toggleFC(){const el=document.getElementById('fc');if(el)el.classList.toggle('flipped');}
+function renderEC(){let s=localStorage.getItem('vibe_research_check');let c=s?JSON.parse(s):new Array(errors.length).fill(false);
+let h='<div class="error-grid">';errors.forEach((e,i)=>{h+=`<div class="error-card fade-in-up"><div class="num">${i+1}</div><h4>${e.title}</h4><div class="ex-wrong">❌ ${e.wrong}</div><div class="ex-right">✅ ${e.right}</div>
+|<div class="check-item ${c[i]?'checked':''}" onclick="toggleEC(${i})" style="margin-top:.6rem;border-top:1px solid var(--border);padding-top:.6rem;display:flex;align-items:center;gap:.6rem;cursor:pointer">
+|<div style="width:20px;height:20px;border:2px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;${c[i]?'background:var(--success);border-color:var(--success);color:#fff':''}">${c[i]?'<i class="fas fa-check" style="font-size:10px"></i>':''}</div>
+|<span style="font-size:.82rem;${c[i]?'text-decoration:line-through;opacity:.5':''}">我已掌握这个误区</span></div></div>`;});h+='</div>';document.getElementById('errorChecklist').innerHTML=h;updateEC();}
+function toggleEC(i){let s=localStorage.getItem('vibe_research_check');let c=s?JSON.parse(s):new Array(errors.length).fill(false);c[i]=!c[i];localStorage.setItem('vibe_research_check',JSON.stringify(c));renderEC();}
+function resetEC(){if(confirm('重置所有自检？')){localStorage.removeItem('vibe_research_check');renderEC();}}
+function updateEC(){let s=localStorage.getItem('vibe_research_check');let c=s?JSON.parse(s):new Array(errors.length).fill(false);document.getElementById('ecProgress').textContent=`✅ ${c.filter(x=>x).length}/${errors.length} 已掌握`;}
+document.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;const a=document.querySelector('.tab-content.active');if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();if(a&&a.id==='tab-quiz')nextQ();else if(a&&a.id==='tab-flashcard')renderFC('next');}
+if(e.key==='ArrowLeft'){e.preventDefault();if(a&&a.id==='tab-quiz')prevQ();else if(a&&a.id==='tab-flashcard')renderFC('prev');}
+if(e.key==='f'&&a&&a.id==='tab-flashcard')toggleFC();});
+renderEC();initQ();renderFC();renderQ();
+</script>
+<script>
+// 点击音效
+(function(){try{var ac;document.addEventListener('click',function(e){var t=e.target.closest('button, a, .option, .tab-btn, .subject-header, .section-title, .check-item, .navbar-nav a, .btn, .flashcard, .layer-tab, .q-header');if(t){try{if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=700;o.type='sine';g.gain.setValueAtTime(0.06,ac.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.06);o.start(ac.currentTime);o.stop(ac.currentTime+0.06)}catch(e2){}}})}catch(e){}})();
+</script>
+
+</body></html>
