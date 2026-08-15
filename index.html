@@ -196,8 +196,8 @@ tr:hover td{background:#f8fafc}
     <h1>📊 我的个人投资中心 <span class="bar">|</span> 高股息 · 低波动 · 危机买入</h1>
     <div class="sub">围绕「股息高买低卖 + 危机买入法」构建的组合管理体系：用真实数据算股息率分位，用 AI 做系统化研究，最终买卖决策永远在自己手里。</div>
     <div class="flow">
-      <div class="node">📦 <b>数据</b> 六大数据源</div><span class="arrow">→</span>
-      <div class="node">🤖 <b>AI 研究</b> Claude / Codex</div><span class="arrow">→</span>
+      <div class="node">📦 <b>数据</b> 三套数据源</div><span class="arrow">→</span>
+      <div class="node">🤖 <b>AI 研究</b> DeepSeek 驱动</div><span class="arrow">→</span>
       <div class="node">🧠 <b>人决策</b> 买卖由我</div>
     </div>
     <div class="kpis">
@@ -234,11 +234,11 @@ tr:hover td{background:#f8fafc}
       </div>
       <div class="m-card">
         <h3><span class="n">3</span>AI 投研闭环</h3>
-        <p>用 Vibe-Research 这类开源 AI 投研系统：整合行情、财报、研报、公告、资金流、资讯六大数据，AI 做系统化研究，决策权在自己。</p>
-        <div class="kv"><span class="k">覆盖</span><span class="v">A股 · 美股 · 港股</span></div>
-        <div class="kv"><span class="k">四大功能</span><span class="v">每日复盘 / 自选股 / 多空辩论 / 持仓分析</span></div>
-        <div class="kv"><span class="k">边界</span><span class="v">AI 不提供买卖建议</span></div>
-        <div class="kv"><span class="k">工具观</span><span class="v">90% 好工具免费 · 先学会用</span></div>
+        <p>用 Vibe-Research 开源 AI 投研看板：A股全栈数据 + 美港股 + 全球资讯直接内嵌仓库，接入自己的 DeepSeek API 驱动每日复盘与研究，决策权在自己。</p>
+        <div class="kv"><span class="k">覆盖</span><span class="v">A股主推 · 美股/港股兼看</span></div>
+        <div class="kv"><span class="k">功能</span><span class="v">复盘 / 资讯雷达 / 个股 / 板块 / 自选 / 持仓 / 研报</span></div>
+        <div class="kv"><span class="k">AI 接入</span><span class="v">DeepSeek API · 内置 baseURL 自动填</span></div>
+        <div class="kv"><span class="k">边界</span><span class="v">只呈现事实 · 不推荐个股</span></div>
       </div>
     </div>
   </div>
@@ -280,38 +280,38 @@ tr:hover td{background:#f8fafc}
 
   <!-- AI 投研 -->
   <div class="section" id="ai">
-    <div class="section-head"><div class="ico">🤖</div><h2>AI 投研工具 · Vibe-Research</h2><span class="desc">开源的 AI 投研系统，A股/美股/港股一个 AI 全盯住（源自老马呀 2026-08-02 分享）</span></div>
+    <div class="section-head"><div class="ico">🤖</div><h2>AI 投研工具 · Vibe-Research</h2><span class="desc">开源「个人 AI 投研看板」：数据配齐，由你自己的 DeepSeek 驱动研究（github.com/simonlin1212/Vibe-Research · 2k⭐）</span></div>
     <div class="flowchart">
       <div class="fc-grid">
         <div class="fc-node d1">
-          <h4>📦 数据层 · 六大数据源</h4>
+          <h4>📦 数据层 · 三套内嵌数据源</h4>
           <ul>
-            <li>行情 — 价格、成交量、涨跌</li>
-            <li>财报 — 营收、利润、现金流</li>
-            <li>研报 — 券商观点与评级</li>
-            <li>公告 — 重大事项披露</li>
-            <li>资金流 — 主力资金动向</li>
-            <li>资讯 — 新闻与舆情</li>
+            <li>A股全栈数据 — a-stock-data（十层数据栈，内嵌 v3.6.0）</li>
+            <li>美股 / 港股 — global-stock-data（东财合规子集：全球指数 + 美港股行情/财务）</li>
+            <li>全球资讯 — investment-news（资讯雷达）</li>
+            <li>git clone 开箱即用 · 无需另外接线</li>
+            <li>只呈现事实 · 不推荐个股 · 不预测涨跌</li>
           </ul>
         </div>
         <div class="fc-arrow">→</div>
         <div class="fc-node d2">
-          <h4>🤖 AI 分析层</h4>
+          <h4>🤖 AI 分析层 · DeepSeek</h4>
           <ul>
-            <li>接入 Claude、Codex 等模型</li>
-            <li>每日复盘 · 自选股管理</li>
-            <li>多空辩论 · 持仓分析</li>
-            <li>高效、系统的投资研究</li>
+            <li>接入 AI 页 → API 接入 → 选 DeepSeek</li>
+            <li>baseURL 自动填好 · 只需粘自己的 key</li>
+            <li>每日复盘 / 今日要点 / 个股页问 AI</li>
+            <li>也支持豆包 / MiniMax / OpenAI / OpenRouter 等</li>
+            <li>分析都由你的模型给出 · 无校准无倾向</li>
           </ul>
         </div>
         <div class="fc-arrow">→</div>
         <div class="fc-node d3">
           <h4>🧠 人决策层</h4>
           <ul>
-            <li>AI 只做研究，不提供买卖建议</li>
-            <li>多空逻辑看完再决策</li>
-            <li>持仓风险自己把握</li>
-            <li>最终决策和责任在人</li>
+            <li>UI 无买卖按钮</li>
+            <li>估值历史分位只标位置、不划买卖线</li>
+            <li>持仓 / 关注股 / 研报 / key 只存本地</li>
+            <li>最终决策和责任永远在自己</li>
           </ul>
         </div>
       </div>
@@ -320,29 +320,36 @@ tr:hover td{background:#f8fafc}
     <div style="height:16px"></div>
     <div class="vibe-grid">
       <div class="vibe">
-        <span class="tag2">四大核心功能</span>
-        <h3>每日复盘 · 自选股 · 多空辩论 · 持仓分析</h3>
-        <p>收盘后 AI 自动汇总当日市场表现与持仓变化；集中跟踪自选标的；AI 分别站多方与空方辩论；审视持仓结构识别集中度与风险。</p>
+        <span class="tag2">功能看板</span>
+        <h3>一个看板全盯住</h3>
+        <ul>
+          <li><span class="dot"></span>每日复盘 — 大盘 / 短线情绪 / 板块资金一屏看全</li>
+          <li><span class="dot"></span>资讯雷达 — 全球资讯自动汇集</li>
+          <li><span class="dot"></span>个股数据 — 财报速览 + 估值分位 + 资金面</li>
+          <li><span class="dot"></span>板块中心 · 自选股 · 我的持仓</li>
+          <li><span class="dot"></span>我的研报 — 拖拽上传自动分行业归档</li>
+        </ul>
       </div>
       <div class="vibe">
-        <span class="tag2">上手三步</span>
-        <h3>快速开始</h3>
+        <span class="tag2">快速开始</span>
+        <h3>本地跑起来</h3>
         <ul>
-          <li><span class="dot"></span>克隆仓库</li>
-          <li><span class="dot"></span>接入 Claude / Codex API</li>
-          <li><span class="dot"></span>添加自选股 → 开始每日复盘</li>
+          <li><span class="dot"></span>git clone 仓库（数据内嵌，开箱即用）</li>
+          <li><span class="dot"></span>启动后端 FastAPI :8900</li>
+          <li><span class="dot"></span>启动前端 :5899 → 浏览器打开 localhost:5899</li>
+          <li><span class="dot"></span>「接入 AI」选 DeepSeek，粘 key 即用</li>
         </ul>
         <div class="repo"><b>仓库</b> github.com/simonlin1212/Vibe-Research</div>
       </div>
       <div class="vibe">
-        <span class="tag2">作者生态 @linsizhen</span>
-        <h3>开源投研全家桶</h3>
+        <span class="tag2">接入 AI 三种方式</span>
+        <h3>用自己的模型，不额外花钱</h3>
         <ul>
-          <li><span class="dot"></span>a-stock-data — 7.7k ⭐</li>
-          <li><span class="dot"></span>TradingAgents — 2.6k ⭐</li>
-          <li><span class="dot"></span>global-stock-data — 1.2k ⭐</li>
-          <li><span class="dot"></span>Vibe-Research — 1.1k ⭐（新库）</li>
+          <li><span class="dot"></span>API 接入 — DeepSeek 等内置 baseURL 自动填，粘 key</li>
+          <li><span class="dot"></span>订阅接入 — 调本机 DeepSeek CLI 免 key（用订阅额度）</li>
+          <li><span class="dot"></span>MCP — 挂进 Claude Code 等 agent 做多步分析</li>
         </ul>
+        <div class="repo"><b>作者生态 @linsizhen</b> a-stock-data 7.7k⭐ · TradingAgents 2.6k⭐ · global-stock-data 1.2k⭐</div>
       </div>
     </div>
   </div>
