@@ -207,7 +207,7 @@ tr:hover td{background:#f8fafc}
     <span class="desc">大盘 / 短线情绪 / 板块资金一屏看全，一键交给你的 AI 复盘</span>
     <div class="spacer"></div>
     <button class="btn btn-blue" id="btnGather" onclick="gatherReview()">⏳ 抓取今日数据</button>
-    <button class="btn btn-gold" id="btnAiReview" onclick="aiReview()" disabled>🤖 AI 生成复盘</button>
+    <button class="btn btn-gold" id="btnAiReview" onclick="aiReview()">🤖 AI 生成复盘</button>
   </div>
   <div class="error-box" id="reviewErr"></div>
   <div id="reviewArea">
@@ -606,12 +606,12 @@ async function gatherReview(){
     reviewData = { indexes:idx, sentiment:sent, sectors:secs.slice(0,12), sectorsBad:secs.slice(-5), turnover:turn,
       time: new Date().toLocaleString('zh-CN',{hour12:false}) };
     renderReview();
-    $('btnAiReview').disabled = !aiReady();
   }catch(e){
     showErr('reviewErr','❌ '+e.message);
   }
   btn.disabled = false; btn.textContent='⏳ 抓取今日数据';
-}
+  return reviewData;
+  }
 function renderReview(){
   var d = reviewData; if(!d) return;
   var html = '';
@@ -673,9 +673,18 @@ function renderReview(){
   $('reviewArea').innerHTML = html;
 }
 async function aiReview(){
-  if(!aiReady()){ openAI(); return; }
-  var d = reviewData; if(!d){ showErr('reviewErr','请先抓取今日数据'); return; }
+  if(!aiReady()){
+    openAI();
+    $('aiTestResult').textContent='⚠️ 请先粘贴你的 API Key 接入 AI';
+    return;
+  }
   var btn = $('btnAiReview'); btn.disabled = true; btn.textContent='🤖 分析中…';
+  if(!reviewData){
+    showErr('reviewErr','⏳ 未抓到数据，正在自动抓取今日数据…');
+    await gatherReview();
+  }
+  var d = reviewData; if(!d){ btn.disabled=false; btn.textContent='🤖 AI 生成复盘'; return; }
+  showErr('reviewErr','');
   var out = $('reviewArea');
   var prompt = buildReviewPrompt(d);
   try{
