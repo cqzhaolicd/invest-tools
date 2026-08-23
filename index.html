@@ -342,6 +342,12 @@ tr:hover td{background:#f8fafc}
         <span class="example" id="btStratDesc"></span>
         <button class="btn btn-blue" onclick="runBacktest()">运行回测</button>
       </div>
+      <div class="sym-row" style="margin-top:10px;align-items:center;display:none" id="btParamsRow">
+        <span style="font-weight:700;color:var(--navy);font-size:.9rem">参数</span>
+        <div id="btParamsBox" style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center"></div>
+        <button class="btn btn-outline btn-sm" onclick="saveBtParams()" title="把当前参数写回策略并保存">💾 保存到策略</button>
+        <span class="example">改参数后直接点「运行回测」即时生效；点保存才写入策略</span>
+      </div>
       <div id="qLoading" class="loading" style="display:none">⏳ 加载中…</div>
       <div class="error-box" id="qError"></div>
       <div id="quoteArea"></div>
@@ -734,6 +740,42 @@ function onBtStratChange(){
   const d=document.getElementById('btStratDesc');
   const s=sel?getStratById(sel.value):null;
   if(d) d.textContent=s?('策略：'+s.name+' — '+stratDesc(s)):'';
+  renderBtParams();
+}
+/* 回测区参数快捷调整：选择策略后渲染该策略的全部参数输入框 */
+function renderBtParams(){
+  const row=document.getElementById('btParamsRow'), box=document.getElementById('btParamsBox');
+  const s=getSelectedStrat();
+  const tdef=s?STRAT_TYPES[s.type]:null;
+  if(!s||!tdef||!tdef.backtest||!tdef.params||!tdef.params.length){ if(row) row.style.display='none'; return; }
+  if(row) row.style.display='flex';
+  box.innerHTML='';
+  tdef.params.forEach(function(pd){
+    const el=document.createElement('div'); el.className='param-inline';
+    el.innerHTML='<label>'+pd.label+'</label><input type="number" class="bt-param-input" data-key="'+pd.key+'" value="'+((s.params&&s.params[pd.key]!=null)?s.params[pd.key]:pd.def)+'" style="width:80px">';
+    box.appendChild(el);
+  });
+}
+function getBtParams(){
+  const out={};
+  document.querySelectorAll('#btParamsBox .bt-param-input').forEach(function(inp){
+    const v=parseFloat(inp.value);
+    if(!isNaN(v)) out[inp.getAttribute('data-key')]=v;
+  });
+  return out;
+}
+function saveBtParams(){
+  const s=getSelectedStrat();
+  if(!s) return;
+  const p=getBtParams();
+  s.params=s.params||{};
+  Object.keys(p).forEach(function(k){ s.params[k]=p[k]; });
+  s.updatedAt=Date.now();
+  saveStrategies(strategies);
+  renderStrategyCards();
+  renderBtParams();
+  const d=document.getElementById('btStratDesc');
+  if(d){ d.textContent='✅ 参数已保存到策略：「'+s.name+'」'; }
 }
 /* 回测周期选项：值与标签 */
 const BT_RANGES={ '1w':{label:'1周',m:0,d:7,y:0},'1m':{label:'1月',m:1,d:0,y:0},'1q':{label:'1季度',m:3,d:0,y:0},'1y':{label:'1年',m:0,d:0,y:1},'2y':{label:'2年',m:0,d:0,y:2},'3y':{label:'3年',m:0,d:0,y:3},'5y':{label:'5年',m:0,d:0,y:5} };
@@ -1174,6 +1216,13 @@ function runBacktest(){
   if(!sym){ showErr('请输入股票代码'); return; }
   var strat=getSelectedStrat();
   if(!strat){ showErr('请先在「投资总览 · 策略库」新建一个可回测策略，再选择回测'); return; }
+  // 用回测区参数框的当前值（临时生效，不写回存储；点「保存到策略」才持久化）
+  strat=JSON.parse(JSON.stringify(strat));
+  var btParams=getBtParams();
+  if(btParams&&Object.keys(btParams).length){
+    strat.params=strat.params||{};
+    Object.keys(btParams).forEach(function(k){ strat.params[k]=btParams[k]; });
+  }
   var tdef=STRAT_TYPES[strat.type];
   if(!tdef||!tdef.backtest){ showErr('策略「'+strat.name+'」是展示型（'+tdef.label+'），请选择带「可回测」的策略'); return; }
   showLoading(true); showErr(null);
