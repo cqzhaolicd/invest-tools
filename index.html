@@ -1224,6 +1224,19 @@ function runBacktest(){
       else { sampleHtml='<span style="color:#d43f3f;font-weight:700">⛔ 交易仅 '+n+' 次，样本严重不足，结论不可靠（可放宽触发条件，如调小 MA 周期 / 放宽 RSI 阈值，或换标的）</span>'; }
     }
     var fDate=data.length?data[0].date:'-', lDate=data.length?data[data.length-1].date:'-';
+    // 股息策略诊断: 统计该标的在回测区间的股息率区间与各线触发天数, 帮助定位"交易次数少"的原因
+    var diagHtml='';
+    if(strat.type==='dividend'){
+      var dp=strat.params||{}, dps=dp.dps||1;
+      var ys=data.map(function(b){ return b.close>0?dps/b.close*100:null; }).filter(function(y){ return y!=null; });
+      if(ys.length){
+        var ymin=Math.min.apply(null,ys), ymax=Math.max.apply(null,ys);
+        var buyDays=ys.filter(function(y){ return y>=(dp.buyYield||6); }).length;
+        var sellDays=ys.filter(function(y){ return y<(dp.sellYield||4); }).length;
+        var clearDays=ys.filter(function(y){ return y<(dp.clearYield||3); }).length;
+        diagHtml='<div class="bt-note" style="margin-top:6px;color:var(--text2)">📊 诊断：该股'+rng.label+'股息率区间 '+fmtNum(ymin,2)+'%~'+fmtNum(ymax,2)+'%（每股分红'+dps+'元）· 建仓线≥'+(dp.buyYield||6)+'% 可触发 '+buyDays+' 天 · 卖出线<'+(dp.sellYield||4)+'% 仅 '+sellDays+' 天 · 清仓线<'+(dp.clearYield||3)+'% 仅 '+clearDays+' 天。若卖出/清仓线 0 天 = 只买不卖，交易次数必然少，请调高卖出线或核对每股分红</div>';
+      }
+    }
     var html='<div class="bt-summary">'+
       '<div class="bt-cell"><div class="v '+(tr>0?'pos':'neg')+'">'+(tr>0?'+':'')+fmtNum(tr)+'%</div><div class="k">策略总收益</div></div>'+
       '<div class="bt-cell"><div class="v '+(bh>0?'pos':'neg')+'">'+(bh>0?'+':'')+fmtNum(bh)+'%</div><div class="k">买入持有</div></div>'+
@@ -1232,6 +1245,7 @@ function runBacktest(){
       '<div class="bt-cell"><div class="v">'+n+'</div><div class="k">交易次数</div></div>'+
       '</div>'+
       '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='dividend'?'，分批网格操作':(strat.type==='buyhold'?'':'，全仓进出'))+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>'+
+      diagHtml+
       '<div class="bt-note" style="margin-top:6px">📅 回测区间 '+fDate+' ~ '+lDate+'（近'+rng.label+' · '+data.length+' 个交易日）&nbsp;|&nbsp;'+sampleHtml+'</div>';
     document.getElementById('btArea').innerHTML=html;
     // 顺带画 K 线（近 250 日，完整区间见上方统计）
