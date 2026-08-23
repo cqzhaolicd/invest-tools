@@ -1076,21 +1076,18 @@ function runBacktest(){
   var tdef=STRAT_TYPES[strat.type];
   if(!tdef||!tdef.backtest){ showErr('策略「'+strat.name+'」是展示型（'+tdef.label+'），请选择带「可回测」的策略'); return; }
   showLoading(true); showErr(null);
-  // 回测区间：按周期选择 + 指标预热缓冲（保证前段 MA/RSI 等有完整历史）
+  // 回测区间：按周期选择。请求全量日线（不带 beg/end，避免东财日期参数兼容问题），本地按周期截取
   var today=new Date();
   var selRange=(document.getElementById('btRangeSelect')&&document.getElementById('btRangeSelect').value)||'5y';
   var rng=BT_RANGES[selRange]||BT_RANGES['5y'];
   var start=new Date(today.getFullYear()-rng.y, today.getMonth()-rng.m, today.getDate()-rng.d);
-  var buf=new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  buf.setDate(buf.getDate()-300); // 多拉 300 个自然日做指标预热
   function pad(n){ return n<10?'0'+n:''+n; }
-  function dstr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
   loadSDK().then(function(s){
-    return s.kline.cn(sym,{period:'daily',startDate:dstr(buf),endDate:dstr(today)});
+    return s.kline.cn(sym,{period:'daily'});
   }).then(function(k){
     showLoading(false);
-    if(!k||!k.length){ showErr('未获取到K线数据'); return; }
-    // 截取所选周期（去掉预热段）
+    if(!k||!k.length){ showErr('未获取到K线数据（数据源可能繁忙，请稍后重试或换个代码）'); return; }
+    // 全量K线按所选周期本地截取（全量含更早历史，指标预热天然满足）
     var cutoffS=start.getTime();
     var startIdx=0;
     for(var i=0;i<k.length;i++){
