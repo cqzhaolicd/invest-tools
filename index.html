@@ -586,7 +586,7 @@ updateVerdict();
 /* ===== 策略库（localStorage 存储，可新建/编辑/删除，回测选用） ===== */
 const STRAT_KEY='invest_strategies_v1';
 const STRAT_TYPES={
-  dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[{key:'dps',label:'每股年分红(元)',def:1},{key:'buyYield',label:'买入股息率≥',def:6},{key:'sellYield',label:'卖出股息率≤',def:3}],hint:'按每股分红折算股息率=分红/价格×100%：≥买入阈值（跌便宜了）买入，≤卖出阈值（涨贵了）卖出'},
+  dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[{key:'window',label:'分位窗口(日)',def:250},{key:'buyPct',label:'买入分位≤',def:30},{key:'sellPct',label:'卖出分位≥',def:70}],hint:'用价格分位近似股息率：价格处近N日低分位（=股息率相对高，跌便宜了）买入，高分位（=涨贵了）卖出。自动适配任何标的，无需设每股分红'},
   crisis:{label:'危机买入法（可回测）',backtest:true,params:[{key:'dropPct',label:'恐慌跌幅≤(%)',def:4},{key:'volMult',label:'放量倍数≥',def:1.5},{key:'volDays',label:'均量窗口(日)',def:5},{key:'takePct',label:'反弹止盈≥(%)',def:25}],hint:'恐慌放量（单日跌幅大 + 量能放大）买入，反弹止盈卖出。回测不含「只买绩优股」的主观过滤'},
   ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
   ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
@@ -605,7 +605,7 @@ const DEFAULT_STRATS=[
      {k:'分位 < 30%（涨多了）',v:'🟠 减仓区',cls:'sig-reduce'},
      {k:'股息率 < 3%',v:'⚪ 清仓区',cls:'sig-clear'},
      {k:'基本面恶化（净利/分红连降）',v:'⛔ 回避',cls:'sig-avoid'}
-   ],params:{dps:1,buyYield:6,sellYield:3}},
+   ],params:{window:250,buyPct:30,sellPct:70}},
   {id:'s_crisis',name:'择时 · 危机买入法',type:'crisis',card:'green',
    desc:'平时空仓等机会，恐慌放量割肉时用白菜价买绩优股，反弹 25%+ 分批撤退——一年只出手一两次。',
    signals:[
@@ -643,9 +643,16 @@ function loadStrategies(){
           const tdef=STRAT_TYPES[s.type];
           if(tdef&&tdef.params&&tdef.params.length){
             const p=(s.params&&typeof s.params==='object')?s.params:{};
-            tdef.params.forEach(function(pd){
-              if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; }
-            });
+            // 股息策略旧版(每股分红dps) → 强制切新版价格分位默认
+            if(s.type==='dividend'&&p.dps!=null){
+              delete p.dps; delete p.buyYield; delete p.sellYield;
+              p.window=250; p.buyPct=30; p.sellPct=70;
+              changed=true;
+            }else{
+              tdef.params.forEach(function(pd){
+                if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; }
+              });
+            }
             s.params=p;
           }
         });
@@ -662,7 +669,7 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function stratDesc(strat){
   const p=strat.params||{},t=strat.type;
   const map={
-    dividend:'每股分红 '+(p.dps||1)+' 元折算股息率：≥ '+(p.buyYield||6)+'% 买入，≤ '+(p.sellYield||3)+'% 卖出',
+    dividend:'价格分位（近'+(p.window||750)+'日）：分位 ≤ '+(p.buyPct||30)+'% 买入（股息率相对高），≥ '+(p.sellPct||70)+'% 卖出',
     crisis:'单日跌幅 ≤ '+(p.dropPct||4)+'% 且放量 ≥ '+(p.volMult||1.5)+' 倍'+(p.volDays||5)+'日均量 买入，反弹 '+(p.takePct||25)+'%+ 卖出',
     ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
     macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
@@ -981,12 +988,19 @@ function attachIndicators(strat, closes, bars){
 function buildStrategyFn(strat){
   const t=strat.type;
   if(t==='dividend'){
-    const dps=(strat.params&&strat.params.dps)||1, buy=(strat.params&&strat.params.buyYield)||6, sell=(strat.params&&strat.params.sellYield)||3;
-    return function(bar){
-      if(bar.close==null||bar.close<=0) return 'hold';
-      const y=dps/bar.close*100;
-      if(y>=buy) return 'buy';
-      if(y<=sell) return 'sell';
+    const p=strat.params||{};
+    const win=p.window||750, buyP=p.buyPct||30, sellP=p.sellPct||70;
+    return function(bar,i,all){
+      if(bar.close==null||i<win-1) return 'hold';
+      // 价格分位：当前价在近 win 日内低于多少比例（越低=越便宜=股息率相对越高）
+      let below=0, total=0;
+      for(let j=i-win+1;j<=i;j++){
+        if(all[j]&&all[j].close!=null){ total++; if(all[j].close<=bar.close) below++; }
+      }
+      if(total<win) return 'hold';
+      const pct=below/total*100;
+      if(pct<=buyP) return 'buy';
+      if(pct>=sellP) return 'sell';
       return 'hold';
     };
   }
@@ -1108,11 +1122,21 @@ function runBacktest(){
     });
     lastKline=klines;
     var tr=report.totalReturn, bh=report.buyHoldReturn, wr=report.winRate, md=report.maxDrawdown;
-    // 样本量提示：交易次数越多结论越可靠
+    // 样本量提示：按策略类型区分（低频策略交易少是设计使然，趋势策略交易少才需警惕）
     var n=report.tradeCount, sampleHtml;
-    if(n>=15){ sampleHtml='<span style="color:#1e9e6a;font-weight:700">✅ 交易 '+n+' 次，样本量充足</span>'; }
-    else if(n>=6){ sampleHtml='<span style="color:#b8860b;font-weight:700">⚠️ 交易仅 '+n+' 次，样本偏少，结论参考性有限</span>'; }
-    else { sampleHtml='<span style="color:#d43f3f;font-weight:700">⛔ 交易仅 '+n+' 次，样本严重不足，结论不可靠（可放宽触发条件或换标的）</span>'; }
+    var lowFreq=(strat.type==='dividend'||strat.type==='crisis');
+    var shortRange=(selRange==='1w'||selRange==='1m'||selRange==='1q');
+    if(lowFreq){
+      if(shortRange){
+        sampleHtml='<span style="color:#2563eb;font-weight:700">🔵 低频策略 + 短周期：'+rng.label+'交易 '+n+' 次属正常（本就一年出手一两次）。建议切 1 年以上周期，或用多标的交叉验证，再下结论</span>';
+      }else{
+        sampleHtml='<span style="color:#2563eb;font-weight:700">🔵 低频策略：'+rng.label+'交易 '+n+' 次符合「一年出手一两次」的设计。样本靠多次回测累积：建议换 2-3 个标的分别回测对比，勿单次下结论</span>';
+      }
+    }else{
+      if(n>=15){ sampleHtml='<span style="color:#1e9e6a;font-weight:700">✅ 交易 '+n+' 次，样本量充足</span>'; }
+      else if(n>=6){ sampleHtml='<span style="color:#b8860b;font-weight:700">⚠️ 交易仅 '+n+' 次，样本偏少，结论参考性有限</span>'; }
+      else { sampleHtml='<span style="color:#d43f3f;font-weight:700">⛔ 交易仅 '+n+' 次，样本严重不足，结论不可靠（可放宽触发条件，如调小 MA 周期 / 放宽 RSI 阈值，或换标的）</span>'; }
+    }
     var fDate=data.length?data[0].date:'-', lDate=data.length?data[data.length-1].date:'-';
     var html='<div class="bt-summary">'+
       '<div class="bt-cell"><div class="v '+(tr>0?'pos':'neg')+'">'+(tr>0?'+':'')+fmtNum(tr)+'%</div><div class="k">策略总收益</div></div>'+
