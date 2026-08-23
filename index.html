@@ -586,7 +586,17 @@ updateVerdict();
 /* ===== 策略库（localStorage 存储，可新建/编辑/删除，回测选用） ===== */
 const STRAT_KEY='invest_strategies_v1';
 const STRAT_TYPES={
-  dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[{key:'window',label:'分位窗口(日)',def:250},{key:'buyPct',label:'买入分位≤',def:30},{key:'sellPct',label:'卖出分位≥',def:70}],hint:'用价格分位近似股息率：价格处近N日低分位（=股息率相对高，跌便宜了）买入，高分位（=涨贵了）卖出。自动适配任何标的，无需设每股分红'},
+  dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[
+    {key:'dps',label:'每股年分红(元)',def:1},
+    {key:'buyYield',label:'建仓股息率≥',def:6},
+    {key:'firstPct',label:'首仓比例(%)',def:10},
+    {key:'addDrop',label:'加仓跌幅(%)',def:5},
+    {key:'addPct',label:'加仓比例(%)',def:5},
+    {key:'sellYield',label:'开始卖出股息率<',def:4},
+    {key:'sellStep',label:'卖出阶梯涨幅(%)',def:5},
+    {key:'sellPct',label:'每档卖出比例(%)',def:5},
+    {key:'clearYield',label:'清仓股息率<',def:3}
+  ],hint:'股息率=每股分红÷价格×100%：≥建仓线买首仓，之后每跌5%加仓5%；<开始卖出线后每涨5%卖5%；<清仓线全卖'},
   crisis:{label:'危机买入法（可回测）',backtest:true,params:[{key:'dropPct',label:'恐慌跌幅≤(%)',def:4},{key:'volMult',label:'放量倍数≥',def:1.5},{key:'volDays',label:'均量窗口(日)',def:5},{key:'takePct',label:'反弹止盈≥(%)',def:25}],hint:'恐慌放量（单日跌幅大 + 量能放大）买入，反弹止盈卖出。回测不含「只买绩优股」的主观过滤'},
   ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
   ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
@@ -605,7 +615,7 @@ const DEFAULT_STRATS=[
      {k:'分位 < 30%（涨多了）',v:'🟠 减仓区',cls:'sig-reduce'},
      {k:'股息率 < 3%',v:'⚪ 清仓区',cls:'sig-clear'},
      {k:'基本面恶化（净利/分红连降）',v:'⛔ 回避',cls:'sig-avoid'}
-   ],params:{window:250,buyPct:30,sellPct:70}},
+   ],params:{dps:1,buyYield:6,firstPct:10,addDrop:5,addPct:5,sellYield:4,sellStep:5,sellPct:5,clearYield:3}},
   {id:'s_crisis',name:'择时 · 危机买入法',type:'crisis',card:'green',
    desc:'平时空仓等机会，恐慌放量割肉时用白菜价买绩优股，反弹 25%+ 分批撤退——一年只出手一两次。',
    signals:[
@@ -643,15 +653,17 @@ function loadStrategies(){
           const tdef=STRAT_TYPES[s.type];
           if(tdef&&tdef.params&&tdef.params.length){
             const p=(s.params&&typeof s.params==='object')?s.params:{};
-            // 股息策略旧版(每股分红dps) → 强制切新版价格分位默认
-            if(s.type==='dividend'&&p.dps!=null){
-              delete p.dps; delete p.buyYield; delete p.sellYield;
-              p.window=250; p.buyPct=30; p.sellPct=70;
-              changed=true;
+            if(s.type==='dividend'){
+              // 旧版股息策略(分位模式window / 第一版dps无firstPct) → 强制切新版网格默认
+              if(p.window!=null||(p.dps!=null&&p.firstPct==null)){
+                Object.keys(p).forEach(function(k){ delete p[k]; });
+                tdef.params.forEach(function(pd){ p[pd.key]=pd.def; });
+                changed=true;
+              }else{
+                tdef.params.forEach(function(pd){ if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; } });
+              }
             }else{
-              tdef.params.forEach(function(pd){
-                if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; }
-              });
+              tdef.params.forEach(function(pd){ if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; } });
             }
             s.params=p;
           }
@@ -669,7 +681,7 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function stratDesc(strat){
   const p=strat.params||{},t=strat.type;
   const map={
-    dividend:'价格分位（近'+(p.window||750)+'日）：分位 ≤ '+(p.buyPct||30)+'% 买入（股息率相对高），≥ '+(p.sellPct||70)+'% 卖出',
+    dividend:'每股分红 '+(p.dps||1)+' 元：股息率≥'+(p.buyYield||6)+'%建仓'+(p.firstPct||10)+'%，每跌'+(p.addDrop||5)+'%加仓'+(p.addPct||5)+'%；股息率<'+(p.sellYield||4)+'%后每涨'+(p.sellStep||5)+'%卖'+(p.sellPct||5)+'%；<'+(p.clearYield||3)+'%清仓',
     crisis:'单日跌幅 ≤ '+(p.dropPct||4)+'% 且放量 ≥ '+(p.volMult||1.5)+' 倍'+(p.volDays||5)+'日均量 买入，反弹 '+(p.takePct||25)+'%+ 卖出',
     ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
     macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
@@ -1082,6 +1094,81 @@ function buildStrategyFn(strat){
   return function(bar,i){ return i===0?'buy':'hold'; };
 }
 
+/* 股息网格回测引擎：股息率定买卖 + 股价阶梯加仓/减仓（SDK.backtest 是单仓位模型，无法表达分批网格，故独立实现） */
+function gridBacktest(klines, strat){
+  const p=strat.params||{};
+  const dps=p.dps||1, buyYield=p.buyYield||6, firstPct=p.firstPct||10;
+  const addDrop=p.addDrop||5, addPct=p.addPct||5;
+  const sellYield=p.sellYield||4, sellStep=p.sellStep||5, sellPct=p.sellPct||5;
+  const clearYield=p.clearYield||3;
+  const initial=100000;
+  let cash=initial, shares=0, avgCost=0;
+  let lastBuyPrice=null, sellLevel=0;   // sellLevel=已卖到的涨幅档数
+  let buys=0, sells=0, wins=0;
+  const equity=[];
+  const firstClose=klines.length?klines[0].close:null;
+  let bhEnd=klines.length?klines[klines.length-1].close:null;
+  for(let i=0;i<klines.length;i++){
+    const bar=klines[i], close=bar.close;
+    if(close==null||close<=0){ equity.push(cash+shares*(avgCost||close||0)); continue; }
+    const y=dps/close*100;  // 股息率
+    // 规则5：股息率<清仓线 → 全仓卖出
+    if(shares>0 && y<clearYield){
+      cash+=shares*close;
+      if(close>avgCost) wins++;
+      sells++; shares=0; avgCost=0; lastBuyPrice=null; sellLevel=0;
+    }
+    // 规则4：股息率<开始卖出线 → 股价每涨 sellStep% 卖一档 sellPct%
+    else if(shares>0 && y<sellYield && lastBuyPrice!=null){
+      const gain=(close-lastBuyPrice)/lastBuyPrice*100;
+      const targetLevel=Math.floor(gain/sellStep);
+      while(sellLevel<targetLevel && shares>0){
+        const amt=initial*sellPct/100;
+        const sShares=Math.min(amt/close, shares);
+        if(sShares<=0) break;
+        cash+=sShares*close; shares-=sShares;
+        if(close>avgCost) wins++;
+        sells++; sellLevel++;
+        if(shares<=0){ avgCost=0; lastBuyPrice=null; sellLevel=0; break; }
+      }
+    }
+    // 规则1：空仓且股息率≥建仓线 → 建仓 firstPct%
+    else if(shares===0 && y>=buyYield){
+      const amt=initial*firstPct/100;
+      const bShares=Math.min(amt/close, cash/close);
+      if(bShares>0){
+        cash-=bShares*close;
+        avgCost=(avgCost*shares+close*bShares)/(shares+bShares);
+        shares+=bShares; lastBuyPrice=close; sellLevel=0; buys++;
+      }
+    }
+    // 规则3：持仓中，股价较最近买入价跌 addDrop% → 加仓 addPct%
+    else if(shares>0 && lastBuyPrice!=null){
+      const drop=(lastBuyPrice-close)/lastBuyPrice*100;
+      if(drop>=addDrop){
+        const amt=initial*addPct/100;
+        const bShares=Math.min(amt/close, cash/close);
+        if(bShares>0){
+          cash-=bShares*close;
+          avgCost=(avgCost*shares+close*bShares)/(shares+bShares);
+          shares+=bShares; lastBuyPrice=close; sellLevel=0; buys++;
+        }
+      }
+    }
+    equity.push(cash+shares*(close||0));
+  }
+  // 期末：清仓结算（若仍持仓按最后收盘价计市值，计入收益率）
+  let finalEquity=cash+shares*(bhEnd||0);
+  const totalReturn=(finalEquity/initial-1)*100;
+  const buyHoldReturn=firstClose&&bhEnd?(bhEnd/firstClose-1)*100:0;
+  const winRate=sells>0?wins/sells*100:0;
+  // 最大回撤
+  let peak=initial, maxDD=0;
+  for(let v of equity){ if(v>peak) peak=v; const dd=(peak-v)/peak*100; if(dd>maxDD) maxDD=dd; }
+  return {initialCapital:initial, finalEquity:finalEquity, totalReturn:totalReturn, buyHoldReturn:buyHoldReturn,
+          winRate:winRate, maxDrawdown:maxDD, tradeCount:buys+sells, buys:buys, sells:sells, equityCurve:equity};
+}
+
 function runBacktest(){
   var sym=getSym();
   if(!sym){ showErr('请输入股票代码'); return; }
@@ -1116,10 +1203,9 @@ function runBacktest(){
     var maAll=SDK.calcMA(closes,{periods:[5,10,20]});
     klines.forEach(function(b,i){ if(maAll[i]){ b.ma5=maAll[i].ma5; b.ma10=maAll[i].ma10; b.ma20=maAll[i].ma20; } });
     attachIndicators(strat, closes, klines);
-    var report=SDK.backtest({
-      klines:klines,
-      strategy:buildStrategyFn(strat)
-    });
+    var report = (strat.type==='dividend')
+      ? gridBacktest(klines, strat)   // 股息网格策略：分批建仓/加仓/减仓，用独立引擎
+      : SDK.backtest({ klines:klines, strategy:buildStrategyFn(strat) });
     lastKline=klines;
     var tr=report.totalReturn, bh=report.buyHoldReturn, wr=report.winRate, md=report.maxDrawdown;
     // 样本量提示：按策略类型区分（低频策略交易少是设计使然，趋势策略交易少才需警惕）
@@ -1145,7 +1231,7 @@ function runBacktest(){
       '<div class="bt-cell"><div class="v neg">'+fmtNum(md,1)+'%</div><div class="k">最大回撤</div></div>'+
       '<div class="bt-cell"><div class="v">'+n+'</div><div class="k">交易次数</div></div>'+
       '</div>'+
-      '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='buyhold'?'':'，全仓进出')+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>'+
+      '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='dividend'?'，分批网格操作':(strat.type==='buyhold'?'':'，全仓进出'))+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>'+
       '<div class="bt-note" style="margin-top:6px">📅 回测区间 '+fDate+' ~ '+lDate+'（近'+rng.label+' · '+data.length+' 个交易日）&nbsp;|&nbsp;'+sampleHtml+'</div>';
     document.getElementById('btArea').innerHTML=html;
     // 顺带画 K 线（近 250 日，完整区间见上方统计）
