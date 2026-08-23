@@ -159,6 +159,42 @@ tr:hover td{background:#f8fafc}
 .repo{display:inline-block;margin-top:12px;background:#f5f8fc;border:1px solid #d5dde7;border-radius:8px;padding:7px 12px;font-size:.8rem;color:var(--blue);font-family:ui-monospace,monospace;word-break:break-all}
 .repo b{color:var(--navy)}
 
+/* ===== 策略库 ===== */
+.strat-edit{position:absolute;top:12px;right:12px;background:#f2f5f9;border:1px solid #d5dde7;border-radius:8px;width:32px;height:32px;font-size:.9rem;cursor:pointer;transition:.15s;z-index:2;line-height:1}
+.strat-edit:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.strat-tag{position:absolute;top:14px;right:50px;background:#eef6ff;color:#2563eb;border:1px solid #b9d2f0;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:999px;z-index:2}
+.m-card-add{cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:170px;border-style:dashed;background:#fbfcfe}
+.m-card-add:hover{border-color:var(--gold);background:#fdf9ef}
+.m-card-add .add-box{text-align:center;color:var(--text3);font-size:1.5rem;font-weight:300}
+.m-card-add .add-box span{display:block;font-size:.85rem;font-weight:700;color:var(--gold);margin-top:4px}
+/* ===== 策略编辑模态框 ===== */
+.modal-mask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(20,44,69,.45);display:flex;align-items:flex-start;justify-content:center;z-index:200;padding:40px 16px;overflow-y:auto}
+.modal{background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(20,44,69,.3);width:100%;max-width:700px;margin:auto}
+.modal-head{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid #e6ebf2}
+.modal-head h3{font-size:1.05rem;font-weight:800;color:var(--navy);flex:1}
+.modal-x{background:#f2f5f9;border:none;border-radius:8px;width:32px;height:32px;font-size:.95rem;cursor:pointer;color:var(--text3);line-height:1}
+.modal-x:hover{background:var(--navy);color:#fff}
+.modal-body{padding:18px 20px}
+.form-row{margin-bottom:16px}
+.form-row>label{display:block;font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.form-row input[type=text],.form-row textarea{width:100%;font-size:.92rem;padding:9px 12px;border:1.5px solid #ccd5e0;border-radius:9px;outline:none;font-family:inherit;background:#fbfcfe;color:var(--text)}
+.form-row input[type=text]:focus,.form-row textarea:focus{border-color:var(--blue)}
+.form-row select{width:100%;font-size:.92rem}
+.form-row .hint{font-size:.75rem;color:var(--text3);margin-top:5px}
+.sig-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.sig-row input{flex:1;font-size:.85rem;padding:8px 10px;border:1.5px solid #ccd5e0;border-radius:8px;outline:none;background:#fbfcfe;color:var(--text)}
+.sig-row input:focus{border-color:var(--blue)}
+.sig-row select{width:132px;flex-shrink:0;font-size:.8rem;padding:8px 8px}
+.sig-del{flex-shrink:0;background:#fdecec;border:1px solid #f2b9b9;color:#b03a3a;border-radius:8px;width:30px;height:34px;cursor:pointer;font-size:.8rem}
+.sig-del:hover{background:#d43f3f;color:#fff}
+.param-inline{display:inline-flex;align-items:center;gap:8px;margin:0 12px 8px 0}
+.param-inline label{font-size:.8rem;color:var(--text3)}
+.param-inline input{width:90px}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-danger{background:#fdecec;color:#b03a3a;border:1.5px solid #f2b9b9}
+.btn-danger:hover{background:#d43f3f;color:#fff}
+.modal-foot{display:flex;gap:10px;padding:14px 20px;border-top:1px solid #e6ebf2;align-items:center}
+
 /* ===== 行情·指标·回测 ===== */
 .market-tool{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:16px}
 .market-tool h3{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:8px}
@@ -237,36 +273,10 @@ tr:hover td{background:#f8fafc}
 
 <div class="wrap">
 
-  <!-- 总览 -->
+  <!-- 总览 / 策略库 -->
   <div class="section" id="overview">
-    <div class="section-head"><div class="ico">🎯</div><h2>投资总览</h2><span class="desc">策略一句话：平时拿着收息，股息贵了减仓，市场恐慌了才出手</span></div>
-    <div class="method-grid">
-      <div class="m-card gold">
-        <h3><span class="n">1</span>核心策略 · 股息高买低卖</h3>
-        <p>不赌股价涨跌，靠「股息率」这一客观指标做买卖依据。股息率高（跌多了）买，股息率低（涨多了）卖，年分红当收入。</p>
-        <div class="kv"><span class="k">股息率 ≥ 6%</span><span class="v"><span class="signal sig-strong">🔴 强力买入</span></span></div>
-        <div class="kv"><span class="k">分位 ≥ 70% 或 ≥5%+分位≥50</span><span class="v"><span class="signal sig-buy">🟢 买入区</span></span></div>
-        <div class="kv"><span class="k">分位 &lt; 30%（涨多了）</span><span class="v"><span class="signal sig-reduce">🟠 减仓区</span></span></div>
-        <div class="kv"><span class="k">股息率 &lt; 3%</span><span class="v"><span class="signal sig-clear">⚪ 清仓区</span></span></div>
-        <div class="kv"><span class="k">基本面恶化（净利/分红连降）</span><span class="v"><span class="signal sig-avoid">⛔ 回避</span></span></div>
-      </div>
-      <div class="m-card green">
-        <h3><span class="n">2</span>择时 · 危机买入法</h3>
-        <p>平时空仓等机会，恐慌放量割肉时用白菜价买绩优股，反弹 25%+ 分批撤退——一年只出手一两次。</p>
-        <div class="kv"><span class="k">等</span><span class="v">空仓等待 · 不盯盘不追热点</span></div>
-        <div class="kv"><span class="k">买</span><span class="v">恐慌放量 · 只买绩优股</span></div>
-        <div class="kv"><span class="k">卖</span><span class="v">反弹25%+ · 分批撤退</span></div>
-        <div class="kv"><span class="k">铁律</span><span class="v">只做绩优 · 分3-5份 · 建好就收</span></div>
-      </div>
-      <div class="m-card">
-        <h3><span class="n">3</span>AI 投研闭环</h3>
-        <p>用 Vibe-Research 开源 AI 投研看板：A股全栈数据 + 美港股 + 全球资讯直接内嵌仓库，接入自己的 DeepSeek API 驱动每日复盘与研究，决策权在自己。</p>
-        <div class="kv"><span class="k">覆盖</span><span class="v">A股主推 · 美股/港股兼看</span></div>
-        <div class="kv"><span class="k">功能</span><span class="v">复盘 / 资讯雷达 / 个股 / 板块 / 自选 / 持仓 / 研报</span></div>
-        <div class="kv"><span class="k">AI 接入</span><span class="v">DeepSeek API · 内置 baseURL 自动填</span></div>
-        <div class="kv"><span class="k">边界</span><span class="v">只呈现事实 · 不推荐个股</span></div>
-      </div>
-    </div>
+    <div class="section-head"><div class="ico">🎯</div><h2>投资总览 · 策略库</h2><span class="desc">你的策略可以新建 / 编辑 / 删除，回测时直接选用</span><div class="spacer" style="flex:1"></div><button class="btn btn-blue" onclick="openStratEditor(null)">＋ 新建策略</button></div>
+    <div class="method-grid" id="strategyGrid"></div>
   </div>
 
   <!-- 500万配置 -->
@@ -314,8 +324,13 @@ tr:hover td{background:#f8fafc}
         <input type="text" id="symInput" placeholder="如 600519 / 00700 / AAPL" style="width:220px">
         <button class="btn btn-blue" onclick="loadQuote()">查行情</button>
         <button class="btn btn-outline" onclick="loadKline()">K线+指标</button>
-        <button class="btn btn-outline" onclick="runBacktest()">策略回测</button>
         <span class="example">试试：<a href="javascript:void(0)" onclick="document.getElementById('symInput').value='600519';loadQuote()">600519 茅台</a> · <a href="javascript:void(0)" onclick="document.getElementById('symInput').value='601166';loadQuote()">601166 兴业</a> · <a href="javascript:void(0)" onclick="document.getElementById('symInput').value='sh000001';loadQuote()">上证指数</a> · <a href="javascript:void(0)" onclick="document.getElementById('symInput').value='AAPL';loadQuote()">AAPL</a></span>
+      </div>
+      <div class="sym-row" style="margin-top:12px">
+        <span style="font-weight:700;color:var(--navy);font-size:.9rem">回测策略</span>
+        <select id="btStratSelect" onchange="onBtStratChange()" style="min-width:250px"></select>
+        <span class="example" id="btStratDesc"></span>
+        <button class="btn btn-blue" onclick="runBacktest()">运行回测</button>
       </div>
       <div id="qLoading" class="loading" style="display:none">⏳ 加载中…</div>
       <div class="error-box" id="qError"></div>
@@ -418,6 +433,55 @@ tr:hover td{background:#f8fafc}
 
 <div class="footer">📊 个人投资中心 · AI 投研工作台 &nbsp;|&nbsp; 核心方法：<b>股息高买低卖 + 危机买入法 + AI 辅助研究</b> &nbsp;|&nbsp; 数据仅供个人参考，不构成投资建议</div>
 
+<!-- 策略编辑模态框 -->
+<div class="modal-mask" id="stratModal" style="display:none" onclick="if(event.target===this)closeStratEditor()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="stratModalTitle">编辑策略</h3>
+      <button class="modal-x" onclick="closeStratEditor()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label>策略名称</label>
+        <input type="text" id="seName" placeholder="如：核心策略 · 股息高买低卖 / MA 金叉死叉">
+      </div>
+      <div class="form-row">
+        <label>策略类型</label>
+        <select id="seType" onchange="updateParamFields()"></select>
+        <div class="hint" id="seTypeHint"></div>
+      </div>
+      <div class="form-row">
+        <label>策略描述（总览卡片展示）</label>
+        <textarea id="seDesc" rows="2" placeholder="一句话说明这个策略怎么用"></textarea>
+      </div>
+      <div class="form-row">
+        <label>信号 / 规则（总览卡片逐条展示，可增删）</label>
+        <div id="seSignals"></div>
+        <button class="btn btn-outline btn-sm" onclick="addSigRow()">＋ 添加一行</button>
+      </div>
+      <div class="form-row" id="seParamsRow">
+        <label>回测参数（仅可回测类型有效）</label>
+        <div id="seParams"></div>
+      </div>
+      <div class="form-row">
+        <label>卡片样式</label>
+        <select id="seCard">
+          <option value="">深蓝（默认）</option>
+          <option value="gold">金色（主策略）</option>
+          <option value="green">绿色（择时）</option>
+          <option value="red">红色（交易）</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" id="seDelete" onclick="deleteStrat()" style="display:none">删除</button>
+      <span style="flex:1"></span>
+      <button class="btn btn-outline" onclick="closeStratEditor()">取消</button>
+      <button class="btn btn-blue" onclick="saveStrat()">保存</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ===== 顶栏日期 ===== */
 (function(){
@@ -508,6 +572,212 @@ function updateVerdict(){
   }
 }
 updateVerdict();
+
+/* ===== 策略库（localStorage 存储，可新建/编辑/删除，回测选用） ===== */
+const STRAT_KEY='invest_strategies_v1';
+const STRAT_TYPES={
+  dividend:{label:'股息率信号（展示型）',backtest:false,hint:'按股息率/分位判断买卖区，用于总览展示'},
+  crisis:{label:'危机买入法（展示型）',backtest:false,hint:'恐慌放量买入的择时纪律，用于总览展示'},
+  ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
+  ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
+  macd:{label:'MACD 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快EMA',def:12},{key:'slow',label:'慢EMA',def:26},{key:'signal',label:'信号线',def:9}],hint:'DIF 上穿 DEA 买入，下穿卖出'},
+  rsi:{label:'RSI 超买卖（可回测）',backtest:true,params:[{key:'period',label:'RSI周期',def:14},{key:'buyBelow',label:'低于买入',def:30},{key:'sellAbove',label:'高于卖出',def:70}],hint:'RSI 超卖区买入，超买区卖出'},
+  boll:{label:'布林带触轨（可回测）',backtest:true,params:[{key:'period',label:'周期',def:20},{key:'stdDev',label:'标准差倍数',def:2}],hint:'收盘触下轨买入，触上轨卖出'},
+  kdj:{label:'KDJ 金叉死叉（可回测）',backtest:true,params:[{key:'period',label:'周期',def:9}],hint:'K 上穿 D 买入，下穿卖出'},
+  buyhold:{label:'买入持有（基准·可回测）',backtest:true,params:[],hint:'期初全仓买入持有到期末，作为基准对比'}
+};
+const DEFAULT_STRATS=[
+  {id:'s_dividend',name:'核心策略 · 股息高买低卖',type:'dividend',card:'gold',
+   desc:'不赌股价涨跌，靠「股息率」这一客观指标做买卖依据。股息率高（跌多了）买，股息率低（涨多了）卖，年分红当收入。',
+   signals:[
+     {k:'股息率 ≥ 6%',v:'🔴 强力买入',cls:'sig-strong'},
+     {k:'分位 ≥ 70% 或 ≥5%+分位≥50',v:'🟢 买入区',cls:'sig-buy'},
+     {k:'分位 < 30%（涨多了）',v:'🟠 减仓区',cls:'sig-reduce'},
+     {k:'股息率 < 3%',v:'⚪ 清仓区',cls:'sig-clear'},
+     {k:'基本面恶化（净利/分红连降）',v:'⛔ 回避',cls:'sig-avoid'}
+   ],params:{}},
+  {id:'s_crisis',name:'择时 · 危机买入法',type:'crisis',card:'green',
+   desc:'平时空仓等机会，恐慌放量割肉时用白菜价买绩优股，反弹 25%+ 分批撤退——一年只出手一两次。',
+   signals:[
+     {k:'等',v:'空仓等待 · 不盯盘不追热点'},
+     {k:'买',v:'恐慌放量 · 只买绩优股'},
+     {k:'卖',v:'反弹25%+ · 分批撤退'},
+     {k:'铁律',v:'只做绩优 · 分3-5份 · 建好就收'}
+   ],params:{}},
+  {id:'s_ai',name:'AI 投研闭环',type:'ai',card:'',
+   desc:'用 Vibe-Research 开源 AI 投研看板：A股全栈数据 + 美港股 + 全球资讯直接内嵌仓库，接入自己的 DeepSeek API 驱动每日复盘与研究，决策权在自己。',
+   signals:[
+     {k:'覆盖',v:'A股主推 · 美股/港股兼看'},
+     {k:'功能',v:'复盘 / 资讯雷达 / 个股 / 板块 / 自选 / 持仓 / 研报'},
+     {k:'AI 接入',v:'DeepSeek API · 内置 baseURL 自动填'},
+     {k:'边界',v:'只呈现事实 · 不推荐个股'}
+   ],params:{}},
+  {id:'s_ma',name:'MA 金叉死叉',type:'ma_cross',card:'red',
+   desc:'经典均线趋势策略：快线上穿慢线（金叉）买入，下穿（死叉）卖出，全仓进出。可作为技术面回测基准。',
+   signals:[
+     {k:'买',v:'快线 上穿 慢线 → 金叉买入',cls:'sig-buy'},
+     {k:'卖',v:'快线 下穿 慢线 → 死叉卖出',cls:'sig-reduce'}
+   ],
+   params:{fast:5,slow:20}}
+];
+let strategies=[];
+function loadStrategies(){
+  try{
+    const raw=localStorage.getItem(STRAT_KEY);
+    if(raw){ const arr=JSON.parse(raw); if(Array.isArray(arr)&&arr.length) return arr; }
+  }catch(e){}
+  return DEFAULT_STRATS.map(function(s){return JSON.parse(JSON.stringify(s));});
+}
+function saveStrategies(list){ try{ localStorage.setItem(STRAT_KEY,JSON.stringify(list)); }catch(e){} }
+function getStratById(id){ return strategies.filter(function(s){return s.id===id;})[0]; }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function stratDesc(strat){
+  const p=strat.params||{},t=strat.type;
+  const map={
+    ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
+    macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
+    rsi:'RSI('+(p.period||14)+') 低于 '+(p.buyBelow||30)+' 买入，高于 '+(p.sellAbove||70)+' 卖出',
+    boll:'收盘触下轨买入，触上轨卖出（布林带 '+(p.period||20)+' 周期 · '+(p.stdDev||2)+' 倍标准差）',
+    kdj:'K 上穿 D 买入（金叉），下穿卖出（死叉）',
+    buyhold:'期初全仓买入持有至期末（基准）'
+  };
+  return map[t]||'自定义规则';
+}
+function renderStrategyCards(){
+  const box=document.getElementById('strategyGrid');
+  if(!box) return;
+  let h='';
+  strategies.forEach(function(s,i){
+    const cls=s.card?' '+s.card:'';
+    const tdef=STRAT_TYPES[s.type];
+    const bt=tdef&&tdef.backtest;
+    let sig='';
+    (s.signals||[]).forEach(function(x){
+      sig+='<div class="kv"><span class="k">'+esc(x.k)+'</span><span class="v"><span class="signal '+(x.cls||'')+'">'+esc(x.v)+'</span></span></div>';
+    });
+    h+='<div class="m-card'+cls+'">'+
+      '<button class="strat-edit" title="编辑策略" onclick="openStratEditor(\''+s.id+'\')">✏️</button>'+
+      (bt?'<span class="strat-tag">🔬 可回测</span>':'')+
+      '<h3><span class="n">'+(i+1)+'</span>'+esc(s.name)+'</h3>'+
+      '<p>'+esc(s.desc)+'</p>'+sig+'</div>';
+  });
+  h+='<div class="m-card m-card-add" onclick="openStratEditor(null)"><div class="add-box">＋<br><span>新建策略</span></div></div>';
+  box.innerHTML=h;
+  renderStratOptions();
+}
+function renderStratOptions(){
+  const sel=document.getElementById('btStratSelect');
+  if(!sel) return;
+  const prev=sel.value;
+  let h='';
+  strategies.forEach(function(s){
+    const tdef=STRAT_TYPES[s.type];
+    if(tdef&&tdef.backtest){
+      h+='<option value="'+s.id+'">'+esc(s.name)+'</option>';
+    }
+  });
+  sel.innerHTML=h||'<option value="">（没有可回测策略，去上方新建）</option>';
+  if(prev&&getStratById(prev)){ sel.value=prev; }
+  onBtStratChange();
+}
+function onBtStratChange(){
+  const sel=document.getElementById('btStratSelect');
+  const d=document.getElementById('btStratDesc');
+  const s=sel?getStratById(sel.value):null;
+  if(d) d.textContent=s?('策略：'+s.name+' — '+stratDesc(s)):'';
+}
+let editingId=null;
+function openStratEditor(id){
+  editingId=id;
+  const s=id?getStratById(id):null;
+  const tsel=document.getElementById('seType');
+  tsel.innerHTML=Object.keys(STRAT_TYPES).map(function(k){
+    return '<option value="'+k+'">'+STRAT_TYPES[k].label+'</option>';
+  }).join('');
+  document.getElementById('stratModalTitle').textContent=s?'编辑策略':'新建策略';
+  document.getElementById('seName').value=s?s.name:'';
+  tsel.value=s?s.type:'ma_cross';
+  document.getElementById('seDesc').value=s?s.desc:'';
+  document.getElementById('seCard').value=s?(s.card||''):'';
+  document.getElementById('seDelete').style.display=s?'inline-block':'none';
+  const sb=document.getElementById('seSignals'); sb.innerHTML='';
+  const sigs=(s&&s.signals&&s.signals.length)?s.signals:[{k:'',v:'',cls:''}];
+  sigs.forEach(function(x){ addSigRow(x); });
+  updateParamFields(s?s.params:{});
+  document.getElementById('stratModal').style.display='flex';
+}
+function closeStratEditor(){ document.getElementById('stratModal').style.display='none'; }
+function addSigRow(x){
+  x=x||{k:'',v:'',cls:''};
+  const sb=document.getElementById('seSignals');
+  const d=document.createElement('div'); d.className='sig-row';
+  d.innerHTML='<input class="sig-k" placeholder="条件 / 阈值（如：股息率 ≥ 6%）" value="'+esc(x.k)+'">'+
+    '<input class="sig-v" placeholder="结论（如：🔴 强力买入）" value="'+esc(x.v)+'">'+
+    '<select class="sig-cls">'+
+      '<option value="">样式默认</option>'+
+      '<option value="sig-strong"'+(x.cls==='sig-strong'?' selected':'')+'>🔴 红-强力</option>'+
+      '<option value="sig-buy"'+(x.cls==='sig-buy'?' selected':'')+'>🟢 绿-买入</option>'+
+      '<option value="sig-reduce"'+(x.cls==='sig-reduce'?' selected':'')+'>🟠 橙-减仓</option>'+
+      '<option value="sig-clear"'+(x.cls==='sig-clear'?' selected':'')+'>⚪ 灰-清仓</option>'+
+      '<option value="sig-avoid"'+(x.cls==='sig-avoid'?' selected':'')+'>⛔ 紫-回避</option>'+
+    '</select>'+
+    '<button type="button" class="sig-del" onclick="this.parentNode.remove()">✕</button>';
+  sb.appendChild(d);
+}
+function updateParamFields(params){
+  params=params||{};
+  const t=document.getElementById('seType').value;
+  const tdef=STRAT_TYPES[t];
+  const row=document.getElementById('seParamsRow'),box=document.getElementById('seParams');
+  const hint=document.getElementById('seTypeHint');
+  hint.textContent=tdef?tdef.hint:'';
+  const defs=tdef?tdef.params:[];
+  if(!defs.length){ row.style.display='none'; return; }
+  row.style.display='';
+  box.innerHTML='';
+  defs.forEach(function(pd){
+    const el=document.createElement('div'); el.className='param-inline';
+    el.innerHTML='<label>'+pd.label+'</label><input type="number" class="param-input" data-key="'+pd.key+'" value="'+(params[pd.key]!=null?params[pd.key]:pd.def)+'">';
+    box.appendChild(el);
+  });
+}
+function saveStrat(){
+  const name=document.getElementById('seName').value.trim();
+  if(!name){ alert('请输入策略名称'); return; }
+  const type=document.getElementById('seType').value;
+  const desc=document.getElementById('seDesc').value.trim();
+  const card=document.getElementById('seCard').value;
+  const signals=[];
+  document.querySelectorAll('#seSignals .sig-row').forEach(function(r){
+    const k=r.querySelector('.sig-k').value.trim(),v=r.querySelector('.sig-v').value.trim(),cls=r.querySelector('.sig-cls').value;
+    if(k||v) signals.push({k:k,v:v,cls:cls});
+  });
+  const params={};
+  document.querySelectorAll('#seParams .param-input').forEach(function(inp){
+    const key=inp.getAttribute('data-key'),v=parseFloat(inp.value);
+    if(!isNaN(v)) params[key]=v;
+  });
+  const now=Date.now();
+  if(editingId){
+    const s=getStratById(editingId);
+    if(s){ s.name=name;s.type=type;s.desc=desc;s.card=card;s.signals=signals;s.params=params;s.updatedAt=now; }
+  }else{
+    strategies.push({id:'s_'+now.toString(36)+Math.floor(Math.random()*1e4).toString(36),name:name,type:type,desc:desc,card:card,signals:signals,params:params,createdAt:now,updatedAt:now});
+  }
+  saveStrategies(strategies);
+  renderStrategyCards();
+  closeStratEditor();
+}
+function deleteStrat(){
+  if(!editingId) return;
+  if(!confirm('确定删除该策略？')) return;
+  strategies=strategies.filter(function(s){return s.id!==editingId;});
+  saveStrategies(strategies);
+  renderStrategyCards();
+  closeStratEditor();
+}
+strategies=loadStrategies();
+renderStrategyCards();
 
 /* ===== 行情·指标·回测（stock-sdk） ===== */
 let SDK=null, sdk=null, lastKline=null;
@@ -643,9 +913,93 @@ function loadKline(){
   });
 }
 
+function getSelectedStrat(){
+  const sel=document.getElementById('btStratSelect');
+  return (sel&&sel.value)?getStratById(sel.value):null;
+}
+/* 根据策略类型给 K 线附加指标字段（maFast/maSlow/dif/dea/rsi/bollUpper/bollLower/k/d） */
+function attachIndicators(strat, closes, bars){
+  const p=strat.params||{}, t=strat.type;
+  if(t==='ma_cross'){
+    const fast=p.fast||5, slow=p.slow||20;
+    const m=SDK.calcMA(closes,{periods:[fast,slow]});
+    bars.forEach(function(b,i){ if(m[i]){ b.maFast=m[i]['ma'+fast]; b.maSlow=m[i]['ma'+slow]; } });
+  }else if(t==='macd'){
+    const mc=SDK.calcMACD(closes,{short:p.fast||12,long:p.slow||26,signal:p.signal||9});
+    bars.forEach(function(b,i){ if(mc[i]){ b.dif=mc[i].dif; b.dea=mc[i].dea; } });
+  }else if(t==='rsi'){
+    const per=p.period||14;
+    const r=SDK.calcRSI(closes,{periods:[per]});
+    bars.forEach(function(b,i){ if(r[i]) b.rsi=r[i]['rsi'+per]; });
+  }else if(t==='boll'){
+    const bl=SDK.calcBOLL(closes,{period:p.period||20,stdDev:p.stdDev||2});
+    bars.forEach(function(b,i){ if(bl[i]){ b.bollUpper=bl[i].upper; b.bollLower=bl[i].lower; } });
+  }else if(t==='kdj'){
+    const kd=SDK.calcKDJ(bars,{period:p.period||9});
+    bars.forEach(function(b,i){ if(kd[i]){ b.k=kd[i].k; b.d=kd[i].d; } });
+  }
+}
+/* 根据策略类型生成回测买卖信号函数（返回 buy / sell / hold） */
+function buildStrategyFn(strat){
+  const t=strat.type;
+  if(t==='ma_cross'){
+    return function(bar,i,all){
+      if(i<1||bar.maFast==null||bar.maSlow==null) return 'hold';
+      const prev=all[i-1];
+      if(prev.maFast==null||prev.maSlow==null) return 'hold';
+      if(bar.maFast>bar.maSlow&&prev.maFast<=prev.maSlow) return 'buy';
+      if(bar.maFast<bar.maSlow&&prev.maFast>=prev.maSlow) return 'sell';
+      return 'hold';
+    };
+  }
+  if(t==='macd'){
+    return function(bar,i,all){
+      if(i<1||bar.dif==null||bar.dea==null) return 'hold';
+      const prev=all[i-1];
+      if(prev.dif==null||prev.dea==null) return 'hold';
+      if(bar.dif>bar.dea&&prev.dif<=prev.dea) return 'buy';
+      if(bar.dif<bar.dea&&prev.dif>=prev.dea) return 'sell';
+      return 'hold';
+    };
+  }
+  if(t==='rsi'){
+    const buyBelow=(strat.params&&strat.params.buyBelow)||30, sellAbove=(strat.params&&strat.params.sellAbove)||70;
+    return function(bar){
+      if(bar.rsi==null) return 'hold';
+      if(bar.rsi<buyBelow) return 'buy';
+      if(bar.rsi>sellAbove) return 'sell';
+      return 'hold';
+    };
+  }
+  if(t==='boll'){
+    return function(bar){
+      if(bar.bollUpper==null||bar.bollLower==null) return 'hold';
+      if(bar.close<=bar.bollLower) return 'buy';
+      if(bar.close>=bar.bollUpper) return 'sell';
+      return 'hold';
+    };
+  }
+  if(t==='kdj'){
+    return function(bar,i,all){
+      if(i<1||bar.k==null||bar.d==null) return 'hold';
+      const prev=all[i-1];
+      if(prev.k==null||prev.d==null) return 'hold';
+      if(bar.k>bar.d&&prev.k<=prev.d) return 'buy';
+      if(bar.k<bar.d&&prev.k>=prev.d) return 'sell';
+      return 'hold';
+    };
+  }
+  // buyhold 基准：期初全仓买入持有
+  return function(bar,i){ return i===0?'buy':'hold'; };
+}
+
 function runBacktest(){
   var sym=getSym();
   if(!sym){ showErr('请输入股票代码'); return; }
+  var strat=getSelectedStrat();
+  if(!strat){ showErr('请先在「投资总览 · 策略库」新建一个可回测策略，再选择回测'); return; }
+  var tdef=STRAT_TYPES[strat.type];
+  if(!tdef||!tdef.backtest){ showErr('策略「'+strat.name+'」是展示型（'+tdef.label+'），请选择带「可回测」的策略'); return; }
   showLoading(true); showErr(null);
   loadSDK().then(function(s){
     return s.kline.cn(sym,{period:'daily',limit:500});
@@ -653,18 +1007,14 @@ function runBacktest(){
     showLoading(false);
     if(!k||!k.length){ showErr('未获取到K线数据'); return; }
     var closes=k.map(function(b){return b.close;});
-    var ma5=SDK.calcMA(closes,5).map(function(x){return x.ma5;});
-    var ma20=SDK.calcMA(closes,20).map(function(x){return x.ma20;});
-    var klines=k.map(function(b,i){return {date:b.date,open:b.open,close:b.close,high:b.high,low:b.low,volume:b.volume,ma5:ma5[i],ma20:ma20[i]};});
+    var klines=k.map(function(b){return {date:b.date,open:b.open,close:b.close,high:b.high,low:b.low,volume:b.volume};});
+    // 统一附加 MA5/10/20（画K线用）+ 策略专属指标
+    var maAll=SDK.calcMA(closes,{periods:[5,10,20]});
+    klines.forEach(function(b,i){ if(maAll[i]){ b.ma5=maAll[i].ma5; b.ma10=maAll[i].ma10; b.ma20=maAll[i].ma20; } });
+    attachIndicators(strat, closes, klines);
     var report=SDK.backtest({
       klines:klines,
-      strategy:function(bar,i,all){
-        if(i<1) return 'hold';
-        var prev=all[i-1];
-        if(bar.ma5>bar.ma20&&prev.ma5<=prev.ma20) return 'buy';
-        if(bar.ma5<bar.ma20&&prev.ma5>=prev.ma20) return 'sell';
-        return 'hold';
-      }
+      strategy:buildStrategyFn(strat)
     });
     lastKline=klines;
     var tr=report.totalReturn, bh=report.buyHoldReturn, wr=report.winRate, md=report.maxDrawdown;
@@ -675,11 +1025,11 @@ function runBacktest(){
       '<div class="bt-cell"><div class="v neg">'+fmtNum(md,1)+'%</div><div class="k">最大回撤</div></div>'+
       '<div class="bt-cell"><div class="v">'+report.tradeCount+'</div><div class="k">交易次数</div></div>'+
       '</div>'+
-      '<div class="bt-note">📐 策略：MA5 上穿 MA20 买入（金叉），下穿卖出（死叉），全仓进出。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>';
+      '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='buyhold'?'':'，全仓进出')+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>';
     document.getElementById('btArea').innerHTML=html;
     // 顺带画 K 线
     var khtml='<div class="chart-box"><canvas id="klineCanvas2" height="300"></canvas></div>'+
-      '<div class="hint" style="margin-top:10px">📊 回测区间K线（近'+klines.length+'日）</div>';
+      '<div class="hint" style="margin-top:10px">📊 回测区间K线（近'+klines.length+'日 · MA5/10/20）</div>';
     document.getElementById('klineArea').innerHTML=khtml;
     var cv=document.getElementById('klineCanvas2');
     cv.style.width='100%';
