@@ -328,7 +328,17 @@ tr:hover td{background:#f8fafc}
       </div>
       <div class="sym-row" style="margin-top:12px">
         <span style="font-weight:700;color:var(--navy);font-size:.9rem">回测策略</span>
-        <select id="btStratSelect" onchange="onBtStratChange()" style="min-width:250px"></select>
+        <select id="btStratSelect" onchange="onBtStratChange()" style="min-width:230px"></select>
+        <span style="font-weight:700;color:var(--navy);font-size:.9rem">周期</span>
+        <select id="btRangeSelect" onchange="onBtRangeChange()" style="min-width:90px">
+          <option value="1w">1周</option>
+          <option value="1m">1月</option>
+          <option value="1q">1季度</option>
+          <option value="1y">1年</option>
+          <option value="2y">2年</option>
+          <option value="3y">3年</option>
+          <option value="5y" selected>5年</option>
+        </select>
         <span class="example" id="btStratDesc"></span>
         <button class="btn btn-blue" onclick="runBacktest()">运行回测</button>
       </div>
@@ -706,6 +716,14 @@ function onBtStratChange(){
   const s=sel?getStratById(sel.value):null;
   if(d) d.textContent=s?('策略：'+s.name+' — '+stratDesc(s)):'';
 }
+/* 回测周期选项：值与标签 */
+const BT_RANGES={ '1w':{label:'1周',m:0,d:7,y:0},'1m':{label:'1月',m:1,d:0,y:0},'1q':{label:'1季度',m:3,d:0,y:0},'1y':{label:'1年',m:0,d:0,y:1},'2y':{label:'2年',m:0,d:0,y:2},'3y':{label:'3年',m:0,d:0,y:3},'5y':{label:'5年',m:0,d:0,y:5} };
+function onBtRangeChange(){
+  const sel=document.getElementById('btRangeSelect');
+  const r=sel?BT_RANGES[sel.value]:null;
+  const d=document.getElementById('btStratDesc');
+  if(d&&r&&d.textContent.indexOf('回测区间')<0){} // 保持策略说明即可
+}
 let editingId=null;
 function openStratEditor(id){
   editingId=id;
@@ -1058,9 +1076,12 @@ function runBacktest(){
   var tdef=STRAT_TYPES[strat.type];
   if(!tdef||!tdef.backtest){ showErr('策略「'+strat.name+'」是展示型（'+tdef.label+'），请选择带「可回测」的策略'); return; }
   showLoading(true); showErr(null);
-  // 回测区间：过去 5 年（含指标预热缓冲，保证前段 MA/RSI 等有完整历史）
+  // 回测区间：按周期选择 + 指标预热缓冲（保证前段 MA/RSI 等有完整历史）
   var today=new Date();
-  var buf=new Date(today.getFullYear()-5, today.getMonth(), today.getDate());
+  var selRange=(document.getElementById('btRangeSelect')&&document.getElementById('btRangeSelect').value)||'5y';
+  var rng=BT_RANGES[selRange]||BT_RANGES['5y'];
+  var start=new Date(today.getFullYear()-rng.y, today.getMonth()-rng.m, today.getDate()-rng.d);
+  var buf=new Date(start.getFullYear(), start.getMonth(), start.getDate());
   buf.setDate(buf.getDate()-300); // 多拉 300 个自然日做指标预热
   function pad(n){ return n<10?'0'+n:''+n; }
   function dstr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
@@ -1069,9 +1090,8 @@ function runBacktest(){
   }).then(function(k){
     showLoading(false);
     if(!k||!k.length){ showErr('未获取到K线数据'); return; }
-    // 截取最近 5 年（去掉预热段）
-    var cutoff=new Date(today.getFullYear()-5, today.getMonth(), today.getDate());
-    var cutoffS=cutoff.getTime();
+    // 截取所选周期（去掉预热段）
+    var cutoffS=start.getTime();
     var startIdx=0;
     for(var i=0;i<k.length;i++){
       var t=k[i].date.replace(/-/g,'');
@@ -1105,11 +1125,11 @@ function runBacktest(){
       '<div class="bt-cell"><div class="v">'+n+'</div><div class="k">交易次数</div></div>'+
       '</div>'+
       '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='buyhold'?'':'，全仓进出')+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>'+
-      '<div class="bt-note" style="margin-top:6px">📅 回测区间 '+fDate+' ~ '+lDate+'（近5年 · '+data.length+' 个交易日）&nbsp;|&nbsp;'+sampleHtml+'</div>';
+      '<div class="bt-note" style="margin-top:6px">📅 回测区间 '+fDate+' ~ '+lDate+'（近'+rng.label+' · '+data.length+' 个交易日）&nbsp;|&nbsp;'+sampleHtml+'</div>';
     document.getElementById('btArea').innerHTML=html;
     // 顺带画 K 线（近 250 日，完整区间见上方统计）
     var khtml='<div class="chart-box"><canvas id="klineCanvas2" height="300"></canvas></div>'+
-      '<div class="hint" style="margin-top:10px">📊 近250日K线（完整回测区间 '+data.length+' 日 · MA5/10/20）</div>';
+      '<div class="hint" style="margin-top:10px">📊 近'+Math.min(250,klines.length)+'日K线（完整回测区间 '+data.length+' 日 · MA5/10/20）</div>';
     document.getElementById('klineArea').innerHTML=khtml;
     var cv=document.getElementById('klineCanvas2');
     cv.style.width='100%';
