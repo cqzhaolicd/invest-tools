@@ -576,7 +576,7 @@ updateVerdict();
 /* ===== 策略库（localStorage 存储，可新建/编辑/删除，回测选用） ===== */
 const STRAT_KEY='invest_strategies_v1';
 const STRAT_TYPES={
-  dividend:{label:'股息率信号（展示型）',backtest:false,hint:'按股息率/分位判断买卖区，用于总览展示'},
+  dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[{key:'dps',label:'每股年分红(元)',def:1},{key:'buyYield',label:'买入股息率≥',def:6},{key:'sellYield',label:'卖出股息率≤',def:3}],hint:'按每股分红折算股息率=分红/价格×100%：≥买入阈值（跌便宜了）买入，≤卖出阈值（涨贵了）卖出'},
   crisis:{label:'危机买入法（展示型）',backtest:false,hint:'恐慌放量买入的择时纪律，用于总览展示'},
   ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
   ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
@@ -595,7 +595,7 @@ const DEFAULT_STRATS=[
      {k:'分位 < 30%（涨多了）',v:'🟠 减仓区',cls:'sig-reduce'},
      {k:'股息率 < 3%',v:'⚪ 清仓区',cls:'sig-clear'},
      {k:'基本面恶化（净利/分红连降）',v:'⛔ 回避',cls:'sig-avoid'}
-   ],params:{}},
+   ],params:{dps:1,buyYield:6,sellYield:3}},
   {id:'s_crisis',name:'择时 · 危机买入法',type:'crisis',card:'green',
    desc:'平时空仓等机会，恐慌放量割肉时用白菜价买绩优股，反弹 25%+ 分批撤退——一年只出手一两次。',
    signals:[
@@ -624,7 +624,25 @@ let strategies=[];
 function loadStrategies(){
   try{
     const raw=localStorage.getItem(STRAT_KEY);
-    if(raw){ const arr=JSON.parse(raw); if(Array.isArray(arr)&&arr.length) return arr; }
+    if(raw){
+      const arr=JSON.parse(raw);
+      if(Array.isArray(arr)&&arr.length){
+        // 迁移: 按类型补齐缺失的回测参数默认值(旧数据无 params 也能直接回测)
+        let changed=false;
+        arr.forEach(function(s){
+          const tdef=STRAT_TYPES[s.type];
+          if(tdef&&tdef.params&&tdef.params.length){
+            const p=(s.params&&typeof s.params==='object')?s.params:{};
+            tdef.params.forEach(function(pd){
+              if(p[pd.key]==null){ p[pd.key]=pd.def; changed=true; }
+            });
+            s.params=p;
+          }
+        });
+        if(changed) saveStrategies(arr);
+        return arr;
+      }
+    }
   }catch(e){}
   return DEFAULT_STRATS.map(function(s){return JSON.parse(JSON.stringify(s));});
 }
@@ -634,6 +652,7 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function stratDesc(strat){
   const p=strat.params||{},t=strat.type;
   const map={
+    dividend:'每股分红 '+(p.dps||1)+' 元折算股息率：≥ '+(p.buyYield||6)+'% 买入，≤ '+(p.sellYield||3)+'% 卖出',
     ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
     macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
     rsi:'RSI('+(p.period||14)+') 低于 '+(p.buyBelow||30)+' 买入，高于 '+(p.sellAbove||70)+' 卖出',
@@ -731,7 +750,7 @@ function updateParamFields(params){
   const row=document.getElementById('seParamsRow'),box=document.getElementById('seParams');
   const hint=document.getElementById('seTypeHint');
   hint.textContent=tdef?tdef.hint:'';
-  const defs=tdef?tdef.params:[];
+  const defs=(tdef&&tdef.params)?tdef.params:[];
   if(!defs.length){ row.style.display='none'; return; }
   row.style.display='';
   box.innerHTML='';
@@ -942,6 +961,16 @@ function attachIndicators(strat, closes, bars){
 /* 根据策略类型生成回测买卖信号函数（返回 buy / sell / hold） */
 function buildStrategyFn(strat){
   const t=strat.type;
+  if(t==='dividend'){
+    const dps=(strat.params&&strat.params.dps)||1, buy=(strat.params&&strat.params.buyYield)||6, sell=(strat.params&&strat.params.sellYield)||3;
+    return function(bar){
+      if(bar.close==null||bar.close<=0) return 'hold';
+      const y=dps/bar.close*100;
+      if(y>=buy) return 'buy';
+      if(y<=sell) return 'sell';
+      return 'hold';
+    };
+  }
   if(t==='ma_cross'){
     return function(bar,i,all){
       if(i<1||bar.maFast==null||bar.maSlow==null) return 'hold';
