@@ -577,7 +577,7 @@ updateVerdict();
 const STRAT_KEY='invest_strategies_v1';
 const STRAT_TYPES={
   dividend:{label:'股息高买低卖（可回测）',backtest:true,params:[{key:'dps',label:'每股年分红(元)',def:1},{key:'buyYield',label:'买入股息率≥',def:6},{key:'sellYield',label:'卖出股息率≤',def:3}],hint:'按每股分红折算股息率=分红/价格×100%：≥买入阈值（跌便宜了）买入，≤卖出阈值（涨贵了）卖出'},
-  crisis:{label:'危机买入法（展示型）',backtest:false,hint:'恐慌放量买入的择时纪律，用于总览展示'},
+  crisis:{label:'危机买入法（可回测）',backtest:true,params:[{key:'dropPct',label:'恐慌跌幅≤(%)',def:4},{key:'volMult',label:'放量倍数≥',def:1.5},{key:'volDays',label:'均量窗口(日)',def:5},{key:'takePct',label:'反弹止盈≥(%)',def:25}],hint:'恐慌放量（单日跌幅大 + 量能放大）买入，反弹止盈卖出。回测不含「只买绩优股」的主观过滤'},
   ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
   ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
   macd:{label:'MACD 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快EMA',def:12},{key:'slow',label:'慢EMA',def:26},{key:'signal',label:'信号线',def:9}],hint:'DIF 上穿 DEA 买入，下穿卖出'},
@@ -603,7 +603,7 @@ const DEFAULT_STRATS=[
      {k:'买',v:'恐慌放量 · 只买绩优股'},
      {k:'卖',v:'反弹25%+ · 分批撤退'},
      {k:'铁律',v:'只做绩优 · 分3-5份 · 建好就收'}
-   ],params:{}},
+   ],params:{dropPct:4,volMult:1.5,volDays:5,takePct:25}},
   {id:'s_ai',name:'AI 投研闭环',type:'ai',card:'',
    desc:'用 Vibe-Research 开源 AI 投研看板：A股全栈数据 + 美港股 + 全球资讯直接内嵌仓库，接入自己的 DeepSeek API 驱动每日复盘与研究，决策权在自己。',
    signals:[
@@ -653,6 +653,7 @@ function stratDesc(strat){
   const p=strat.params||{},t=strat.type;
   const map={
     dividend:'每股分红 '+(p.dps||1)+' 元折算股息率：≥ '+(p.buyYield||6)+'% 买入，≤ '+(p.sellYield||3)+'% 卖出',
+    crisis:'单日跌幅 ≤ '+(p.dropPct||4)+'% 且放量 ≥ '+(p.volMult||1.5)+' 倍'+(p.volDays||5)+'日均量 买入，反弹 '+(p.takePct||25)+'%+ 卖出',
     ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
     macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
     rsi:'RSI('+(p.period||14)+') 低于 '+(p.buyBelow||30)+' 买入，高于 '+(p.sellAbove||70)+' 卖出',
@@ -968,6 +969,33 @@ function buildStrategyFn(strat){
       const y=dps/bar.close*100;
       if(y>=buy) return 'buy';
       if(y<=sell) return 'sell';
+      return 'hold';
+    };
+  }
+  if(t==='crisis'){
+    const p=strat.params||{};
+    const drop=-(p.dropPct||4), volMult=p.volMult||1.5, volDays=p.volDays||5, take=p.takePct||25;
+    let entryPrice=null;
+    return function(bar,i,all){
+      if(bar.close==null||bar.volume==null) return 'hold';
+      // 持仓中：反弹止盈
+      if(entryPrice!=null){
+        if(bar.close>=entryPrice*(1+take/100)){ entryPrice=null; return 'sell'; }
+        return 'hold';
+      }
+      // 空仓：恐慌放量（单日大跌 + 量能放大）买入
+      if(i<volDays||!all[i-1]||all[i-1].close==null) return 'hold';
+      let vsum=0,cnt=0;
+      for(let j=i-volDays;j<i;j++){
+        if(all[j]&&all[j].volume!=null){ vsum+=all[j].volume; cnt++; }
+      }
+      if(cnt<volDays) return 'hold';
+      const avgV=vsum/cnt;
+      const chgPct=(bar.close-all[i-1].close)/all[i-1].close*100;
+      if(chgPct<=drop&&avgV>0&&bar.volume>=avgV*volMult){
+        entryPrice=bar.close;
+        return 'buy';
+      }
       return 'hold';
     };
   }
