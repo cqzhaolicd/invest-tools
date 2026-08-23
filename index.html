@@ -1058,13 +1058,29 @@ function runBacktest(){
   var tdef=STRAT_TYPES[strat.type];
   if(!tdef||!tdef.backtest){ showErr('策略「'+strat.name+'」是展示型（'+tdef.label+'），请选择带「可回测」的策略'); return; }
   showLoading(true); showErr(null);
+  // 回测区间：过去 5 年（含指标预热缓冲，保证前段 MA/RSI 等有完整历史）
+  var today=new Date();
+  var buf=new Date(today.getFullYear()-5, today.getMonth(), today.getDate());
+  buf.setDate(buf.getDate()-300); // 多拉 300 个自然日做指标预热
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function dstr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
   loadSDK().then(function(s){
-    return s.kline.cn(sym,{period:'daily',limit:500});
+    return s.kline.cn(sym,{period:'daily',startDate:dstr(buf),endDate:dstr(today)});
   }).then(function(k){
     showLoading(false);
     if(!k||!k.length){ showErr('未获取到K线数据'); return; }
-    var closes=k.map(function(b){return b.close;});
-    var klines=k.map(function(b){return {date:b.date,open:b.open,close:b.close,high:b.high,low:b.low,volume:b.volume};});
+    // 截取最近 5 年（去掉预热段）
+    var cutoff=new Date(today.getFullYear()-5, today.getMonth(), today.getDate());
+    var cutoffS=cutoff.getTime();
+    var startIdx=0;
+    for(var i=0;i<k.length;i++){
+      var t=k[i].date.replace(/-/g,'');
+      var ts=new Date(parseInt(t.slice(0,4)),parseInt(t.slice(4,6))-1,parseInt(t.slice(6,8))).getTime();
+      if(ts>=cutoffS){ startIdx=i; break; }
+    }
+    var data=(startIdx>0)?k.slice(startIdx):k;
+    var closes=data.map(function(b){return b.close;});
+    var klines=data.map(function(b){return {date:b.date,open:b.open,close:b.close,high:b.high,low:b.low,volume:b.volume};});
     // 统一附加 MA5/10/20（画K线用）+ 策略专属指标
     var maAll=SDK.calcMA(closes,{periods:[5,10,20]});
     klines.forEach(function(b,i){ if(maAll[i]){ b.ma5=maAll[i].ma5; b.ma10=maAll[i].ma10; b.ma20=maAll[i].ma20; } });
@@ -1075,22 +1091,29 @@ function runBacktest(){
     });
     lastKline=klines;
     var tr=report.totalReturn, bh=report.buyHoldReturn, wr=report.winRate, md=report.maxDrawdown;
+    // 样本量提示：交易次数越多结论越可靠
+    var n=report.tradeCount, sampleHtml;
+    if(n>=15){ sampleHtml='<span style="color:#1e9e6a;font-weight:700">✅ 交易 '+n+' 次，样本量充足</span>'; }
+    else if(n>=6){ sampleHtml='<span style="color:#b8860b;font-weight:700">⚠️ 交易仅 '+n+' 次，样本偏少，结论参考性有限</span>'; }
+    else { sampleHtml='<span style="color:#d43f3f;font-weight:700">⛔ 交易仅 '+n+' 次，样本严重不足，结论不可靠（可放宽触发条件或换标的）</span>'; }
+    var fDate=data.length?data[0].date:'-', lDate=data.length?data[data.length-1].date:'-';
     var html='<div class="bt-summary">'+
       '<div class="bt-cell"><div class="v '+(tr>0?'pos':'neg')+'">'+(tr>0?'+':'')+fmtNum(tr)+'%</div><div class="k">策略总收益</div></div>'+
       '<div class="bt-cell"><div class="v '+(bh>0?'pos':'neg')+'">'+(bh>0?'+':'')+fmtNum(bh)+'%</div><div class="k">买入持有</div></div>'+
       '<div class="bt-cell"><div class="v">'+fmtNum(wr,1)+'%</div><div class="k">胜率</div></div>'+
       '<div class="bt-cell"><div class="v neg">'+fmtNum(md,1)+'%</div><div class="k">最大回撤</div></div>'+
-      '<div class="bt-cell"><div class="v">'+report.tradeCount+'</div><div class="k">交易次数</div></div>'+
+      '<div class="bt-cell"><div class="v">'+n+'</div><div class="k">交易次数</div></div>'+
       '</div>'+
-      '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='buyhold'?'':'，全仓进出')+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>';
+      '<div class="bt-note">📐 策略：「'+esc(strat.name)+'」· '+stratDesc(strat)+(strat.type==='buyhold'?'':'，全仓进出')+'。期初资金 '+fmtNum(report.initialCapital,0)+' 元 → 期末 '+fmtNum(report.finalEquity,0)+' 元。回测基于历史数据，仅供研究，不构成投资建议。</div>'+
+      '<div class="bt-note" style="margin-top:6px">📅 回测区间 '+fDate+' ~ '+lDate+'（近5年 · '+data.length+' 个交易日）&nbsp;|&nbsp;'+sampleHtml+'</div>';
     document.getElementById('btArea').innerHTML=html;
-    // 顺带画 K 线
+    // 顺带画 K 线（近 250 日，完整区间见上方统计）
     var khtml='<div class="chart-box"><canvas id="klineCanvas2" height="300"></canvas></div>'+
-      '<div class="hint" style="margin-top:10px">📊 回测区间K线（近'+klines.length+'日 · MA5/10/20）</div>';
+      '<div class="hint" style="margin-top:10px">📊 近250日K线（完整回测区间 '+data.length+' 日 · MA5/10/20）</div>';
     document.getElementById('klineArea').innerHTML=khtml;
     var cv=document.getElementById('klineCanvas2');
     cv.style.width='100%';
-    drawKline(cv,klines.slice(-120));
+    drawKline(cv,klines.slice(-250));
   }).catch(function(e){
     showLoading(false);
     showErr(e.message||'回测请求失败');
