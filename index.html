@@ -1211,6 +1211,20 @@ function gridBacktest(klines, strat){
           winRate:winRate, maxDrawdown:maxDD, tradeCount:buys+sells, buys:buys, sells:sells, equityCurve:equity};
 }
 
+/* 按实际分红记录计算每股年分红：近3年每股税前分红均值（同一年多次分红累加） */
+function calcAnnualDps(details){
+  const byYear={};
+  (details||[]).forEach(function(d){
+    if(!d||!d.reportDate) return;
+    const y=String(d.reportDate).slice(0,4);
+    const v=parseFloat(d.dividendPretax);
+    if(!isNaN(v)&&v>0) byYear[y]=(byYear[y]||0)+v;
+  });
+  const years=Object.keys(byYear).sort().reverse().slice(0,3);
+  if(!years.length) return null;
+  const sum=years.reduce(function(a,y){ return a+byYear[y]; },0);
+  return Math.round(sum/years.length*100)/100;
+}
 function runBacktest(){
   var sym=getSym();
   if(!sym){ showErr('请输入股票代码'); return; }
@@ -1233,10 +1247,34 @@ function runBacktest(){
   var start=new Date(today.getFullYear()-rng.y, today.getMonth()-rng.m, today.getDate()-rng.d);
   function pad(n){ return n<10?'0'+n:''+n; }
   loadSDK().then(function(s){
-    return s.kline.cn(sym,{period:'daily'});
-  }).then(function(k){
+    // 并发拉取 K 线 + 分红详情（股息策略自动按实际分红算每股分红）
+    var kp=s.kline.cn(sym,{period:'daily'});
+    var dp=(strat.type==='dividend')
+      ? s.reference.dividendDetail(sym).catch(function(){ return []; })
+      : Promise.resolve([]);
+    return Promise.all([kp, dp]);
+  }).then(function(res){
+    var k=res[0], details=res[1]||[];
     showLoading(false);
     if(!k||!k.length){ showErr('未获取到K线数据（数据源可能繁忙，请稍后重试或换个代码）'); return; }
+    // 股息策略：按标的实际分红自动计算每股年分红（仅当用户未手动设置过）
+    var autoDpsNote='';
+    if(strat.type==='dividend'){
+      var userDps=strat.params.dps;
+      var autoDps=calcAnnualDps(details);
+      if(autoDps){
+        if(userDps==null||userDps===1){  // 默认值1 → 自动覆盖为实际分红
+          strat.params.dps=autoDps;
+          var inp=document.querySelector('#btParamsBox .bt-param-input[data-key=dps]');
+          if(inp) inp.value=autoDps;
+          autoDpsNote='已按'+sym+'实际分红自动计算：每股分红 '+autoDps+' 元（近3年均值）';
+        }else{
+          autoDpsNote='该股实际分红折算约 '+autoDps+' 元/股，当前按你设置的 '+userDps+' 元回测';
+        }
+      }else{
+        autoDpsNote='⚠️ 未获取到该股分红数据，当前按每股 '+userDps+' 元回测，建议核对';
+      }
+    }
     // 全量K线按所选周期本地截取（全量含更早历史，指标预热天然满足）
     var cutoffS=start.getTime();
     var startIdx=0;
@@ -1283,7 +1321,7 @@ function runBacktest(){
         var buyDays=ys.filter(function(y){ return y>=(dp.buyYield||6); }).length;
         var sellDays=ys.filter(function(y){ return y<(dp.sellYield||4); }).length;
         var clearDays=ys.filter(function(y){ return y<(dp.clearYield||3); }).length;
-        diagHtml='<div class="bt-note" style="margin-top:6px;color:var(--text2)">📊 诊断：该股'+rng.label+'股息率区间 '+fmtNum(ymin,2)+'%~'+fmtNum(ymax,2)+'%（每股分红'+dps+'元）· 建仓线≥'+(dp.buyYield||6)+'% 可触发 '+buyDays+' 天 · 卖出线<'+(dp.sellYield||4)+'% 仅 '+sellDays+' 天 · 清仓线<'+(dp.clearYield||3)+'% 仅 '+clearDays+' 天。若卖出/清仓线 0 天 = 只买不卖，交易次数必然少，请调高卖出线或核对每股分红</div>';
+        diagHtml='<div class="bt-note" style="margin-top:6px;color:var(--text2)">📊 诊断：该股'+rng.label+'股息率区间 '+fmtNum(ymin,2)+'%~'+fmtNum(ymax,2)+'%（每股分红'+dps+'元'+(autoDpsNote?('·'+autoDpsNote):'')+'）· 建仓线≥'+(dp.buyYield||6)+'% 可触发 '+buyDays+' 天 · 卖出线<'+(dp.sellYield||4)+'% 仅 '+sellDays+' 天 · 清仓线<'+(dp.clearYield||3)+'% 仅 '+clearDays+' 天。若卖出/清仓线 0 天 = 只买不卖，交易次数必然少，请调高卖出线或核对每股分红</div>';
       }
     }
     var html='<div class="bt-summary">'+
