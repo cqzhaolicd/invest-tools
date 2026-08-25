@@ -792,7 +792,7 @@ async function aiReview(){
     var box = $('aiReviewOut');
     var cursor = '<span class="cursor"></span>';
     box.insertAdjacentHTML('beforeend', cursor);
-    var full = await aiChat([{role:'system',content:'你是专业的A股每日复盘分析师。根据用户提供的市场客观数据，输出一份简洁的复盘报告：1) 大盘概况 2) 短线情绪解读 3) 资金流向解读 4) 风险与关注点。**如果数据中包含"我的自选股"和"我的持仓"，必须重点复盘：每只自选股/持仓个股当日的表现与异动解读、其所属板块的资金动向与板块强弱，以及组合层面的风险提示（如持仓集中度、回撤风险）。** 用markdown格式，标题用##，要点用-。客观陈述，不推荐个股、不预测涨跌。'},{role:'user',content:prompt}], function(delta){
+    var full = await aiChat([{role:'system',content:'你是专业的A股每日复盘分析师。根据用户提供的市场客观数据，输出一份简洁的复盘报告，**核心结论一律用 markdown 表格呈现**（表头用 `| 指标 | 数值 | 解读 |` 这类管道表格，必须有分隔行 `|---|---|`）：\n1) 大盘概况：指数表（指数/收盘/涨跌幅/要点解读）\n2) 短线情绪：情绪指标表（指标/数值/定性）\n3) 资金流向：行业资金表（行业/涨跌幅/主力净额/净占比/领涨股）\n4) 我的自选股：个股表（代码/名称/现价/涨跌幅/成交量/主力净流入/简评）\n5) 我的持仓：持仓表（代码/名称/持股/现价/当日盈利/主力净流入/浮盈/简评），并对组合给出集中度、回撤等风险提示\n6) 风险与关注点：可用要点列表。\n**要求：** 只呈现客观数据与中性解读，不推荐个股、不预测涨跌；表格不要超过6列；文字尽量精简。'},{role:'user',content:prompt}], function(delta){
       var c = box.querySelector('.cursor'); if(c) c.remove();
       var t = box.innerHTML.replace(/<span class="thinking">.*?<\/span><br>/,'');
       box.innerHTML = t + esc(delta) + '<span class="cursor"></span>';
@@ -1184,6 +1184,26 @@ function renderMd(md){
   var s = esc(md);
   var blocks = [];
   s = s.replace(/```([\s\S]*?)```/g, function(m, c){ blocks.push(c); return '\u0000BLOCK'+(blocks.length-1)+'\u0000'; });
+  if(!/\n$/.test(s)) s += '\n'; /* 保证末尾换行, 表格末行也能匹配 */
+  /* markdown 表格 → HTML 表格 */
+  s = s.replace(/(^\|[^\n]*\|\s*\n)+/gm, function(m){
+    var lines = m.replace(/\s+$/,'').split('\n');
+    var sepIdx = -1;
+    for(var i=0;i<lines.length;i++){ if(/^\|[\s\-:|]+\|$/.test(lines[i])){ sepIdx = i; break; } }
+    function cells(l){
+      return l.replace(/^\s*\|\s*/,'').replace(/\s*\|\s*$/,'').split(/\s*\|\s*/).map(function(c){ return c.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\*(.*?)\*/g,'<i>$1</i>'); });
+    }
+    var out = '<div class="table-wrap"><table>';
+    for(var j=0;j<lines.length;j++){
+      if(j===sepIdx) continue;
+      var cs = cells(lines[j]);
+      var tag = (sepIdx<0 || j<sepIdx) ? 'th' : 'td';
+      out += '<tr>';
+      cs.forEach(function(c){ out += '<'+tag+'>'+(c||'')+'</'+tag+'>'; });
+      out += '</tr>';
+    }
+    return out + '</table></div>\n';
+  });
   s = s.replace(/^### (.*)$/gm, '<h3>$1</h3>');
   s = s.replace(/^## (.*)$/gm, '<h2>$1</h2>');
   s = s.replace(/^# (.*)$/gm, '<h1>$1</h1>');
