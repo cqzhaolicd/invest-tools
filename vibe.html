@@ -621,6 +621,7 @@ async function gatherReview(){
     var idx = await getIndexes();
     var sent = await getSentiment();
     var secsAll = await getSectorsAll('m:90+t:2');
+    var concAll = await getSectorsAll('m:90+t:3');
     var turn = await getTurnoverTop().catch(function(){ return []; });
     /* 我的自选股 + 持仓行情 */
     var watch = lsGet('watch', []);
@@ -651,8 +652,28 @@ async function gatherReview(){
       });
     }
     var mySectors = secsAll.filter(function(x){ return indMatch(x.name); });
+    /* 我的关注板块(固定分组: 农业/养殖业/银行/低波股息/消费) */
+    var focusDefs = [
+      {label:'农业', codes:['BK0433','BK0888']},
+      {label:'养殖业', codes:['BK1259','BK1512']},
+      {label:'银行', codes:['BK1283','BK0475']},
+      {label:'低波股息', codes:['BK1641','BK1636']},
+      {label:'消费', codes:['BK1711','BK1652']}
+    ];
+    var pool = secsAll.concat(concAll);
+    var myFocus = focusDefs.map(function(fd){
+      for(var ci=0; ci<fd.codes.length; ci++){
+        for(var i=0;i<pool.length;i++){
+          if(pool[i].code===fd.codes[ci]){
+            var s = pool[i];
+            return {label:fd.label, code:s.code, name:s.name, pct:s.pct, net:s.net, main:s.main, lead:s.lead};
+          }
+        }
+      }
+      return null;
+    }).filter(Boolean);
     reviewData = { indexes:idx, sentiment:sent, sectors:secsAll.slice(0,12), sectorsBad:secsAll.slice(-5), turnover:turn,
-      watchStocks:watchStocks, holdStocks:holdStocks, mySectors:mySectors,
+      watchStocks:watchStocks, holdStocks:holdStocks, mySectors:mySectors, myFocus:myFocus,
       time: new Date().toLocaleString('zh-CN',{hour12:false}) };
     renderReview();
   }catch(e){
@@ -718,7 +739,15 @@ function renderReview(){
   }
   html += '</div>';
   /* 板块资金 */
-  html += '<div class="card"><h3><span class="n">💰</span>行业资金流（净流入 Top12 / 净流出末5）</h3><div class="table-wrap"><table><tr><th>行业</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
+  html += '<div class="card"><h3><span class="n">💰</span>行业资金流 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（我的关注 · 净流入 Top12 / 净流出末5）</span></h3>';
+  if(d.myFocus && d.myFocus.length){
+    html += '<div class="hint" style="margin-bottom:6px">⭐ 我的关注（农业/养殖业/银行/低波股息/消费）</div><div class="table-wrap"><table><tr><th>关注</th><th>板块</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
+    d.myFocus.forEach(function(x){
+      html += '<tr><td class="td-b">'+esc(x.label)+'</td><td>'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+((x.main!=null)?x.main.toFixed(2)+'%':'-')+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
+    });
+    html += '</table></div><div style="margin:10px 0;border-top:1px dashed var(--line)"></div>';
+  }
+  html += '<div class="table-wrap"><table><tr><th>行业</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
   d.sectors.forEach(function(x){
     html += '<tr><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+((x.main!=null)?x.main.toFixed(2)+'%':'-')+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
   });
@@ -801,6 +830,10 @@ function buildReviewPrompt(d){
   if(d.mySectors && d.mySectors.length){
     lines.push('', '## 我的自选/持仓相关行业资金', '');
     d.mySectors.forEach(function(x){ lines.push('- '+x.name+'：主力净额 '+fmtMoney(x.net)+'（'+(x.main!=null?x.main.toFixed(2)+'%':'-')+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
+  }
+  if(d.myFocus && d.myFocus.length){
+    lines.push('', '## 我的关注板块（农业/养殖业/银行/低波股息/消费）', '');
+    d.myFocus.forEach(function(x){ lines.push('- '+x.label+'（'+x.name+'）：主力净额 '+fmtMoney(x.net)+'（'+(x.main!=null?x.main.toFixed(2)+'%':'-')+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
   }
   return lines.join('\n');
 }
