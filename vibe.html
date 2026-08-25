@@ -178,6 +178,8 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
 }
 .footer{text-align:center;color:var(--text3);font-size:.78rem;padding:26px 0 34px;border-top:1px solid var(--line);margin-top:26px}
 </style>
+<script src="vendor/html2canvas.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -209,6 +211,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
     <div class="spacer"></div>
     <button class="btn btn-blue" id="btnGather" onclick="gatherReview()">⏳ 抓取今日数据</button>
     <button class="btn btn-gold" id="btnAiReview" onclick="aiReview()">🤖 AI 生成复盘</button>
+    <button class="btn btn-outline" id="btnPdf" onclick="exportReviewPdf()">📄 导出PDF</button>
   </div>
   <div class="error-box" id="reviewErr"></div>
   <div id="reviewArea">
@@ -771,6 +774,80 @@ function renderReview(){
   }
   html += '<div class="card" style="font-size:.8rem;color:var(--text3)">数据更新时间：'+esc(d.time)+' · 客观公开榜单，不构成投资建议</div>';
   $('reviewArea').innerHTML = html;
+}
+async function exportReviewPdf(){
+  if(!reviewData){
+    showErr('reviewErr','⏳ 尚未抓取数据，正在自动抓取今日数据…');
+    await gatherReview();
+  }
+  if(!reviewData){ showErr('reviewErr','❌ 数据抓取失败，无法导出'); return; }
+  if(typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined'){ showErr('reviewErr','❌ PDF 组件未加载（vendor/html2canvas.min.js / vendor/jspdf.umd.min.js），请确认部署完整'); return; }
+  var btn = $('btnPdf'); btn.disabled = true; btn.textContent = '📄 生成中…';
+  showErr('reviewErr','');
+  try{
+    var d = reviewData;
+    var dateStr = '';
+    try{ dateStr = new Date(d.time).toISOString().slice(0,10); }catch(e){}
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) dateStr = new Date().toISOString().slice(0,10);
+    /* 组装白底打印容器 */
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'background:#ffffff;color:#1a2b3c;padding:18px;font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;width:780px;';
+    var headHtml = '<div style="text-align:center;padding:10px 0 14px;border-bottom:2px solid #b8860b;margin-bottom:14px">'
+      + '<div style="font-size:22px;font-weight:bold;color:#142c45">个人投资中心 · 每日复盘</div>'
+      + '<div style="font-size:13px;color:#5b7b8f;margin-top:6px">' + esc(d.time) + '</div></div>';
+    var bodyHtml = $('reviewArea').innerHTML;
+    wrap.innerHTML = headHtml + bodyHtml;
+    /* AI 复盘内容合并 */
+    var aiOut = $('aiReviewOut');
+    if(aiOut && aiOut.innerHTML.trim()){
+      wrap.innerHTML += '<div style="margin-top:16px;padding-top:12px;border-top:2px solid #b8860b"><div style="font-size:16px;font-weight:bold;color:#142c45;margin-bottom:8px">🤖 AI 复盘</div>' + aiOut.innerHTML + '</div>';
+    }
+    /* 表格白底样式覆盖 */
+    wrap.querySelectorAll('.card').forEach(function(x){ x.style.border='none'; x.style.boxShadow='none'; x.style.background='transparent'; x.style.padding='4px 0'; });
+    wrap.querySelectorAll('.table-wrap').forEach(function(x){ x.style.overflow='visible'; });
+    wrap.querySelectorAll('table').forEach(function(t){ t.style.width='100%'; t.style.borderCollapse='collapse'; t.style.fontSize='12px'; });
+    wrap.querySelectorAll('th,td').forEach(function(c){ c.style.border='1px solid #ccd6e0'; c.style.padding='4px 7px'; c.style.textAlign='left'; });
+    wrap.querySelectorAll('th').forEach(function(c){ c.style.background='#f2f5f9'; c.style.color='#142c45'; });
+    wrap.querySelectorAll('.num').forEach(function(c){ c.style.textAlign='right'; });
+    wrap.querySelectorAll('.up').forEach(function(x){ x.style.color='#c0392b'; });   /* A股红涨 */
+    wrap.querySelectorAll('.down').forEach(function(x){ x.style.color='#1e8449'; }); /* A股绿跌 */
+    wrap.querySelectorAll('.hint').forEach(function(x){ x.style.color='#5b7b8f'; x.style.fontSize='12px'; });
+    wrap.querySelectorAll('h2,h3').forEach(function(x){ x.style.color='#142c45'; });
+    wrap.querySelectorAll('.ai-output').forEach(function(x){ x.style.border='1px solid #ccd6e0'; x.style.borderRadius='8px'; x.style.padding='10px'; x.style.background='#fafbfc'; });
+    /* 渲染容器(html2canvas 需元素在文档中且可见; 用固定定位盖住但立即截图) */
+    wrap.id = 'pdfTempWrap';
+    wrap.style.position = 'fixed';
+    wrap.style.top = '0';
+    wrap.style.left = '0';
+    wrap.style.zIndex = '2147483000';
+    document.body.appendChild(wrap);
+    var canvas = await html2canvas(wrap, {
+      scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 820, logging: false
+    });
+    try{ document.body.removeChild(wrap); }catch(e){}
+    var imgData = canvas.toDataURL('image/jpeg', 0.95);
+    var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+    var pageW = 210, pageH = 297, margin = 10;
+    var imgW = pageW - margin*2;
+    var imgH = canvas.height * imgW / canvas.width;
+    var remaining = imgH;
+    var position = margin;
+    pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+    remaining -= (pageH - margin*2);
+    /* 分页: 内容超一页时逐页切割 */
+    while(remaining > 0){
+      pdf.addPage();
+      position = margin - (pageH - margin*2 - remaining);
+      pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+      remaining -= (pageH - margin*2);
+    }
+    var filename = '每日复盘_' + dateStr + '.pdf';
+    pdf.save(filename);
+    showErr('reviewErr','✅ 已生成 '+filename+'。文件保存到浏览器下载目录——如需自动存入 L:\\股票每日复盘，请在 Chrome/Edge 设置 → 下载 → 下载位置 改为该文件夹。');
+  }catch(e){
+    showErr('reviewErr','❌ 导出失败: '+e.message);
+  }
+  btn.disabled = false; btn.textContent = '📄 导出PDF';
 }
 async function aiReview(){
   if(!aiReady()){
