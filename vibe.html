@@ -344,6 +344,8 @@ function cacheSet(k, v){ CFG.cache[k]=v; CFG.cacheT[k]=Date.now(); }
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function fmtMoney(v){ if(v==null||isNaN(v)) return '-'; var b = Math.abs(v); var s = b>=1e12?(b/1e12).toFixed(2)+'万亿' : b>=1e8?(b/1e8).toFixed(2)+'亿' : b>=1e4?(b/1e4).toFixed(1)+'万' : b.toFixed(0); return (v<0?'-':'')+s; }
+function fmtVol(v){ if(v==null||isNaN(v)) return '-'; var b = Math.abs(v); var s = b>=1e8?(b/1e8).toFixed(2)+'亿手' : b>=1e4?(b/1e4).toFixed(1)+'万手' : b.toFixed(0)+'手'; return (v<0?'-':'')+s; }
+function fmtFlow(v){ if(v==null||isNaN(v)) return '-'; return (v>=0?'+':'')+fmtMoney(v); }
 function fmtPct(v){ if(v==null||isNaN(v)) return '-'; return (v>0?'+':'')+v.toFixed(2)+'%'; }
 function pctCls(v){ if(v==null||isNaN(v)||v===0) return ''; return v>0?'up':'down'; }
 function showErr(id, msg){ var el=$(id); if(!el) return; if(msg){ el.textContent=msg; el.classList.add('show'); } else el.classList.remove('show'); }
@@ -488,14 +490,15 @@ function toSecid(code){
   return code; // 兼容 sh600519 / 00700.HK 等
 }
 async function getStockQuote(secid){
-  var j = await emJson('https://push2.eastmoney.com/api/qt/stock/get?fltt=2&invt=2&secid='+secid+'&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f116,f117,f127,f162,f163,f164,f167,f168,f169,f170,f171,f292,f152');
+  var j = await emJson('https://push2.eastmoney.com/api/qt/stock/get?fltt=2&invt=2&secid='+secid+'&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f116,f117,f127,f137,f162,f163,f164,f167,f168,f169,f170,f171,f292,f152');
   var d = j.data; if(!d) throw new Error('未找到该股票');
   return {
     code:d.f57, name:d.f58, price:d.f43, pct:d.f170, chg:d.f169,
     open:d.f46, high:d.f44, low:d.f45, preClose:d.f60,
+    vol:d.f47, amount:d.f48, mainIn:d.f137, // vol成交量(手) amount成交额(元) mainIn主力净流入(元)
     peTTM:d.f162, peStatic:d.f164, pb:d.f167, dv:d.f292, // dv 股息率(%), 可能无
     totalMcap:d.f116, floatMcap:d.f117, turnover:d.f168,
-    vol:d.f47, amount:d.f48, industry:d.f127||'', update:d.f152,
+    industry:d.f127||'', update:d.f152,
   };
 }
 async function getStockFundFlow(secid){
@@ -636,7 +639,7 @@ async function gatherReview(){
         var q = await getStockQuote(toSecid(holds[j].code));
         var cost = holds[j].price*holds[j].shares;
         var val = q.price*holds[j].shares;
-        holdStocks.push({code:q.code, name:q.name, industry:q.industry, shares:holds[j].shares, costP:holds[j].price, price:q.price, pct:q.pct, pnl:val-cost, pnlPct: cost? (val-cost)/cost*100 : 0, dayPnl: (q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*holds[j].shares : null, mcap:q.totalMcap});
+        holdStocks.push({code:q.code, name:q.name, industry:q.industry, shares:holds[j].shares, costP:holds[j].price, price:q.price, pct:q.pct, pnl:val-cost, pnlPct: cost? (val-cost)/cost*100 : 0, dayPnl: (q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*holds[j].shares : null, vol:q.vol, mainIn:q.mainIn, mcap:q.totalMcap});
       }catch(e){}
     }
     /* 自选/持仓相关行业板块资金（行业名去罗马数字后匹配，如 白酒Ⅱ↔白酒Ⅱ / 银行Ⅱ↔银行） */
@@ -693,9 +696,9 @@ function renderReview(){
   html += '</div></div>';
   /* 我的自选股 */
   if(d.watchStocks && d.watchStocks.length){
-    html += '<div class="card"><h3><span class="n">⭐</span>我的自选股 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.watchStocks.length+' 只 · 自动抓取）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>现价</th><th>涨跌幅</th><th>PE(TTM)</th><th>总市值</th></tr>';
+    html += '<div class="card"><h3><span class="n">⭐</span>我的自选股 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.watchStocks.length+' 只 · 自动抓取）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>现价</th><th>涨跌幅</th><th>当日成交量</th><th>主力净流入</th><th>PE(TTM)</th><th>总市值</th></tr>';
     d.watchStocks.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
     });
     html += '</table></div></div>';
   }
@@ -703,11 +706,11 @@ function renderReview(){
   if(d.holdStocks && d.holdStocks.length){
     var tCost=0, tVal=0, tDay=0;
     d.holdStocks.forEach(function(x){ tCost+=x.costP*x.shares; tVal+=x.price*x.shares; if(x.dayPnl!=null) tDay+=x.dayPnl; });
-    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>持股</th><th>成本</th><th>现价</th><th>市值</th><th>当日盈利</th><th>浮动盈亏</th><th>收益率</th></tr>';
+    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>持股</th><th>成本</th><th>现价</th><th>市值</th><th>当日盈利</th><th>当日成交量</th><th>主力净流入</th><th>浮动盈亏</th><th>收益率</th></tr>';
     d.holdStocks.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td></tr>';
     });
-    html += '<tr class="total"><td colspan="6" style="text-align:right">合计</td><td class="num">'+fmtMoney(tVal)+'</td><td class="num '+pctCls(tDay)+'">'+(tDay>=0?'+':'')+fmtMoney(tDay)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td></tr>';
+    html += '<tr class="total"><td colspan="7" style="text-align:right">合计</td><td class="num">'+fmtMoney(tVal)+'</td><td class="num '+pctCls(tDay)+'">'+(tDay>=0?'+':'')+fmtMoney(tDay)+'</td><td class="num">-</td><td class="num">-</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td></tr>';
     html += '</table></div></div>';
   }
   /* 情绪 */
@@ -821,11 +824,11 @@ function buildReviewPrompt(d){
   }
   if(d.watchStocks && d.watchStocks.length){
     lines.push('', '## 我的自选股（'+d.watchStocks.length+' 只）', '');
-    d.watchStocks.forEach(function(x){ lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：现价 '+x.price+'（'+fmtPct(x.pct)+'），PE(TTM) '+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'，总市值 '+fmtMoney(x.totalMcap)); });
+    d.watchStocks.forEach(function(x){ lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：现价 '+x.price+'（'+fmtPct(x.pct)+'），量 '+fmtVol(x.vol)+'，主力净流入 '+(x.mainIn!=null?fmtFlow(x.mainIn):'-')+'，PE(TTM) '+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'，总市值 '+fmtMoney(x.totalMcap)); });
   }
   if(d.holdStocks && d.holdStocks.length){
     lines.push('', '## 我的持仓（'+d.holdStocks.length+' 只）', '');
-    d.holdStocks.forEach(function(x){ lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：'+x.shares+'股 成本'+x.costP+' 现价'+x.price+'，当日'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'，浮盈'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'（'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%）'); });
+    d.holdStocks.forEach(function(x){ lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：'+x.shares+'股 成本'+x.costP+' 现价'+x.price+'，当日'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'，量 '+fmtVol(x.vol)+'，主力净流入 '+(x.mainIn!=null?fmtFlow(x.mainIn):'-')+'，浮盈'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'（'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%）'); });
   }
   if(d.mySectors && d.mySectors.length){
     lines.push('', '## 我的自选/持仓相关行业资金', '');
@@ -900,7 +903,7 @@ function renderStock(q, fin, ff){
     + '<div class="idx"><div class="nm">PE(TTM)</div><div class="val" style="font-size:1.15rem">'+(q.peTTM!=null?q.peTTM.toFixed(2):'-')+'</div><div class="chg" style="color:#8fa5ba">静 '+(q.peStatic!=null?q.peStatic.toFixed(1):'-')+'</div></div>'
     + '<div class="idx"><div class="nm">PB</div><div class="val" style="font-size:1.15rem">'+(q.pb!=null?q.pb.toFixed(2):'-')+'</div><div class="chg" style="color:#8fa5ba">'+(q.dv!=null?('股息率 '+q.dv.toFixed(2)+'%'):'')+'</div></div>'
     + '<div class="idx"><div class="nm">总市值</div><div class="val" style="font-size:1.15rem">'+fmtMoney(q.totalMcap)+'</div><div class="chg" style="color:#8fa5ba">换手 '+(q.turnover!=null?q.turnover.toFixed(2)+'%':'-')+'</div></div>'
-    + '</div><div class="hint" style="margin-top:10px">今开 '+q.open.toFixed(2)+' / 最高 '+q.high.toFixed(2)+' / 最低 '+q.low.toFixed(2)+' / 昨收 '+q.preClose.toFixed(2)+' &nbsp;·&nbsp; 最新主力净流入：<b class="'+(lastMain!=null&&lastMain>=0?'up':'down')+'">'+(lastMain!=null?fmtMoney(lastMain*10000):'-')+'</b></div></div>';
+    + '</div><div class="hint" style="margin-top:10px">今开 '+q.open.toFixed(2)+' / 最高 '+q.high.toFixed(2)+' / 最低 '+q.low.toFixed(2)+' / 昨收 '+q.preClose.toFixed(2)+' &nbsp;·&nbsp; 成交量 '+fmtVol(q.vol)+' / 成交额 '+fmtMoney(q.amount)+' &nbsp;·&nbsp; 最新主力净流入：<b class="'+(lastMain!=null&&lastMain>=0?'up':'down')+'">'+(lastMain!=null?fmtMoney(lastMain):'-')+'</b></div></div>';
   /* 财务速览 */
   if(fin.length){
     html += '<div class="card"><h3><span class="n">📑</span>财报速览 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（最近 '+fin.length+' 期）</span></h3><div class="table-wrap"><table><tr><th>报告期</th><th>营收</th><th>营收同比</th><th>净利润</th><th>净利同比</th><th>ROE</th><th>毛利率</th><th>负债率</th></tr>';
@@ -913,10 +916,10 @@ function renderStock(q, fin, ff){
   if(ff.length){
     var maxAbs = 1;
     ff.forEach(function(x){ maxAbs = Math.max(maxAbs, Math.abs(+x.main)); });
-    html += '<div class="card"><h3><span class="n">💧</span>主力资金近10日 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（单位：万元）</span></h3><div class="table-wrap"><table><tr><th>日期</th><th>主力净流入</th><th>主力占比</th><th>超大单</th><th>大单</th><th>中单</th><th>小单</th></tr>';
+    html += '<div class="card"><h3><span class="n">💧</span>主力资金近10日 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（单位：元）</span></h3><div class="table-wrap"><table><tr><th>日期</th><th>主力净流入</th><th>主力占比</th><th>超大单</th><th>大单</th><th>中单</th><th>小单</th></tr>';
     ff.forEach(function(x){
       var mainV = +x.main;
-      html += '<tr><td class="num">'+esc(x.date)+'</td><td class="num '+pctCls(mainV)+'"><b>'+fmtMoney(mainV*10000)+'</b></td><td><div class="bar '+(mainV>=0?'green':'red')+'" style="width:110px"><i style="width:'+Math.round(Math.abs(mainV)/maxAbs*100)+'%"></i></div></td><td class="num">'+fmtMoney(x.super*10000)+'</td><td class="num">'+fmtMoney(x.big*10000)+'</td><td class="num">'+fmtMoney(x.mid*10000)+'</td><td class="num">'+fmtMoney(x.small*10000)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.date)+'</td><td class="num '+pctCls(mainV)+'"><b>'+fmtMoney(mainV)+'</b></td><td><div class="bar '+(mainV>=0?'green':'red')+'" style="width:110px"><i style="width:'+Math.round(Math.abs(mainV)/maxAbs*100)+'%"></i></div></td><td class="num">'+fmtMoney(x.super)+'</td><td class="num">'+fmtMoney(x.big)+'</td><td class="num">'+fmtMoney(x.mid)+'</td><td class="num">'+fmtMoney(x.small)+'</td></tr>';
     });
     html += '</table></div></div>';
   }
@@ -1005,7 +1008,7 @@ function renderWatch(){
     var html = '';
     quotes.forEach(function(q, i){
       if(!q){ html += '<div class="stock-row"><span class="code">'+esc(watch[i])+'</span><span class="name">读取失败</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>'; return; }
-      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+esc(q.name)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
+      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+esc(q.name)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">量 '+fmtVol(q.vol)+' · 主力 '+(q.mainIn!=null?('<b class="'+(q.mainIn>=0?'up':'down')+'">'+fmtFlow(q.mainIn)+'</b>'):'-')+' · PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
     });
     listEl.innerHTML = html;
   });
@@ -1030,7 +1033,7 @@ function renderHold(){
   }
   el.innerHTML = '<div class="card"><h3><span class="n">💼</span>我的持仓</h3>'+holdForm()+'<div id="holdList"><div class="loading">⏳ 计算中…</div></div></div>';
   Promise.all(holds.map(function(h){ return getStockQuote(toSecid(h.code)).catch(function(){ return null; }); })).then(function(quotes){
-    var html = '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>持股</th><th>成本价</th><th>现价</th><th>市值</th><th>当日盈利</th><th>浮动盈亏</th><th>收益率</th><th></th></tr>';
+    var html = '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>持股</th><th>成本价</th><th>现价</th><th>市值</th><th>当日盈利</th><th>当日成交量</th><th>主力净流入</th><th>浮动盈亏</th><th>收益率</th><th></th></tr>';
     var totalCost=0, totalVal=0, totalDay=0;
     holds.forEach(function(h, i){
       var q = quotes[i];
@@ -1040,9 +1043,9 @@ function renderHold(){
       var pnlPct = cost? pnl/cost*100 : 0;
       var dayPnl = (q&&q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*h.shares : null;
       totalCost+=cost; totalVal+=val; if(dayPnl!=null) totalDay+=dayPnl;
-      html += '<tr><td class="num">'+esc(h.code)+'</td><td class="td-b">'+(q?esc(q.name):'-')+'</td><td class="num">'+h.shares+'</td><td class="num">'+h.price.toFixed(2)+'</td><td class="num">'+(q?q.price.toFixed(2):'-')+'</td><td class="num">'+fmtMoney(val)+'</td><td class="num '+pctCls(dayPnl)+'">'+(dayPnl!=null?((dayPnl>=0?'+':'')+fmtMoney(dayPnl)):'-')+'</td><td class="num '+pctCls(pnl)+'">'+(pnl>=0?'+':'')+fmtMoney(pnl)+'</td><td class="num '+pctCls(pnlPct)+'">'+(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%</td><td><span class="rm" style="cursor:pointer" onclick="rmHold('+i+')">✕</span></td></tr>';
+      html += '<tr><td class="num">'+esc(h.code)+'</td><td class="td-b">'+(q?esc(q.name):'-')+'</td><td class="num">'+h.shares+'</td><td class="num">'+h.price.toFixed(2)+'</td><td class="num">'+(q?q.price.toFixed(2):'-')+'</td><td class="num">'+fmtMoney(val)+'</td><td class="num '+pctCls(dayPnl)+'">'+(dayPnl!=null?((dayPnl>=0?'+':'')+fmtMoney(dayPnl)):'-')+'</td><td class="num">'+(q?fmtVol(q.vol):'-')+'</td><td class="num '+pctCls(q?q.mainIn:null)+'">'+(q?fmtFlow(q.mainIn):'-')+'</td><td class="num '+pctCls(pnl)+'">'+(pnl>=0?'+':'')+fmtMoney(pnl)+'</td><td class="num '+pctCls(pnlPct)+'">'+(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%</td><td><span class="rm" style="cursor:pointer" onclick="rmHold('+i+')">✕</span></td></tr>';
     });
-    html += '<tr class="total"><td colspan="5" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td><td class="num '+pctCls(totalDay)+'">'+(totalDay>=0?'+':'')+fmtMoney(totalDay)+'</td><td class="num '+pctCls(totalVal-totalCost)+'">'+((totalVal-totalCost)>=0?'+':'')+fmtMoney(totalVal-totalCost)+'</td><td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td></tr>';
+    html += '<tr class="total"><td colspan="6" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td><td class="num '+pctCls(totalDay)+'">'+(totalDay>=0?'+':'')+fmtMoney(totalDay)+'</td><td class="num">-</td><td class="num">-</td><td class="num '+pctCls(totalVal-totalCost)+'">'+((totalVal-totalCost)>=0?'+':'')+fmtMoney(totalVal-totalCost)+'</td><td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td></tr>';
     html += '</table></div>';
     $('holdList').innerHTML = html;
   });
