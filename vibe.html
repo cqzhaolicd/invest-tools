@@ -830,16 +830,15 @@ async function exportReviewPdf(){
     var pageW = 210, pageH = 297, margin = 10;
     var imgW = pageW - margin*2;
     var imgH = canvas.height * imgW / canvas.width;
-    var remaining = imgH;
-    var position = margin;
-    pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
-    remaining -= (pageH - margin*2);
-    /* 分页: 内容超一页时逐页切割 */
-    while(remaining > 0){
-      pdf.addPage();
-      position = margin - (pageH - margin*2 - remaining);
-      pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
-      remaining -= (pageH - margin*2);
+    /* 分页: 每页显示图片的一个连续区域, 用负 y 偏移逐段切割, 不重叠不遗漏 */
+    var perPage = pageH - margin*2;
+    var offset = 0;
+    var first = true;
+    while(offset < imgH){
+      if(!first) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', margin, margin - offset, imgW, imgH);
+      offset += perPage;
+      first = false;
     }
     var filename = '每日复盘_' + dateStr + '.pdf';
     pdf.save(filename);
