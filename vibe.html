@@ -821,28 +821,44 @@ async function exportReviewPdf(){
     wrap.style.left = '0';
     wrap.style.zIndex = '2147483000';
     document.body.appendChild(wrap);
-    /* 按 DOM 块分页: 每页只放完整卡片, 卡片不跨页, 页边界永不切到标题中间 */
+    /* 按 DOM 块分页: 每页只放完整卡片; 超高块(单块超一页)用 y 裁剪分段, 保证内容完整不丢失 */
     var pageW = 210, pageH = 297, margin = 10;
     var pxPerMm = 780 / (pageW - margin*2);              /* 内容宽 780px ↔ 190mm */
     var pageCapPx = Math.floor((pageH - margin*2) * pxPerMm) - 20; /* 每页可容纳 DOM 高度 */
     var blocks = Array.prototype.slice.call(wrap.children);        /* 头部 + 各卡片 + AI复盘 */
-    var pages = [];
+    var pages = [];          /* 每页: {blocks:[...]} 或 {block: el, y0: px, y1: px} 分段 */
     var cur = [], curH = 0;
     for(var bi=0; bi<blocks.length; bi++){
-      var h = blocks[bi].offsetHeight || 80;
-      if(cur.length && curH + h > pageCapPx){ pages.push(cur); cur = []; curH = 0; }
-      cur.push(blocks[bi]); curH += h;
+      var el = blocks[bi];
+      var h = el.offsetHeight || 80;
+      if(h > pageCapPx){
+        /* 超高块: 先结算当前页, 再按 y 裁剪分多段 */
+        if(cur.length){ pages.push({blocks:cur}); cur = []; curH = 0; }
+        for(var y0=0; y0<h; y0+=pageCapPx){
+          pages.push({block: el, y0: y0, y1: Math.min(y0+pageCapPx, h)});
+        }
+      } else {
+        if(cur.length && curH + h > pageCapPx){ pages.push({blocks:cur}); cur = []; curH = 0; }
+        cur.push(el); curH += h;
+      }
     }
-    if(cur.length) pages.push(cur);
+    if(cur.length) pages.push({blocks:cur});
     var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
     var imgW = pageW - margin*2;
     for(var pi=0; pi<pages.length; pi++){
-      var pageDiv = document.createElement('div');
-      pageDiv.style.cssText = 'background:#ffffff;width:780px;padding:10px 10px 0;box-sizing:border-box;position:fixed;top:0;left:0;z-index:2147483001;';
-      pages[pi].forEach(function(c){ pageDiv.appendChild(c.cloneNode(true)); });
-      document.body.appendChild(pageDiv);
-      var pc = await html2canvas(pageDiv, { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 820, logging: false });
-      document.body.removeChild(pageDiv);
+      var pg = pages[pi];
+      var pc;
+      if(pg.block){
+        /* 超高块分段: 用 html2canvas 的 y/height 参数精确裁剪该段 */
+        pc = await html2canvas(pg.block, { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 820, logging: false, y: pg.y0, height: pg.y1 - pg.y0 });
+      } else {
+        var pageDiv = document.createElement('div');
+        pageDiv.style.cssText = 'background:#ffffff;width:780px;padding:10px 10px 0;box-sizing:border-box;position:fixed;top:0;left:0;z-index:2147483001;';
+        pg.blocks.forEach(function(c){ pageDiv.appendChild(c.cloneNode(true)); });
+        document.body.appendChild(pageDiv);
+        pc = await html2canvas(pageDiv, { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 820, logging: false });
+        document.body.removeChild(pageDiv);
+      }
       if(pi>0) pdf.addPage();
       var pImgH = pc.height * imgW / pc.width;
       pdf.addImage(pc.toDataURL('image/jpeg', 0.95), 'JPEG', margin, margin, imgW, pImgH);
