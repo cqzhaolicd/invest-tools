@@ -418,17 +418,17 @@ async function getIndexes(){
 /* ---------- 数据层：日本Top10银行（nkbnk） ----------
  * 实时行情：东财 push2 ulist 批量；区间K线：东财 push2his（日股，串行+降频+子域轮换+重试） */
 async function getNkbnkKline(secid){
-  var domains = ['push2his.eastmoney.com','1.push2his.eastmoney.com','2.push2his.eastmoney.com','3.push2his.eastmoney.com','4.push2his.eastmoney.com'];
+  var domains = ['push2his.eastmoney.com','1.push2his.eastmoney.com','2.push2his.eastmoney.com'];
   var url = 'https://{D}/api/qt/stock/kline/get?secid='+secid+'&klt=101&fqt=1&lmt=120&end=20500100&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57';
-  for(var attempt=0; attempt<3; attempt++){
-    for(var i=0;i<domains.length;i++){
-      try{
-        var j = await fetchJSON(url.replace('{D}', domains[i]));
-        var ks = (j.data&&j.data.klines)||[];
-        if(ks && ks.length) return ks;
-      }catch(e){}
-    }
-    if(attempt<2) await new Promise(function(r){ setTimeout(r, 700*(attempt+1)); });
+  for(var i=0;i<domains.length;i++){
+    try{
+      var ctl = new AbortController();
+      var timer = setTimeout(function(){ ctl.abort(); }, 8000);
+      var j = await fetchJSON(url.replace('{D}', domains[i]), {signal:ctl.signal});
+      clearTimeout(timer);
+      var ks = (j.data&&j.data.klines)||[];
+      if(ks && ks.length) return ks;
+    }catch(e){}
   }
   return null;
 }
