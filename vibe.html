@@ -452,19 +452,24 @@ async function getIndexes(){
 }
 
 /* ---------- 数据层：日本Top10银行（nkbnk） ----------
- * 实时行情：东财 push2 ulist 批量；区间K线：东财 push2his（日股，串行+降频+子域轮换+重试） */
+ * 实时行情：东财 push2 ulist 批量；区间K线：东财 push2his（日股，串行+降频+子域轮换+重试）。
+ * push2his 对日股 IP 级风控可持续 10+ 分钟：成功数据持久化 localStorage，失败时用 ≤7 日旧值兜底；
+ * 全部区间失败时不写 5 分钟内存缓存，保证「抓取今日数据」可立即重试 */
 async function getNkbnkKline(secid){
   var domains = ['push2his.eastmoney.com','1.push2his.eastmoney.com','2.push2his.eastmoney.com'];
+  var start = (CFG.nkbnkDomIdx!=null)? CFG.nkbnkDomIdx : Math.floor(Math.random()*domains.length);
   var url = 'https://{D}/api/qt/stock/kline/get?secid='+secid+'&klt=101&fqt=1&lmt=120&end=20500100&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57';
-  for(var i=0;i<domains.length;i++){
+  for(var k=0;k<domains.length;k++){
+    var i = (start+k)%domains.length;
     try{
       var ctl = new AbortController();
-      var timer = setTimeout(function(){ ctl.abort(); }, 8000);
+      var timer = setTimeout(function(){ ctl.abort(); }, 10000);
       var j = await fetchJSON(url.replace('{D}', domains[i]), {signal:ctl.signal});
       clearTimeout(timer);
       var ks = (j.data&&j.data.klines)||[];
-      if(ks && ks.length) return ks;
+      if(ks && ks.length){ CFG.nkbnkDomIdx=i; return ks; }
     }catch(e){}
+    if(k < domains.length-1) await new Promise(function(r){ setTimeout(r, 600); });
   }
   return null;
 }
@@ -477,8 +482,10 @@ async function getNkbnk(){
     var j = await emJson('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids='+secids+'&fields=f2,f3,f12,f14');
     ((j.data&&j.data.diff)||[]).forEach(function(d){ qmap[d.f12] = d; });
   }catch(e){}
-  /* 2) 区间K线：东财 push2his 逐只（串行 + 间隔降频） */
+  /* 2) 区间K线：东财 push2his 逐只（串行 + 间隔降频），失败用 localStorage ≤7日 兜底 */
+  var ls = lsGet('nkbnk_w', {t:0, byCode:{}});
   var rows = [];
+  var anyNew = false, usedFallback = false;
   for(var i=0;i<CFG.nkbnk.length;i++){
     var st = CFG.nkbnk[i];
     var q = qmap[st.code]||{};
@@ -494,20 +501,27 @@ async function getNkbnk(){
           if(!base) return null;
           return (last/base-1)*100;
         }
-        w = {w5:ret(5), w30:ret(30), w60:ret(60), w90:ret(90)};
+        var nw = {w5:ret(5), w30:ret(30), w60:ret(60), w90:ret(90)};
+        if(nw.w90!=null){ w = nw; anyNew = true; ls.byCode[st.code] = nw; ls.t = Date.now(); }
       }
     }catch(e){}
+    if(w.w90==null && ls.byCode[st.code] && Date.now()-ls.t < 7*86400000){
+      w = ls.byCode[st.code]; usedFallback = true;
+    }
     rows.push({code:st.code, name:st.name, price:q.f2!=null?q.f2:null, pct:q.f3!=null?q.f3:null, w5:w.w5, w30:w.w30, w60:w.w60, w90:w.w90});
-    if(i < CFG.nkbnk.length-1) await new Promise(function(r){ setTimeout(r, 350); });
+    if(i < CFG.nkbnk.length-1) await new Promise(function(r){ setTimeout(r, 400); });
   }
+  if(anyNew) lsSet('nkbnk_w', ls);
   /* 3) 组合均值（等权） */
   var avg = {};
   ['pct','w5','w30','w60','w90'].forEach(function(k){
     var vals = rows.map(function(x){ return x[k]; }).filter(function(v){ return v!=null; });
     avg[k] = vals.length? vals.reduce(function(a,b){ return a+b; },0)/vals.length : null;
   });
-  var out = { rows: rows, avg: avg, time: new Date().toLocaleString('zh-CN',{hour12:false}) };
-  cacheSet('nkbnk', out); return out;
+  var out = { rows: rows, avg: avg, time: new Date().toLocaleString('zh-CN',{hour12:false}), usedFallback: usedFallback, fbT: ls.t||0 };
+  /* 4) 仅当本次有新拉到区间数据才写 5 分钟缓存；全空不缓存（下次点抓取可立即重试） */
+  if(anyNew || usedFallback) cacheSet('nkbnk', out);
+  return out;
 }
 
 /* ---------- 数据层：短线情绪（东财涨停板四池） ---------- */
@@ -809,7 +823,12 @@ function renderReview(){
   var html = '';
   /* 日本Top10银行（nkbnk） */
   if(d.nkbnk && d.nkbnk.rows && d.nkbnk.rows.length){
-    html += '<div class="card"><h3><span class="n">🏦</span>日本Top10银行 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（nkbnk · 市值前十银行股 · 区间涨跌幅%）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价(円)</th><th>当日</th><th>5日</th><th>30日</th><th>60日</th><th>90日</th></tr>';
+    var fbNote = '';
+    if(d.nkbnk.usedFallback && d.nkbnk.fbT){
+      var ageH = Math.max(1, Math.round((Date.now()-d.nkbnk.fbT)/3600000));
+      fbNote = ' · <span style="color:#b8860b">区间为 '+ageH+' 小时前缓存（东财日股接口限流中，可稍后重试）</span>';
+    }
+    html += '<div class="card"><h3><span class="n">🏦</span>日本Top10银行 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（nkbnk · 市值前十银行股 · 区间涨跌幅%）</span>'+fbNote+'</h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价(円)</th><th>当日</th><th>5日</th><th>30日</th><th>60日</th><th>90日</th></tr>';
     d.nkbnk.rows.forEach(function(x){
       html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(0):'-')+'</td>'
         + '<td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td>'
