@@ -363,6 +363,9 @@ function fmtMoney(v){ if(v==null||isNaN(v)) return '-'; var b = Math.abs(v); var
 function fmtVol(v){ if(v==null||isNaN(v)) return '-'; var b = Math.abs(v); var s = b>=1e8?(b/1e8).toFixed(2)+'亿手' : b>=1e4?(b/1e4).toFixed(1)+'万手' : b.toFixed(0)+'手'; return (v<0?'-':'')+s; }
 function fmtFlow(v){ if(v==null||isNaN(v)) return '-'; return (v>=0?'+':'')+fmtMoney(v); }
 function fmtPct(v){ if(v==null||isNaN(v)) return '-'; return (v>0?'+':'')+v.toFixed(2)+'%'; }
+/* 东财 clist 数值字段缺数据时返回 '-' 字符串（非 null），裸 .toFixed 会崩；统一走此安全格式化 */
+function cleanNum(v){ if(v==null||v===''||v==='-'||v==='--') return null; var n=Number(v); return isFinite(n)?n:null; }
+function fmtMain(v){ v=cleanNum(v); return v==null?'-':v.toFixed(2)+'%'; }
 function pctCls(v){ if(v==null||isNaN(v)||v===0) return ''; return v>0?'up':'down'; }
 function showErr(id, msg){ var el=$(id); if(!el) return; if(msg){ el.textContent=msg; el.classList.add('show'); } else el.classList.remove('show'); }
 async function fetchJSON(url, opt){
@@ -526,7 +529,7 @@ async function getSectorsAll(fs){
     var diff = (j.data&&j.data.diff)||[];
     if(!diff.length) break;
     diff.forEach(function(d){
-      out.push({code:d.f12, name:d.f14, pct:d.f3, net:d.f62, main:d.f184,
+      out.push({code:d.f12, name:d.f14, pct:d.f3, net:d.f62, main:cleanNum(d.f184),
         superIn:d.f66, bigIn:d.f72, superPct:d.f69, bigPct:d.f75,
         midOut:d.f78, smallOut:d.f81, lead:d.f204});
     });
@@ -540,7 +543,7 @@ async function getSectors(fs){
   var j = await emJson('https://push2.eastmoney.com/api/qt/clist/get?pn=1&pz=100&po=1&np=1&fltt=2&invt=2&fid=f62&fs='+encodeURIComponent(fs)+'&fields=f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205');
   var diff = (j.data&&j.data.diff)||[];
   var out = diff.map(function(d){
-    return {code:d.f12, name:d.f14, pct:d.f3, net:d.f62, main:d.f184,
+    return {code:d.f12, name:d.f14, pct:d.f3, net:d.f62, main:cleanNum(d.f184),
       superIn:d.f66, bigIn:d.f72, superPct:d.f69, bigPct:d.f75,
       midOut:d.f78, smallOut:d.f81, lead:d.f204};
   });
@@ -844,13 +847,13 @@ function renderReview(){
   if(d.myFocus && d.myFocus.length){
     html += '<div class="hint" style="margin-bottom:6px">⭐ 我的关注（农业/养殖业/银行/低波股息/消费）</div><div class="table-wrap"><table><tr><th>关注</th><th>板块</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
     d.myFocus.forEach(function(x){
-      html += '<tr><td class="td-b">'+esc(x.label)+'</td><td>'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+((x.main!=null)?x.main.toFixed(2)+'%':'-')+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
+      html += '<tr><td class="td-b">'+esc(x.label)+'</td><td>'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+fmtMain(x.main)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
     });
     html += '</table></div><div style="margin:10px 0;border-top:1px dashed var(--line)"></div>';
   }
   html += '<div class="table-wrap"><table><tr><th>行业</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
   d.sectors.forEach(function(x){
-    html += '<tr><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+((x.main!=null)?x.main.toFixed(2)+'%':'-')+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
+    html += '<tr><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+fmtMain(x.main)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
   });
   html += '</table>';
   if(d.sectorsBad.length){
@@ -1035,11 +1038,11 @@ function buildReviewPrompt(d){
   }
   if(d.mySectors && d.mySectors.length){
     lines.push('', '## 我的自选/持仓相关行业资金', '');
-    d.mySectors.forEach(function(x){ lines.push('- '+x.name+'：主力净额 '+fmtMoney(x.net)+'（'+(x.main!=null?x.main.toFixed(2)+'%':'-')+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
+    d.mySectors.forEach(function(x){ lines.push('- '+x.name+'：主力净额 '+fmtMoney(x.net)+'（'+fmtMain(x.main)+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
   }
   if(d.myFocus && d.myFocus.length){
     lines.push('', '## 我的关注板块（农业/养殖业/银行/低波股息/消费）', '');
-    d.myFocus.forEach(function(x){ lines.push('- '+x.label+'（'+x.name+'）：主力净额 '+fmtMoney(x.net)+'（'+(x.main!=null?x.main.toFixed(2)+'%':'-')+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
+    d.myFocus.forEach(function(x){ lines.push('- '+x.label+'（'+x.name+'）：主力净额 '+fmtMoney(x.net)+'（'+fmtMain(x.main)+'），板块涨跌 '+fmtPct(x.pct)+(x.lead?'，领涨 '+x.lead:'')); });
   }
   return lines.join('\n');
 }
@@ -1191,7 +1194,7 @@ async function renderSectors(){
     var secs = await getSectors(fs);
     var html = '<div class="card"><h3><span class="n">💰</span>'+(boardSecKind==='industry'?'行业':'概念')+'资金流排行 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（按主力净额降序 · 客观榜单）</span></h3><div class="table-wrap"><table><tr><th>#</th><th>'+(boardSecKind==='industry'?'行业':'概念')+'</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>超大单净</th><th>大单净</th><th>领涨股</th></tr>';
     secs.forEach(function(x, i){
-      html += '<tr><td class="num" style="color:var(--text3)">'+(i+1)+'</td><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'"><b>'+fmtMoney(x.net)+'</b></td><td class="num">'+(x.main!=null?x.main.toFixed(2)+'%':'-')+'</td><td class="num">'+fmtMoney(x.superIn)+'</td><td class="num">'+fmtMoney(x.bigIn)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
+      html += '<tr><td class="num" style="color:var(--text3)">'+(i+1)+'</td><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'"><b>'+fmtMoney(x.net)+'</b></td><td class="num">'+fmtMain(x.main)+'</td><td class="num">'+fmtMoney(x.superIn)+'</td><td class="num">'+fmtMoney(x.bigIn)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
     });
     html += '</table></div></div>';
     el.innerHTML = html;
