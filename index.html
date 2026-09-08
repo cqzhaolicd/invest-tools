@@ -604,6 +604,7 @@ const STRAT_TYPES={
     {key:'clearYield',label:'清仓股息率<',def:3}
   ],hint:'股息率=每股分红÷价格×100%：≥建仓线买首仓，之后每跌5%加仓5%；<开始卖出线后每涨5%卖5%；<清仓线全卖'},
   crisis:{label:'危机买入法（可回测）',backtest:true,params:[{key:'dropPct',label:'恐慌跌幅≤(%)',def:4},{key:'volMult',label:'放量倍数≥',def:1.5},{key:'volDays',label:'均量窗口(日)',def:5},{key:'takePct',label:'反弹止盈≥(%)',def:25}],hint:'恐慌放量（单日跌幅大 + 量能放大）买入，反弹止盈卖出。回测不含「只买绩优股」的主观过滤'},
+  cycle_bottom:{label:'周期抄底（可回测）',backtest:true,params:[{key:'lookback',label:'周期高点窗口(日)',def:500},{key:'deepPct',label:'距高点回撤≥(%)',def:25},{key:'fastMA',label:'半年线(日)',def:120},{key:'slowMA',label:'年线(日)',def:250},{key:'confirmDays',label:'金叉确认窗口(日)',def:5},{key:'volDays',label:'均量窗口(日)',def:20},{key:'volMult',label:'放量倍数≥',def:1.5},{key:'takePct',label:'止盈≥(%)',def:50},{key:'stopPct',label:'止损≤(% 0=不用)',def:0}],hint:'牛菲特三条件量化版：①深度回撤=估值低代理 ②半年线上穿年线(金叉后5日内确认)=企稳 ③放量=资金试探。默认回撤25%经真实周期股校准(40%过严)，可下调至20%增加信号。回测不含「估值百分位/业绩拐点/龙头先走」等需人工核对的维度'},
   ai:{label:'AI 投研（展示型）',backtest:false,hint:'AI 辅助研究流程说明，用于总览展示'},
   ma_cross:{label:'MA 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快线周期',def:5},{key:'slow',label:'慢线周期',def:20}],hint:'快线上穿慢线（金叉）买入，下穿（死叉）卖出'},
   macd:{label:'MACD 金叉死叉（可回测）',backtest:true,params:[{key:'fast',label:'快EMA',def:12},{key:'slow',label:'慢EMA',def:26},{key:'signal',label:'信号线',def:9}],hint:'DIF 上穿 DEA 买入，下穿卖出'},
@@ -630,6 +631,14 @@ const DEFAULT_STRATS=[
      {k:'卖',v:'反弹25%+ · 分批撤退'},
      {k:'铁律',v:'只做绩优 · 分3-5份 · 建好就收'}
    ],params:{dropPct:4,volMult:1.5,volDays:5,takePct:25}},
+  {id:'s_cycle',name:'周期抄底 · 行业大底部（牛菲特）',type:'cycle_bottom',card:'gold',
+   desc:'行业大周期底部挖掘三条件量化版：①估值低（完整周期视角≈深度回撤）②板块指数半年线/年线企稳（≈半年线上穿年线）③核心公司先走出来（≈龙头资金试探放量）。满足后买入，周期回归止盈卖出。',
+   signals:[
+     {k:'① 估值低(完整周期)',v:'距周期高点回撤 ≥ 25%',cls:'sig-buy'},
+     {k:'② 均线企稳',v:'MA120 上穿 MA250（5日内确认）',cls:'sig-strong'},
+     {k:'③ 资金试探',v:'量 ≥ 1.5×20日均量',cls:'sig-buy'},
+     {k:'卖',v:'周期回归 · 止盈 ≥50%（或止损离场）',cls:'sig-reduce'}
+   ],params:{lookback:500,deepPct:25,fastMA:120,slowMA:250,confirmDays:5,volDays:20,volMult:1.5,takePct:50,stopPct:0}},
   {id:'s_ai',name:'AI 投研闭环',type:'ai',card:'',
    desc:'用 Vibe-Research 开源 AI 投研看板：A股全栈数据 + 美港股 + 全球资讯直接内嵌仓库，接入自己的 DeepSeek API 驱动每日复盘与研究，决策权在自己。',
    signals:[
@@ -675,6 +684,11 @@ function loadStrategies(){
           }
         });
         if(changed) saveStrategies(arr);
+        // 迁移2: 老用户 localStorage 没有 cycle_bottom(周期抄底) 时补入默认种子
+        if(!arr.some(function(s){ return s.type==='cycle_bottom'; })){
+          const seed=DEFAULT_STRATS.filter(function(s){ return s.type==='cycle_bottom'; })[0];
+          if(seed){ arr.push(JSON.parse(JSON.stringify(seed))); saveStrategies(arr); }
+        }
         return arr;
       }
     }
@@ -689,6 +703,7 @@ function stratDesc(strat){
   const map={
     dividend:'每股分红 '+(p.dps||1)+' 元：股息率≥'+(p.buyYield||6)+'%建仓'+(p.firstPct||10)+'%，每跌'+(p.addDrop||5)+'%加仓'+(p.addPct||5)+'%；股息率<'+(p.sellYield||4)+'%后每涨'+(p.sellStep||5)+'%卖'+(p.sellPct||5)+'%；<'+(p.clearYield||3)+'%清仓',
     crisis:'单日跌幅 ≤ '+(p.dropPct||4)+'% 且放量 ≥ '+(p.volMult||1.5)+' 倍'+(p.volDays||5)+'日均量 买入，反弹 '+(p.takePct||25)+'%+ 卖出',
+    cycle_bottom:'距'+(p.lookback||500)+'日高点回撤≥'+(p.deepPct||25)+'% + MA'+(p.fastMA||120)+'上穿MA'+(p.slowMA||250)+'(确认'+(p.confirmDays||5)+'日) + 量≥'+(p.volMult||1.5)+'×'+(p.volDays||20)+'日均量 买入；止盈≥'+(p.takePct||50)+'%'+(p.stopPct>0?('，止损≤'+(p.stopPct||0)+'%'):'，无止损')+'卖出',
     ma_cross:'MA'+(p.fast||5)+' 上穿 MA'+(p.slow||20)+' 买入（金叉），下穿卖出（死叉）',
     macd:'DIF 上穿 DEA 买入（金叉），下穿卖出（死叉）',
     rsi:'RSI('+(p.period||14)+') 低于 '+(p.buyBelow||30)+' 买入，高于 '+(p.sellAbove||70)+' 卖出',
@@ -1036,6 +1051,10 @@ function attachIndicators(strat, closes, bars){
   }else if(t==='kdj'){
     const kd=SDK.calcKDJ(bars,{period:p.period||9});
     bars.forEach(function(b,i){ if(kd[i]){ b.k=kd[i].k; b.d=kd[i].d; } });
+  }else if(t==='cycle_bottom'){
+    const fast=p.fastMA||120, slow=p.slowMA||250;
+    const m=SDK.calcMA(closes,{periods:[fast,slow]});
+    bars.forEach(function(b,i){ if(m[i]){ b.maFast=m[i]['ma'+fast]; b.maSlow=m[i]['ma'+slow]; } });
   }
 }
 /* 根据策略类型生成回测买卖信号函数（返回 buy / sell / hold） */
@@ -1083,6 +1102,47 @@ function buildStrategyFn(strat){
         return 'buy';
       }
       return 'hold';
+    };
+  }
+  if(t==='cycle_bottom'){
+    const p=strat.params||{};
+    const lookback=p.lookback||500, deep=p.deepPct||25;
+    const confirmDays=p.confirmDays||5;
+    const volDays=p.volDays||20, volMult=p.volMult||1.5;
+    const take=p.takePct||50, stop=p.stopPct||0;
+    let entryPrice=null;
+    let inUp=false, crossAge=null;   // 半年线>年线状态 + 距金叉天数（金叉确认窗口）
+    return function(bar,i,all){
+      if(bar.close==null||bar.volume==null) return 'hold';
+      // 持仓中：周期回归止盈 / 破位止损（stop=0 则不止损）
+      if(entryPrice!=null){
+        if(bar.close>=entryPrice*(1+take/100)){ entryPrice=null; return 'sell'; }
+        if(stop>0&&bar.close<=entryPrice*(1-stop/100)){ entryPrice=null; return 'sell'; }
+        return 'hold';
+      }
+      // 维护金叉状态：半年线上穿年线后保持 inUp，crossAge 记金叉以来天数（死叉则清零）
+      if(bar.maFast!=null&&bar.maSlow!=null&&bar.maFast>bar.maSlow){
+        if(!inUp){ inUp=true; crossAge=0; }           // 今日刚金叉
+        else if(crossAge!=null){ crossAge++; }         // 金叉后延续
+      }else{
+        inUp=false; crossAge=null;                     // 死叉/数据缺失
+      }
+      // 条件② 金叉确认窗口内（刚企稳不久，未走远）
+      if(crossAge==null||crossAge>=confirmDays) return 'hold';
+      // 条件① 深度回撤：价格距近 lookback 日最高点回撤 ≥ deep%（周期底部区域，估值低代理）
+      let need=i-lookback+1; if(need<0) need=0;
+      let highMax=-Infinity, valid=false;
+      for(let j=need;j<=i;j++){ if(all[j]&&all[j].high!=null){ valid=true; if(all[j].high>highMax) highMax=all[j].high; } }
+      if(!valid||highMax<=0) return 'hold';
+      if(bar.close>highMax*(1-deep/100)) return 'hold';
+      // 条件③ 放量确认（资金试探/核心公司先走出来代理）
+      if(i<volDays) return 'hold';
+      let vsum=0,cnt=0;
+      for(let j=i-volDays;j<i;j++){ if(all[j]&&all[j].volume!=null){ vsum+=all[j].volume; cnt++; } }
+      if(cnt<volDays||vsum<=0) return 'hold';
+      if(bar.volume<vsum/cnt*volMult) return 'hold';
+      entryPrice=bar.close;
+      return 'buy';
     };
   }
   if(t==='ma_cross'){
@@ -1297,7 +1357,7 @@ function runBacktest(){
     var tr=report.totalReturn, bh=report.buyHoldReturn, wr=report.winRate, md=report.maxDrawdown;
     // 样本量提示：按策略类型区分（低频策略交易少是设计使然，趋势策略交易少才需警惕）
     var n=report.tradeCount, sampleHtml;
-    var lowFreq=(strat.type==='dividend'||strat.type==='crisis');
+    var lowFreq=(strat.type==='dividend'||strat.type==='crisis'||strat.type==='cycle_bottom');
     var shortRange=(selRange==='1w'||selRange==='1m'||selRange==='1q');
     if(lowFreq){
       if(shortRange){
