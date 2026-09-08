@@ -366,6 +366,39 @@ function fmtPct(v){ if(v==null||isNaN(v)) return '-'; return (v>0?'+':'')+v.toFi
 /* 东财 clist 数值字段缺数据时返回 '-' 字符串（非 null），裸 .toFixed 会崩；统一走此安全格式化 */
 function cleanNum(v){ if(v==null||v===''||v==='-'||v==='--') return null; var n=Number(v); return isFinite(n)?n:null; }
 function fmtMain(v){ v=cleanNum(v); return v==null?'-':v.toFixed(2)+'%'; }
+function fmtRatio(v){ v=cleanNum(v); return v==null?'-':v.toFixed(2); }
+/* 区间涨跌幅：拉近半年日K(前复权)，算 5日/20日 涨跌幅（n=6/21 根回看） */
+async function getRangePct(secid){
+  var d0 = new Date(Date.now()-200*86400000);
+  function pad(n){ return n<10?'0'+n:''+n; }
+  var beg = ''+d0.getFullYear()+pad(d0.getMonth()+1)+pad(d0.getDate());
+  var j = await emJson('https://push2his.eastmoney.com/api/qt/stock/kline/get?secid='+secid+'&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57&klt=101&fqt=1&beg='+beg+'&end=20500101');
+  var kl = (j.data&&j.data.klines)||[];
+  function pctBack(n){ // n 个交易日前（含今天倒数第1根），收盘比
+    if(kl.length < n+1) return null;
+    var v0 = parseFloat(kl[kl.length-1-n].split(',')[2]);
+    var v1 = parseFloat(kl[kl.length-1].split(',')[2]);
+    if(!isFinite(v0)||!isFinite(v1)||v0<=0) return null;
+    return (v1/v0-1)*100;
+  }
+  return {w5: pctBack(5), w20: pctBack(20)};
+}
+/* 交易拥挤度（牛菲特卖点语境，实时近似 0-100）：
+   换手率(≤15%满分45) + 量比(≥4满分25) + 当日涨幅过热(≥2/4/7%得5/10/15) + 主力净占比≤-5%(资金拥挤流出+15)
+   等级: ≥70过热🔥 / 45-69偏热 / 20-44正常 / <20冷清 */
+function crowdInfo(x){
+  var t = cleanNum(x.turnover), vr = cleanNum(x.volRatio), pct = cleanNum(x.pct);
+  var amt = cleanNum(x.amount), mainIn = cleanNum(x.mainIn);
+  var score = 0;
+  if(t!=null && t>0) score += Math.min(t/15, 1)*45;
+  if(vr!=null && vr>0) score += Math.min(Math.max(vr-1,0)/3, 1)*25;
+  if(pct!=null){ if(pct>=7) score+=15; else if(pct>=4) score+=10; else if(pct>=2) score+=5; }
+  if(amt!=null && amt>0 && mainIn!=null){ if(mainIn/amt*100<=-5) score+=15; }
+  score = Math.round(Math.min(100, Math.max(0, score)));
+  var lv = score>=70?'过热': score>=45?'偏热': score>=20?'正常':'冷清';
+  var cls = score>=70?'tag-red': score>=45?'tag-gold': score>=20?'tag-green':'';
+  return {score:score, lv:lv, cls:cls};
+}
 function pctCls(v){ if(v==null||isNaN(v)||v===0) return ''; return v>0?'up':'down'; }
 function showErr(id, msg){ var el=$(id); if(!el) return; if(msg){ el.textContent=msg; el.classList.add('show'); } else el.classList.remove('show'); }
 async function fetchJSON(url, opt){
@@ -568,12 +601,12 @@ function toSecid(code){
   return code; // 兼容 sh600519 / 00700.HK 等
 }
 async function getStockQuote(secid){
-  var j = await emJson('https://push2.eastmoney.com/api/qt/stock/get?fltt=2&invt=2&secid='+secid+'&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f116,f117,f127,f137,f162,f163,f164,f167,f168,f169,f170,f171,f292,f152');
+  var j = await emJson('https://push2.eastmoney.com/api/qt/stock/get?fltt=2&invt=2&secid='+secid+'&fields=f43,f44,f45,f46,f47,f48,f50,f57,f58,f60,f116,f117,f127,f137,f162,f163,f164,f167,f168,f169,f170,f171,f292,f152');
   var d = j.data; if(!d) throw new Error('未找到该股票');
   return {
     code:d.f57, name:d.f58, price:d.f43, pct:d.f170, chg:d.f169,
     open:d.f46, high:d.f44, low:d.f45, preClose:d.f60,
-    vol:d.f47, amount:d.f48, mainIn:d.f137, // vol成交量(手) amount成交额(元) mainIn主力净流入(元)
+    vol:d.f47, amount:d.f48, mainIn:d.f137, volRatio:d.f50, // vol成交量(手) amount成交额(元) mainIn主力净流入(元) volRatio量比
     peTTM:d.f162, peStatic:d.f164, pb:d.f167, dv:d.f292, // dv 股息率(%), 可能无
     totalMcap:d.f116, floatMcap:d.f117, turnover:d.f168,
     industry:d.f127||'', update:d.f152,
@@ -718,8 +751,15 @@ async function gatherReview(){
         var q = await getStockQuote(toSecid(holds[j].code));
         var cost = holds[j].price*holds[j].shares;
         var val = q.price*holds[j].shares;
-        holdStocks.push({code:q.code, name:q.name, industry:q.industry, shares:holds[j].shares, costP:holds[j].price, price:q.price, pct:q.pct, preClose:q.preClose, pnl:val-cost, pnlPct: cost? (val-cost)/cost*100 : 0, dayPnl: (q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*holds[j].shares : null, vol:q.vol, mainIn:q.mainIn, mcap:q.totalMcap});
+        holdStocks.push({secid:toSecid(holds[j].code), code:q.code, name:q.name, industry:q.industry, shares:holds[j].shares, costP:holds[j].price, price:q.price, pct:q.pct, preClose:q.preClose, pnl:val-cost, pnlPct: cost? (val-cost)/cost*100 : 0, dayPnl: (q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*holds[j].shares : null, vol:q.vol, amount:q.amount, mainIn:q.mainIn, turnover:q.turnover, volRatio:q.volRatio, mcap:q.totalMcap});
       }catch(e){}
+    }
+    /* 持仓区间涨跌幅 5日/20日：3 并发 + 250ms 节流（东财 push2his 防风控），失败显示 '-' */
+    for(var b=0;b<holdStocks.length;b+=3){
+      await Promise.all(holdStocks.slice(b,b+3).map(function(hs){
+        return getRangePct(hs.secid).then(function(r){ hs.w5=r.w5; hs.w20=r.w20; }).catch(function(){});
+      }));
+      if(b+3<holdStocks.length) await new Promise(function(res){ setTimeout(res, 250); });
     }
     /* 自选/持仓相关行业板块资金（行业名去罗马数字后匹配，如 白酒Ⅱ↔白酒Ⅱ / 银行Ⅱ↔银行） */
     var inds = {};
@@ -807,11 +847,13 @@ function renderReview(){
   if(d.holdStocks && d.holdStocks.length){
     var tCost=0, tVal=0, tDay=0;
     d.holdStocks.forEach(function(x){ tCost+=x.costP*x.shares; tVal+=x.price*x.shares; if(x.dayPnl!=null) tDay+=x.dayPnl; });
-    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>持股</th><th>成本</th><th>现价</th><th>市值</th><th>当日成交量</th><th>主力净流入</th><th>当日盈利</th><th>浮动盈亏</th><th>收益率</th></tr>';
+    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算 · 涨跌幅度=当日/5日/20日 · 拥挤度=换手率+量比+涨幅+主力净占比综合0-100，牛菲特卖点视角）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>持股</th><th>成本</th><th>现价</th><th>市值</th><th>当日</th><th>5日</th><th>20日</th><th>当日成交量</th><th>拥挤度</th><th>主力净流入</th><th>当日盈利</th><th>浮动盈亏</th><th>收益率</th></tr>';
     d.holdStocks.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td></tr>';
+      var ci = crowdInfo(x);
+      var crowdHtml = ci.cls? '<span class="tag '+ci.cls+'">'+ci.lv+' '+ci.score+'</span>':'<span style="color:var(--text3)">'+ci.lv+' '+ci.score+'</span>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="换手率'+fmtMain(x.turnover)+' · 量比'+fmtRatio(x.volRatio)+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td></tr>';
     });
-    html += '<tr class="total"><td colspan="6" style="text-align:right">合计</td><td class="num">'+fmtMoney(tVal)+'</td><td class="num">-</td><td class="num">-</td><td class="num '+pctCls(tDay)+'">'+(tDay>=0?'+':'')+fmtMoney(tDay)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td></tr>';
+    html += '<tr class="total"><td colspan="6" style="text-align:right">合计</td><td class="num">'+fmtMoney(tVal)+'</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num '+pctCls(tDay)+'">'+(tDay>=0?'+':'')+fmtMoney(tDay)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td></tr>';
     html += '</table></div></div>';
   }
   /* 情绪 */
@@ -1034,7 +1076,7 @@ function buildReviewPrompt(d){
   }
   if(d.holdStocks && d.holdStocks.length){
     lines.push('', '## 我的持仓（'+d.holdStocks.length+' 只）', '');
-    d.holdStocks.forEach(function(x){ lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：'+x.shares+'股 成本'+x.costP+' 昨收'+x.preClose+' 现价'+x.price+'（今日涨跌 '+fmtPct(x.pct)+'），当日'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'，量 '+fmtVol(x.vol)+'，主力净流入 '+(x.mainIn!=null?fmtFlow(x.mainIn):'-')+'，浮盈'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'（'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%）'); });
+    d.holdStocks.forEach(function(x){ var ci=crowdInfo(x); lines.push('- '+x.name+'('+x.code+') '+esc(x.industry||'')+'：'+x.shares+'股 成本'+x.costP+' 昨收'+x.preClose+' 现价'+x.price+'（今日 '+fmtPct(x.pct)+'，5日 '+(x.w5!=null?fmtPct(x.w5):'-')+'，20日 '+(x.w20!=null?fmtPct(x.w20):'-')+'），交易拥挤度 '+ci.score+' '+ci.lv+'，当日'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'，量 '+fmtVol(x.vol)+'，主力净流入 '+(x.mainIn!=null?fmtFlow(x.mainIn):'-')+'，浮盈'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'（'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%）'); });
   }
   if(d.mySectors && d.mySectors.length){
     lines.push('', '## 我的自选/持仓相关行业资金', '');
