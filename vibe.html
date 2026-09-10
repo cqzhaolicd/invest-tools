@@ -191,6 +191,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
       <a data-p="news">📰 资讯雷达</a>
       <a data-p="stock">🔍 个股数据</a>
       <a data-p="board">🗂️ 板块中心</a>
+      <a data-p="sequoia">🌲 Sequoia-X 选股</a>
       <a data-p="reports">📁 我的研报</a>
     </div>
     <div class="top-right">
@@ -270,6 +271,19 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
   <div id="boardTab-sectors"></div>
   <div id="boardTab-watch" style="display:none"></div>
   <div id="boardTab-hold" style="display:none"></div>
+</div>
+
+<!-- ============ Sequoia-X 选股 ============ -->
+<div class="page" id="page-sequoia">
+  <div class="page-head">
+    <div class="ico">🌲</div>
+    <h2>Sequoia-X 选股</h2>
+    <span class="desc">开源 A 股量化选股系统（sngyai/Sequoia-X）· 7 套技术形态策略 · 每日盘后本机自动扫描全市场（baostock → 本地 SQLite，规则化扫描不含大模型判断）</span>
+    <div class="spacer"></div>
+    <button class="btn btn-outline" onclick="loadSequoia(true)">🔄 刷新数据</button>
+  </div>
+  <div class="error-box" id="seqxErr"></div>
+  <div id="seqxArea"><div class="card"><div class="hint">加载中…</div></div></div>
 </div>
 
 <!-- ============ 我的研报 ============ -->
@@ -1487,15 +1501,66 @@ function renderMd(md){
 }
 
 /* =====================================================================
+ * Sequoia-X 选股模块（读取本机盘后导出的 data/sequoia.json）
+ * 数据由 ~/Sequoia-X/sequoia_export.py 生成：baostock 增量 → 7 策略扫描 → JSON
+ * ===================================================================== */
+var seqxData = null;
+function loadSequoia(force){
+  var area = $('seqxArea'); if(!area) return;
+  showErr('seqxErr','');
+  var url = './data/sequoia.json' + (force? ('?t='+Date.now()) : '');
+  fetch(url).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(j){ seqxData = j; renderSequoia(); })
+    .catch(function(e){
+      area.innerHTML = '<div class="card"><div class="hint">⚠️ 未读取到 <code>data/sequoia.json</code>（'+esc(e.message)+'）<br><br>'
+        + 'Sequoia-X 在本机运行、盘后自动生成该文件；首次使用请在本机执行：<br>'
+        + '<code>cd ~/Sequoia-X &amp;&amp; .venv/bin/python sequoia_export.py</code><br>'
+        + '然后把 <code>data/sequoia.json</code> 部署到本仓库（或等待每日盘后自动任务）。</div></div>';
+    });
+}
+function renderSequoia(){
+  var d = seqxData; if(!d) return;
+  var h = '';
+  var totalHits = (d.strategies||[]).reduce(function(a,s){ return a+(s.count||0); },0);
+  h += '<div class="card"><h3><span class="n">🌲</span>运行概况</h3><div class="idx-grid">'
+    + '<div class="idx"><div class="nm">生成时间</div><div class="val" style="font-size:.95rem">'+esc(d.generatedAt||'-')+'</div></div>'
+    + '<div class="idx"><div class="nm">数据日期</div><div class="val" style="font-size:.95rem">'+esc(d.dataDate||'-')+'</div></div>'
+    + '<div class="idx"><div class="nm">命中合计</div><div class="val">'+totalHits+'</div></div>'
+    + '<div class="idx"><div class="nm">去重标的</div><div class="val">'+(d.total||0)+'</div></div>'
+    + '<div class="idx"><div class="nm">增量行数</div><div class="val">'+(d.syncedRows||0)+'</div></div>'
+    + '</div><div class="hint" style="margin-top:10px">📌 规则化扫描（海龟/均线放量/高窄旗形/涨停洗盘/上升跌停/RPS/定增），不含大模型判断；价格为后复权序列最新值，涨跌幅为最新交易日。客观名单，非投资建议。</div></div>';
+  (d.strategies||[]).forEach(function(s){
+    h += '<div class="card"><h3><span class="n">🎯</span>'+esc(s.cn||s.name)
+      + ' <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+(s.count||0)+' 只'+(s.desc?(' · '+esc(s.desc)):'')+' · '+esc(s.name)+'）</span></h3>';
+    if(!s.symbols || !s.symbols.length){ h += '<div class="hint">今日无命中（策略条件未触发）</div></div>'; return; }
+    h += '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价</th><th>涨跌幅</th><th>成交额</th><th>行情</th></tr>';
+    s.symbols.forEach(function(code){
+      var q = (d.quotes&&d.quotes[code])||{};
+      var nm = (d.names&&d.names[code])||code;
+      var xq = /^6/.test(code)? ('SH'+code) : (/^[48]/.test(code)? ('BJ'+code) : ('SZ'+code));
+      h += '<tr><td class="num">'+esc(code)+'</td><td class="td-b">'+esc(nm)+'</td>'
+        + '<td class="num">'+(q.price!=null?Number(q.price).toFixed(2):'-')+'</td>'
+        + '<td class="num '+pctCls(q.pct)+'">'+fmtPct(q.pct)+'</td>'
+        + '<td class="num">'+fmtMoney(q.amount)+'</td>'
+        + '<td><a href="https://xueqiu.com/S/'+xq+'" target="_blank" rel="noopener">雪球</a></td></tr>';
+    });
+    h += '</table></div></div>';
+  });
+  $('seqxArea').innerHTML = h;
+}
+
+/* =====================================================================
  * 导航与初始化
  * ===================================================================== */
-function switchPage(p){
+function switchPage(p, noHash){
   document.querySelectorAll('.page').forEach(function(el){ el.classList.remove('on'); });
   $('page-'+p).classList.add('on');
   document.querySelectorAll('#mainNav a').forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-p')===p); });
   if(p==='news' && !$('newsList').innerHTML.includes('加载')) loadNews();
   if(p==='board') renderBoardTab();
+  if(p==='sequoia') loadSequoia();
   if(p==='reports') renderReports();
+  if(!noHash){ try{ history.replaceState(null, '', '#'+p); }catch(e){} }
   window.scrollTo(0,0);
 }
 document.querySelectorAll('#mainNav a').forEach(function(a){
@@ -1504,6 +1569,11 @@ document.querySelectorAll('#mainNav a').forEach(function(a){
 refreshAiPill();
 loadNews();
 renderReports();
+/* 支持 hash 直链：vibe.html#sequoia / #news / #board ... */
+(function(){
+  var p = (location.hash||'').replace('#','');
+  if(p && document.getElementById('page-'+p)) switchPage(p, true);
+})();
 </script>
 </body>
 </html>
