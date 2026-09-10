@@ -1699,6 +1699,31 @@ function renderSequoia(){
     + '<div class="idx"><div class="nm">去重标的</div><div class="val">'+(d.total||0)+'</div></div>'
     + '<div class="idx"><div class="nm">增量行数</div><div class="val">'+(d.syncedRows||0)+'</div></div>'
     + '</div><div class="hint" style="margin-top:10px">📌 规则化扫描（海龟/均线放量/高窄旗形/涨停洗盘/上升跌停/RPS/定增），不含大模型判断；价格为后复权序列最新值，涨跌幅为最新交易日。客观名单，非投资建议。</div></div>';
+  if(d.cycle && d.cycle.length){
+    var reds = d.cycle.filter(function(b){ return b.keyRed; }).length;
+    h += '<div class="card"><h3><span class="n">🔄</span>周期股策略 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（典型周期板块定位 · 等权指数半年线/年线 · 每板块 5 龙头'+(reds?(' · 🔴 底部≥6个月 '+reds+' 个'):'')+'）</span></h3>';
+    h += '<div class="hint" style="margin-bottom:8px">规则：<b>底部区</b>=距 500 日高点回撤 ≥25% 且 半年线(MA120) 未上穿 年线(MA250)；<b>底部</b>=底部区中近 20 日未创新低（磨底），<b>探底中</b>=仍在下探；<b>🔴 重点</b>=底部区连续 ≥180 自然日。</div>';
+    h += '<div class="table-wrap"><table><tr><th>板块</th><th>周期位置</th><th>当前位置持续</th><th>底部区连续</th><th>距高点回撤</th><th>半年线/年线</th><th>板块龙头（5 只 · 涨跌幅）</th></tr>';
+    d.cycle.forEach(function(b){
+      var clsMap = { '底部':'tag-red', '探底':'tag-gold', '上行':'tag-green', '顶部':'tag-gold', '下行':'' };
+      var stageTxt = (b.stage==='探底')? '探底中' : b.stage;
+      var rowStyle = b.keyRed? ' style="background:rgba(217,83,79,.13)"' : '';
+      var leaders = (b.leaders||[]).map(function(m){
+        var q = (d.quotes||{})[m.code] || {};
+        var nm = (d.names||{})[m.code] || m.name || m.code;
+        var xq = /^6/.test(m.code)? ('SH'+m.code) : (/^[48]/.test(m.code)? ('BJ'+m.code) : ('SZ'+m.code));
+        return '<a href="https://xueqiu.com/S/'+xq+'" target="_blank" rel="noopener" style="white-space:nowrap;text-decoration:none">'+esc(nm)+' <span class="'+pctCls(q.pct)+'">'+fmtPct(q.pct)+'</span></a>';
+      }).join('');
+      h += '<tr'+rowStyle+'><td class="td-b">'+esc(b.name)+(b.keyRed? ' 🔴':'')+'</td>'
+        + '<td><span class="tag '+clsMap[b.stage]+'">'+esc(stageTxt)+'</span></td>'
+        + '<td class="num">'+(b.stageDays||0)+' 天</td>'
+        + '<td class="num"'+(b.keyRed? ' style="color:#e35d6a;font-weight:700"':'')+'>'+(b.deepDays? (b.deepDays+' 天') : '-')+'</td>'
+        + '<td class="num '+pctCls(b.drawdown)+'">'+fmtPct(b.drawdown)+'</td>'
+        + '<td class="num">'+(b.goldenCross? '多头（金叉）':'空头（未金叉）')+'</td>'
+        + '<td><div style="display:flex;flex-wrap:wrap;gap:2px 10px">'+leaders+'</div></td></tr>';
+    });
+    h += '</table></div></div>';
+  }
   (d.strategies||[]).forEach(function(s){
     h += '<div class="card"><h3><span class="n">🎯</span>'+esc(s.cn||s.name)
       + ' <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+(s.count||0)+' 只'+(s.desc?(' · '+esc(s.desc)):'')+' · '+esc(s.name)+'）</span></h3>';
