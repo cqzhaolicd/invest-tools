@@ -1305,28 +1305,124 @@ function rmWatch(i){
   var watch = lsGet('watch', []);
   watch.splice(i,1); lsSet('watch', watch); renderWatch();
 }
+/* ---------- 持仓（日期快照 + 变更日志，仅存本地） ----------
+ * vibe_holdsLog  变更日志 [{d:'YYYY-MM-DD', ts, code, name, shares, price, op:'set'|'del', note}]
+ * vibe_holds     当前持仓缓存（兼容旧数据；权威数据是日志）
+ * vibe_holdDate  查看日期（默认今天）
+ * 选中日期的持仓 = 回放 d<=该日期 的日志（del 或 shares<=0 → 清仓）
+ */
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function getHoldDate(){ return lsGet('holdDate','') || todayStr(); }
+function setHoldDate(v){ lsSet('holdDate', v||todayStr()); renderHold(); }
+function backToday(){ lsSet('holdDate', todayStr()); renderHold(); }
+function holdsAsOf(dateStr){
+  var log = lsGet('holdsLog', []);
+  if(!log.length){
+    var old = lsGet('holds', []);
+    if(old.length){
+      log = old.map(function(h){ return {d:todayStr(), ts:Date.now(), code:h.code, shares:h.shares, price:h.price, op:'set', note:'初始导入'}; });
+      lsSet('holdsLog', log);
+    }
+  }
+  var map = {};
+  log.filter(function(e){ return !dateStr || String(e.d||'') <= dateStr; })
+     .sort(function(a,b){
+        var ad=String(a.d||''), bd=String(b.d||'');
+        return ad<bd? -1 : ad>bd? 1 : ((a.ts||0)-(b.ts||0));
+     })
+     .forEach(function(e){
+        var code = String(e.code);
+        if(e.op==='del' || !(Number(e.shares)>0)){ delete map[code]; return; }
+        map[code] = {code:code, shares:Number(e.shares), price:Number(e.price), name:e.name};
+     });
+  var out = [];
+  for(var k in map) out.push(map[k]);
+  return out;
+}
+function pushHoldLog(entry){
+  var log = lsGet('holdsLog', []);
+  log.push(entry);
+  lsSet('holdsLog', log);
+  var cur = holdsAsOf(todayStr()).map(function(h){ return {code:h.code, shares:h.shares, price:h.price}; });
+  lsSet('holds', cur);
+}
+/* 输入解析：'+500'/'-300' 为增减，纯数字为设定值 */
+function parseSharesInput(s, cur){
+  s = String(s||'').trim();
+  if(/^[+-]/.test(s)){ var d=parseFloat(s); return isNaN(d)? null : cur + d; }
+  var v = parseFloat(s);
+  return isNaN(v)? null : v;
+}
+/* 股票名称本地缓存（行情返回后写入，供变更记录显示） */
+function nameOf(code){
+  var c = lsGet('nameCache', {});
+  return c[String(code)] || null;
+}
+function cacheNames(map){
+  if(!map) return;
+  var c = lsGet('nameCache', {});
+  var ch = false;
+  for(var k in map){ if(map[k] && c[k] !== map[k]){ c[k] = map[k]; ch = true; } }
+  if(ch) lsSet('nameCache', c);
+}
 function renderHold(){
-  var holds = lsGet('holds', []);
+  var date = getHoldDate();
+  var isToday = (date === todayStr());
+  var holds = holdsAsOf(date);
   var el = $('boardTab-hold');
+  var toolbar = '<div class="form-grid" style="margin-bottom:4px">'
+    + '<div><label>查看日期</label><input type="date" id="hDate" value="'+date+'" onchange="setHoldDate(this.value)"></div>'
+    + '<div style="display:flex;align-items:flex-end;gap:8px"><button class="btn btn-outline" onclick="backToday()">回到今天</button>'
+    + '<span class="hint" style="margin:0">'+(isToday? '实时行情' : '📅 历史快照 · 按该日收盘价')+'</span></div>'
+    + '</div>';
+  var cardStart = '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+date+(isToday?' · 实时':' · 历史快照')+'）</span></h3>'+toolbar+holdForm();
   if(!holds.length){
-    el.innerHTML = '<div class="card"><div class="hint">暂无持仓记录。添加你的持仓（代码/股数/成本价），看板会按实时行情计算市值与盈亏（只存本地）。</div>'+holdForm()+'</div>';
+    el.innerHTML = cardStart + '<div class="hint">'+(isToday? '暂无持仓记录。' : '该日期无持仓记录（可用上方表单补录，变更将记入所选日期）。')+'</div></div>' + holdLogCard();
     return;
   }
-  el.innerHTML = '<div class="card"><h3><span class="n">💼</span>我的持仓</h3>'+holdForm()+'<div id="holdList"><div class="loading">⏳ 计算中…</div></div></div>';
-  Promise.all(holds.map(function(h){ return getStockQuote(toSecid(h.code)).catch(function(){ return null; }); })).then(function(quotes){
-    var html = '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>持股</th><th>成本价</th><th>现价</th><th>市值</th><th>当日成交量</th><th>主力净流入</th><th>当日盈利</th><th>浮动盈亏</th><th>收益率</th><th></th></tr>';
-    var totalCost=0, totalVal=0, totalDay=0;
+  el.innerHTML = cardStart + '<div id="holdList"><div class="loading">⏳ 计算中…</div></div></div>' + holdLogCard();
+
+  var queries;
+  if(isToday){
+    queries = holds.map(function(h){ return getStockQuote(toSecid(h.code)).catch(function(){ return null; }); });
+  }else{
+    queries = holds.map(function(h){ return getHistClose(h.code, date).catch(function(){ return null; }); });
+  }
+  Promise.all(queries).then(function(res){
+    var nmMap = {};
+    res.forEach(function(q){ if(q && q.name) nmMap[q.code||''] = q.name; });
+    holds.forEach(function(h,i){ var q=res[i]; if(q && q.name) nmMap[h.code] = q.name; });
+    cacheNames(nmMap);
+    var html = '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
+    var totalCost=0, totalVal=0, totalDay=0, hasDay=false;
     holds.forEach(function(h, i){
-      var q = quotes[i];
+      var q = res[i];
+      var px = q? (q.price!=null? q.price : (q.close!=null? q.close : null)) : null;
+      var nm = (q && q.name)? q.name : (h.name||'-');
       var cost = h.price * h.shares;
-      var val = q? q.price*h.shares : cost;
+      var val = (px!=null)? px*h.shares : cost;
       var pnl = val - cost;
       var pnlPct = cost? pnl/cost*100 : 0;
-      var dayPnl = (q&&q.price!=null&&q.preClose!=null&&q.preClose>0)? (q.price-q.preClose)*h.shares : null;
-      totalCost+=cost; totalVal+=val; if(dayPnl!=null) totalDay+=dayPnl;
-      html += '<tr><td class="num">'+esc(h.code)+'</td><td class="td-b">'+(q?esc(q.name):'-')+'</td><td class="num">'+h.shares+'</td><td class="num">'+h.price.toFixed(2)+'</td><td class="num">'+(q?q.price.toFixed(2):'-')+'</td><td class="num">'+fmtMoney(val)+'</td><td class="num">'+(q?fmtVol(q.vol):'-')+'</td><td class="num '+pctCls(q?q.mainIn:null)+'">'+(q?fmtFlow(q.mainIn):'-')+'</td><td class="num '+pctCls(dayPnl)+'">'+(dayPnl!=null?((dayPnl>=0?'+':'')+fmtMoney(dayPnl)):'-')+'</td><td class="num '+pctCls(pnl)+'">'+(pnl>=0?'+':'')+fmtMoney(pnl)+'</td><td class="num '+pctCls(pnlPct)+'">'+(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%</td><td><span class="rm" style="cursor:pointer" onclick="rmHold('+i+')">✕</span></td></tr>';
+      var dayPnl = (isToday && q && q.price!=null && q.preClose!=null && q.preClose>0)? (q.price-q.preClose)*h.shares : null;
+      totalCost+=cost; totalVal+=val;
+      if(dayPnl!=null){ totalDay+=dayPnl; hasDay=true; }
+      html += '<tr><td class="num">'+esc(h.code)+'</td><td class="td-b">'+esc(nm)+'</td>'
+        + '<td class="num">'+h.shares+' <span class="rm" title="修改持股数（支持 +500 / -300）" style="cursor:pointer" onclick="editHoldShares(\''+esc(h.code)+'\')">✎</span></td>'
+        + '<td class="num">'+Number(h.price).toFixed(2)+' <span class="rm" title="修改成本价" style="cursor:pointer" onclick="editHoldCost(\''+esc(h.code)+'\')">✎</span></td>'
+        + '<td class="num">'+(px!=null? Number(px).toFixed(2) : '-')+'</td>'
+        + '<td class="num">'+fmtMoney(val)+'</td>'
+        + (isToday? ('<td class="num">'+(q&&q.vol!=null? fmtVol(q.vol):'-')+'</td><td class="num '+pctCls(q?q.mainIn:null)+'">'+(q&&q.mainIn!=null? fmtFlow(q.mainIn):'-')+'</td><td class="num '+pctCls(dayPnl)+'">'+(dayPnl!=null?((dayPnl>=0?'+':'')+fmtMoney(dayPnl)):'-')+'</td>') : '')
+        + '<td class="num '+pctCls(pnl)+'">'+(pnl>=0?'+':'')+fmtMoney(pnl)+'</td>'
+        + '<td class="num '+pctCls(pnlPct)+'">'+(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%</td>'
+        + '<td><span class="rm" style="cursor:pointer" title="删除" onclick="rmHold(\''+esc(h.code)+'\')">✕</span></td></tr>';
     });
-    html += '<tr class="total"><td colspan="5" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td><td class="num">-</td><td class="num">-</td><td class="num '+pctCls(totalDay)+'">'+(totalDay>=0?'+':'')+fmtMoney(totalDay)+'</td><td class="num '+pctCls(totalVal-totalCost)+'">'+((totalVal-totalCost)>=0?'+':'')+fmtMoney(totalVal-totalCost)+'</td><td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td></tr>';
+    var dayCells = isToday? ('<td class="num">-</td><td class="num">-</td><td class="num '+pctCls(hasDay?totalDay:null)+'">'+(hasDay?((totalDay>=0?'+':'')+fmtMoney(totalDay)):'-')+'</td>') : '';
+    html += '<tr class="total"><td colspan="5" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td>'+dayCells
+      + '<td class="num '+pctCls(totalVal-totalCost)+'">'+((totalVal-totalCost)>=0?'+':'')+fmtMoney(totalVal-totalCost)+'</td>'
+      + '<td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td></tr>';
     html += '</table></div>';
     $('holdList').innerHTML = html;
   });
@@ -1336,24 +1432,98 @@ function holdForm(){
     + '<div><label>代码</label><input type="text" id="hCode" placeholder="600519"></div>'
     + '<div><label>股数</label><input type="number" id="hShares" placeholder="1000"></div>'
     + '<div><label>成本价</label><input type="number" id="hPrice" placeholder="18.5" step="0.01"></div>'
-    + '<div style="display:flex;align-items:flex-end"><button class="btn btn-blue" onclick="addHold()">＋ 添加持仓</button></div>'
-    + '</div>';
+    + '<div style="display:flex;align-items:flex-end"><button class="btn btn-blue" onclick="addHold()">＋ 添加/更新持仓</button></div>'
+    + '</div><div class="hint" style="margin:-2px 0 10px">变更按上方「查看日期」记入（默认今天）；同代码再次保存=覆盖当日持股与成本。</div>';
 }
 function addHold(){
   var code = $('hCode').value.trim();
   var shares = parseFloat($('hShares').value);
   var price = parseFloat($('hPrice').value);
-  if(!code || !shares || !price){ showErr('boardErr','请填写完整的代码/股数/成本价'); return; }
+  if(!code || isNaN(shares) || isNaN(price)){ showErr('boardErr','请填写完整的代码/股数/成本价'); return; }
   showErr('boardErr','');
-  var holds = lsGet('holds', []);
-  holds.push({code:code, shares:shares, price:price});
-  lsSet('holds', holds);
+  var date = getHoldDate();
+  var prev = null;
+  holdsAsOf(date).forEach(function(h){ if(String(h.code)===code) prev = h; });
+  var name = prev? prev.name : null;
+  if(nameOf(code)) name = nameOf(code);
+  pushHoldLog({d:date, ts:Date.now(), code:code, name:name, shares:shares, price:price, op:'set',
+               note:(prev? '持股 '+prev.shares+' → '+shares : '建仓 '+shares+' 股')});
   $('hCode').value=''; $('hShares').value=''; $('hPrice').value='';
   renderHold();
 }
-function rmHold(i){
-  var holds = lsGet('holds', []);
-  holds.splice(i,1); lsSet('holds', holds); renderHold();
+function editHoldShares(code){
+  var date = getHoldDate();
+  var cur = null;
+  holdsAsOf(date).forEach(function(h){ if(String(h.code)===String(code)) cur = h; });
+  if(!cur) return;
+  var v = prompt('修改「'+code+'」持股数（'+date+'）\n当前：'+cur.shares+' 股\n\n输入新持股数（如 1500）或增减量（如 +500 / -300）；输入 0 清仓', String(cur.shares));
+  if(v===null) return;
+  var ns = parseSharesInput(v, Number(cur.shares)||0);
+  if(ns===null){ showErr('boardErr','持股数输入无效'); return; }
+  showErr('boardErr','');
+  pushHoldLog({d:date, ts:Date.now(), code:code, name:cur.name, shares:ns, price:cur.price,
+               op: ns>0? 'set':'del', note:'持股 '+cur.shares+' → '+ns});
+  renderHold();
+}
+function editHoldCost(code){
+  var date = getHoldDate();
+  var cur = null;
+  holdsAsOf(date).forEach(function(h){ if(String(h.code)===String(code)) cur = h; });
+  if(!cur) return;
+  var v = prompt('修改「'+code+'」成本价（'+date+'）\n当前：'+cur.price, String(cur.price));
+  if(v===null) return;
+  var np = parseFloat(v);
+  if(isNaN(np) || np<0){ showErr('boardErr','成本价输入无效'); return; }
+  showErr('boardErr','');
+  pushHoldLog({d:date, ts:Date.now(), code:code, name:cur.name, shares:cur.shares, price:np,
+               op:cur.shares>0? 'set':'del', note:'成本 '+cur.price+' → '+np});
+  renderHold();
+}
+function rmHold(code){
+  var date = getHoldDate();
+  var cur = null;
+  holdsAsOf(date).forEach(function(h){ if(String(h.code)===String(code)) cur = h; });
+  if(!cur) return;
+  if(!confirm('删除「'+code+'」持仓？（记入 '+date+' 的变更）')) return;
+  pushHoldLog({d:date, ts:Date.now(), code:code, name:cur.name, shares:0, price:cur.price, op:'del', note:'清仓（删除 '+cur.shares+' 股）'});
+  renderHold();
+}
+function holdLogCard(){
+  var log = lsGet('holdsLog', []);
+  if(!log.length) return '';
+  var rows = log.slice().sort(function(a,b){
+    var ad=String(a.d||''), bd=String(b.d||'');
+    return ad<bd? 1 : ad>bd? -1 : ((b.ts||0)-(a.ts||0));
+  }).slice(0,60);
+  var h = '<details class="card" style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">📝 持仓变更记录（共 '+log.length+' 笔，显示最近 '+rows.length+'）</summary>'
+    + '<div class="table-wrap" style="margin-top:10px"><table><tr><th>日期</th><th>代码</th><th>名称</th><th>变更</th></tr>';
+  rows.forEach(function(e){
+    var nm = e.name || nameOf(e.code) || '-';
+    h += '<tr><td class="num">'+esc(e.d||'-')+'</td><td class="num">'+esc(e.code)+'</td><td>'+esc(nm)+'</td>'
+      + '<td'+(e.op==='del'? ' style="color:var(--red, #e35d6a)"':'')+'>'+esc(e.note || ((e.op==='del'?'清仓':'设为 '+e.shares+' 股')))+'</td></tr>';
+  });
+  h += '</table></div></details>';
+  return h;
+}
+/* 历史收盘价（东财日K，多子域轮换；失败返回 null） */
+async function getHistClose(code, dateStr){
+  var ymd = String(dateStr).replace(/-/g,'');
+  var secid = toSecid(code);
+  var domains = ['push2his.eastmoney.com','1.push2his.eastmoney.com','2.push2his.eastmoney.com'];
+  for(var i=0;i<domains.length;i++){
+    try{
+      var u = 'https://'+domains[i]+'/api/qt/stock/kline/get?secid='+secid
+        + '&fields1=f1,f2&fields2=f51,f53&klt=101&fqt=0&beg='+ymd+'&end='+ymd+'&lmt=10&_='+Date.now();
+      var j = await fetchJSON(u);
+      var ks = (((j||{}).data)||{}).klines || [];
+      for(var k=0;k<ks.length;k++){
+        var parts = String(ks[k]).split(',');
+        if(parts[0] === dateStr){ return {close: parseFloat(parts[1]), date: parts[0], hist:true}; }
+      }
+      if(ks.length){ var p = String(ks[ks.length-1]).split(','); return {close: parseFloat(p[1]), date: p[0], hist:true, approx:true}; }
+    }catch(e){}
+  }
+  return null;
 }
 
 /* =====================================================================
