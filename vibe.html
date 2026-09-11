@@ -278,10 +278,11 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
   <div class="page-head">
     <div class="ico">🌲</div>
     <h2>Sequoia-X 选股</h2>
-    <span class="desc">开源 A 股量化选股系统（sngyai/Sequoia-X）· 7 套技术形态策略 · 每日盘后本机自动扫描全市场（baostock → 本地 SQLite，规则化扫描不含大模型判断）</span>
+    <span class="desc">开源 A 股量化选股系统（sngyai/Sequoia-X）· 7 套技术形态策略 + 周期板块定位 · 每日盘后本机自动扫描全市场（新浪行情源 → 本地 SQLite，规则化扫描不含大模型判断）</span>
     <div class="spacer"></div>
-    <button class="btn btn-outline" onclick="loadSequoia(true)">🔄 刷新数据</button>
+    <button class="btn btn-outline" id="seqxRefreshBtn" onclick="loadSequoia(true)">🔄 重新加载数据</button>
   </div>
+  <div class="hint" id="seqxTip">数据由本机每交易日 19:20 自动生成并部署；此按钮仅重新读取页面数据文件。</div>
   <div class="error-box" id="seqxErr"></div>
   <div id="seqxArea"><div class="card"><div class="hint">加载中…</div></div></div>
 </div>
@@ -1677,15 +1678,33 @@ function renderMd(md){
 var seqxData = null;
 function loadSequoia(force){
   var area = $('seqxArea'); if(!area) return;
+  var btn = $('seqxRefreshBtn');
+  var tip = $('seqxTip');
+  if(btn){ btn.disabled = true; btn.innerHTML = '⏳ 加载中…'; }
   showErr('seqxErr','');
+  if(tip && force) tip.innerHTML = '⏳ 正在读取最新数据…';
+  var t0 = Date.now();
   var url = './data/sequoia.json' + (force? ('?t='+Date.now()) : '');
-  fetch(url).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(j){ seqxData = j; renderSequoia(); })
+  fetch(url, {cache: force? 'no-store' : 'default'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(j){
+      var prev = seqxData? seqxData.generatedAt : null;
+      seqxData = j;
+      renderSequoia();
+      if(tip){
+        var same = (prev && prev === j.generatedAt);
+        tip.innerHTML = '✅ 读取成功（'+ (Date.now()-t0) +'ms）｜数据生成时间：<b>'+esc(j.generatedAt||'-')+'</b>'
+          + (same? ' <span style="color:var(--text3)">· 数据未变化（每交易日 19:20 自动更新）</span>' : '');
+      }
+      if(btn){ btn.disabled = false; btn.innerHTML = '🔄 重新加载数据'; }
+    })
     .catch(function(e){
       area.innerHTML = '<div class="card"><div class="hint">⚠️ 未读取到 <code>data/sequoia.json</code>（'+esc(e.message)+'）<br><br>'
         + 'Sequoia-X 在本机运行、盘后自动生成该文件；首次使用请在本机执行：<br>'
         + '<code>cd ~/Sequoia-X &amp;&amp; .venv/bin/python sequoia_export.py</code><br>'
         + '然后把 <code>data/sequoia.json</code> 部署到本仓库（或等待每日盘后自动任务）。</div></div>';
+      if(tip) tip.innerHTML = '❌ 读取失败：'+esc(e.message);
+      if(btn){ btn.disabled = false; btn.innerHTML = '🔄 重新加载数据'; }
     });
 }
 function renderSequoia(){
