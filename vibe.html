@@ -1695,28 +1695,56 @@ function renderMd(md){
 
 /* =====================================================================
  * Sequoia-X 选股模块（读取本机盘后导出的 data/sequoia.json）
- * 数据由 ~/Sequoia-X/sequoia_export.py 生成：baostock 增量 → 7 策略扫描 → JSON
+ * 数据由 ~/Sequoia-X/sequoia_export.py 生成：新浪行情 → 7 策略 + 周期板块 → JSON
  * ===================================================================== */
-var seqxData = null;
+var seqxData = null, seqxLoadedAt = 0;
+/* 推算「当前应有的最新交易日」（忽略节假日，够用） */
+function seqxExpectDate(){
+  var d = new Date(), dow = d.getDay();
+  while(dow === 0 || dow === 6){ d.setDate(d.getDate()-1); dow = d.getDay(); }
+  if(dow >= 1 && dow <= 5 && new Date().getHours() < 16){
+    do { d.setDate(d.getDate()-1); dow = d.getDay(); } while(dow === 0 || dow === 6);
+  }
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
 function loadSequoia(force){
   var area = $('seqxArea'); if(!area) return;
   var btn = $('seqxRefreshBtn');
   var tip = $('seqxTip');
+  var t0 = Date.now();
+  /* 2 分钟内重复进入页面时复用内存数据（点按钮可强制重取） */
+  if(!force && seqxData && (t0 - seqxLoadedAt) < 120000){
+    renderSequoia();
+    if(tip && !tip.innerHTML) tip.innerHTML = '数据生成时间：<b>'+esc(seqxData.generatedAt||'-')+'</b>';
+    return;
+  }
   if(btn){ btn.disabled = true; btn.innerHTML = '⏳ 加载中…'; }
   showErr('seqxErr','');
-  if(tip && force) tip.innerHTML = '⏳ 正在读取最新数据…';
-  var t0 = Date.now();
-  var url = './data/sequoia.json' + (force? ('?t='+Date.now()) : '');
-  fetch(url, {cache: force? 'no-store' : 'default'})
+  if(tip) tip.innerHTML = '⏳ 正在读取最新数据…';
+  /* 静态 JSON 会被浏览器/CDN 缓存（max-age=600）→ 始终带时间戳 + no-store，保证拿到最新 */
+  var url = './data/sequoia.json?t=' + t0;
+  fetch(url, {cache: 'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(j){
       var prev = seqxData? seqxData.generatedAt : null;
-      seqxData = j;
+      seqxData = j; seqxLoadedAt = Date.now();
       renderSequoia();
       if(tip){
         var same = (prev && prev === j.generatedAt);
-        tip.innerHTML = '✅ 读取成功（'+ (Date.now()-t0) +'ms）｜数据生成时间：<b>'+esc(j.generatedAt||'-')+'</b>'
-          + (same? ' <span style="color:var(--text3)">· 数据未变化（每交易日 19:20 自动更新）</span>' : '');
+        var exp = seqxExpectDate();
+        var stale = !!(j.dataDate && exp && j.dataDate !== exp);
+        var t = Date.now()-t0;
+        var slow = /github\.io/.test(location.hostname);
+        if(!j.dataDate){
+          tip.innerHTML = '⚠️ 数据文件缺少日期字段';
+        }else if(stale){
+          tip.innerHTML = '⚠️ 数据日期 <b>'+esc(j.dataDate)+'</b>，最新交易日应为 <b>'+esc(exp)+'</b> —— 本机任务可能尚未执行'
+            + '（每交易日 15:00–21:30 自动更新）· 读取耗时 '+t+'ms';
+        }else{
+          tip.innerHTML = '✅ 数据已是最新（'+esc(j.dataDate)+' 收盘）｜生成于 <b>'+esc(j.generatedAt||'-')+'</b>'
+            + ' · 读取 '+t+'ms' + (slow? '（外网 CDN 首包较慢属正常）' : '')
+            + (same? ' · <span style="color:var(--text3)">内容未变化</span>' : '');
+        }
       }
       if(btn){ btn.disabled = false; btn.innerHTML = '🔄 重新加载数据'; }
     })
