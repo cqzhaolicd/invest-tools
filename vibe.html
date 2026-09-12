@@ -1370,6 +1370,16 @@ function cacheNames(map){
   for(var k in map){ if(map[k] && c[k] !== map[k]){ c[k] = map[k]; ch = true; } }
   if(ch) lsSet('nameCache', c);
 }
+/* 把名称回填进变更日志（旧数据/历史快照缺名称时） */
+function backfillLogNames(map){
+  if(!map) return;
+  var log = lsGet('holdsLog', []);
+  var ch = false;
+  log.forEach(function(e){
+    if(!e.name && map[String(e.code)]){ e.name = map[String(e.code)]; ch = true; }
+  });
+  if(ch) lsSet('holdsLog', log);
+}
 function renderHold(){
   var date = getHoldDate();
   var isToday = (date === todayStr());
@@ -1387,23 +1397,34 @@ function renderHold(){
   }
   el.innerHTML = cardStart + '<div id="holdList"><div class="loading">⏳ 计算中…</div></div></div>' + holdLogCard();
 
-  var queries;
+  var queries, nameQueries = null;
   if(isToday){
     queries = holds.map(function(h){ return getStockQuote(toSecid(h.code)).catch(function(){ return null; }); });
   }else{
     queries = holds.map(function(h){ return getHistClose(h.code, date).catch(function(){ return null; }); });
+    /* 历史模式：名称不随日期变化 → 另取一次实时行情（仅用于名称显示与回填） */
+    nameQueries = holds.map(function(h){
+      return getStockQuote(toSecid(h.code)).then(function(q){ return (q && q.name) || null; }).catch(function(){ return null; });
+    });
   }
-  Promise.all(queries).then(function(res){
+  Promise.all([Promise.all(queries), nameQueries? Promise.all(nameQueries) : Promise.resolve([])]).then(function(pack){
+    var res = pack[0] || [];
+    var nameRes = pack[1] || [];
     var nmMap = {};
     res.forEach(function(q){ if(q && q.name) nmMap[q.code||''] = q.name; });
-    holds.forEach(function(h,i){ var q=res[i]; if(q && q.name) nmMap[h.code] = q.name; });
+    holds.forEach(function(h,i){
+      var q = res[i]; if(q && q.name) nmMap[h.code] = q.name;
+      if(nameRes[i]) nmMap[h.code] = nameRes[i];
+      if(h.name && !nmMap[h.code]) nmMap[h.code] = h.name;
+    });
     cacheNames(nmMap);
+    backfillLogNames(nmMap);
     var html = '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
     var totalCost=0, totalVal=0, totalDay=0, hasDay=false;
     holds.forEach(function(h, i){
       var q = res[i];
       var px = q? (q.price!=null? q.price : (q.close!=null? q.close : null)) : null;
-      var nm = (q && q.name)? q.name : (h.name||'-');
+      var nm = (q && q.name) || h.name || nmMap[h.code] || nameOf(h.code) || '-';
       var cost = h.price * h.shares;
       var val = (px!=null)? px*h.shares : cost;
       var pnl = val - cost;
