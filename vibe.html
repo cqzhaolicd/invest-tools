@@ -71,7 +71,7 @@ th{background:#f2f5f9;color:var(--navy);font-weight:700;text-align:left;padding:
 td{padding:9px 12px;border-bottom:1px solid #eaeef3;color:var(--text2);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f8fafc}
-tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy)}
+tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:nowrap}
 .td-b{font-weight:700;color:var(--text)}
 .num{font-variant-numeric:tabular-nums}
 .up{color:var(--red)} .down{color:var(--green)}
@@ -926,7 +926,7 @@ function renderReview(){
     d.holdStocks.forEach(function(x){
       var ci = crowdInfo(x);
       var crowdHtml = ci.cls? '<span class="tag '+ci.cls+'">'+ci.lv+' '+ci.score+'</span>':'<span style="color:var(--text3)">'+ci.lv+' '+ci.score+'</span>';
-      html += '<tr><td class="td-b">'+esc(x.name)+' <span class="rm" style="cursor:pointer;font-size:.7rem" title="置顶（移到第一行，顺序会记住）" onclick="moveHoldTop(\''+esc(x.code)+'\')">⬆</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="换手率'+fmtMain(x.turnover)+' · 量比'+fmtRatio(x.volRatio)+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
+      html += '<tr><td class="td-b" style="white-space:nowrap">'+esc(x.name)+' <span class="rm" style="cursor:pointer;font-size:.7rem;margin-left:2px" title="置顶（移到第一行，顺序会记住）" onclick="moveHoldTop(\''+esc(x.code)+'\')">⬆</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="换手率'+fmtMain(x.turnover)+' · 量比'+fmtRatio(x.volRatio)+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
     });
     html += '<tr class="total"><td colspan="8" style="text-align:right">合计</td><td class="num '+pctCls(hasDay?tDay:null)+'">'+(hasDay?((tDay>=0?'+':'')+fmtMoney(tDay)):'-')+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+(((tVal-tCost)/tCost*100)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td><td class="num">'+tShares+'</td><td class="num">'+fmtMoney(tCost)+'</td><td class="num">'+fmtMoney(tVal)+'</td></tr>';
     html += '</table></div></div>';
