@@ -186,6 +186,28 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
   .idx-grid{grid-template-columns:repeat(3,1fr)}
 }
 .footer{text-align:center;color:var(--text3);font-size:.78rem;padding:26px 0 34px;border-top:1px solid var(--line);margin-top:26px}
+/* ===== 导出 PDF（浏览器打印优化，无外部依赖） ===== */
+.btn-print{white-space:nowrap}
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  html,body{background:#fff !important}
+  .topbar,.tabs,.no-print,.btn-print,button,.rm,.hint#seqxTip{display:none !important}
+  .wrap,.container{padding:0 !important;max-width:none !important}
+  .page{display:none !important}
+  .page.on,.page.print-focus{display:block !important}
+  body.focus-print .page.on:not(.print-focus){display:none !important}
+  .page-head{margin:0 0 8px !important}
+  .card{box-shadow:none !important;border:1px solid #cfd8e3 !important;margin-bottom:8px !important;break-inside:avoid;page-break-inside:avoid}
+  .card h3{font-size:12.5px !important;margin-bottom:6px !important}
+  table{font-size:9.5px !important;min-width:0 !important;width:100% !important}
+  th,td{padding:3px 4px !important}
+  th{font-size:9px !important;background:#eef2f7 !important}
+  .stk{border-bottom:none !important;color:#000 !important}
+  .stk::after{content:"" !important}
+  a{color:#000 !important;text-decoration:none !important}
+  .idx-grid{grid-template-columns:repeat(4,1fr) !important}
+  .grid,.idx-grid{break-inside:avoid}
+}
 </style>
 <script src="vendor/html2canvas.min.js"></script>
 <script src="vendor/jspdf.umd.min.js"></script>
@@ -1907,6 +1929,119 @@ renderReports();
 (function(){
   var p = (location.hash||'').replace('#','');
   if(p && document.getElementById('page-'+p)) switchPage(p, true);
+})();
+</script>
+<script>
+/* ===== 导出 PDF（通用）：复用本地 vendor 的 html2canvas + jsPDF，直接下载 PDF 文件 =====
+   复盘页有自己的 exportReviewPdf()（带 AI 复盘合并）；其余页面用这里的 exportPagePdf()。 */
+async function exportPagePdf(pageEl, opts){
+  opts = opts || {};
+  if(typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined'){
+    alert('❌ PDF 组件未加载（vendor/html2canvas.min.js / vendor/jspdf.umd.min.js），请确认部署完整'); return false;
+  }
+  var src = opts.src || pageEl;
+  if(!src || !src.innerHTML.trim()){ alert('⚠️ 本页暂无内容可导出，请先等数据加载完成'); return false; }
+  var title = opts.title || '数据导出';
+  var dateStr = new Date().toISOString().slice(0,10);
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'background:#ffffff;color:#1a2b3c;padding:18px;font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;width:780px;';
+  wrap.innerHTML = '<div style="text-align:center;padding:10px 0 14px;border-bottom:2px solid #b8860b;margin-bottom:14px">'
+    + '<div style="font-size:22px;font-weight:bold;color:#142c45">个人投资中心 · '+esc(title)+'</div>'
+    + '<div style="font-size:13px;color:#5b7b8f;margin-top:6px">导出时间 '+new Date().toLocaleString('zh-CN')+(opts.sub?(' · '+esc(opts.sub)):'')+'</div></div>';
+  var body = document.createElement('div');
+  body.innerHTML = src.innerHTML;
+  body.querySelectorAll('button,.btn,.error-box,.rm').forEach(function(x){ x.remove(); });
+  wrap.appendChild(body);
+  /* 白底 PDF 样式覆盖（与复盘导出保持一致） */
+  wrap.querySelectorAll('.card').forEach(function(x){ x.style.border='none'; x.style.boxShadow='none'; x.style.background='transparent'; x.style.padding='4px 0'; x.style.marginBottom='10px'; });
+  wrap.querySelectorAll('.table-wrap').forEach(function(x){ x.style.overflow='visible'; });
+  wrap.querySelectorAll('table').forEach(function(t){ t.style.width='100%'; t.style.borderCollapse='collapse'; t.style.fontSize='11px'; t.style.minWidth='0'; });
+  wrap.querySelectorAll('th,td').forEach(function(c){ c.style.border='1px solid #ccd6e0'; c.style.padding='3px 5px'; c.style.textAlign='left'; c.style.whiteSpace='nowrap'; });
+  wrap.querySelectorAll('th').forEach(function(c){ c.style.background='#f2f5f9'; c.style.color='#142c45'; });
+  wrap.querySelectorAll('.num').forEach(function(c){ c.style.textAlign='right'; });
+  wrap.querySelectorAll('.up').forEach(function(x){ x.style.color='#c0392b'; });
+  wrap.querySelectorAll('.down').forEach(function(x){ x.style.color='#1e8449'; });
+  wrap.querySelectorAll('.hint').forEach(function(x){ x.style.color='#5b7b8f'; x.style.fontSize='11.5px'; });
+  wrap.querySelectorAll('h2,h3').forEach(function(x){ x.style.color='#142c45'; });
+  wrap.querySelectorAll('.stk').forEach(function(a){ a.style.color='#142c45'; a.style.textDecoration='none'; a.style.borderBottom='none'; });
+  wrap.id = 'pdfTempWrap2';
+  wrap.style.position = 'fixed'; wrap.style.top = '0'; wrap.style.left = '0'; wrap.style.zIndex = '2147483000';
+  document.body.appendChild(wrap);
+  try{
+    /* 分页：按 DOM 块装页，超高块用 y 裁剪分段，内容不丢 */
+    var pageW = 210, pageH = 297, margin = 10;
+    var pxPerMm = 780 / (pageW - margin*2);
+    var pageCapPx = Math.floor((pageH - margin*2) * pxPerMm) - 20;
+    var blocks = Array.prototype.slice.call(wrap.children);
+    var pages = [], cur = [], curH = 0;
+    for(var bi=0; bi<blocks.length; bi++){
+      var el = blocks[bi], h = el.offsetHeight || 80;
+      if(h > pageCapPx){
+        if(cur.length){ pages.push({blocks:cur}); cur = []; curH = 0; }
+        for(var y0=0; y0<h; y0+=pageCapPx) pages.push({block:el, y0:y0, y1:Math.min(y0+pageCapPx,h)});
+      } else {
+        if(cur.length && curH + h > pageCapPx){ pages.push({blocks:cur}); cur = []; curH = 0; }
+        cur.push(el); curH += h;
+      }
+    }
+    if(cur.length) pages.push({blocks:cur});
+    var pdf = new window.jspdf.jsPDF({ orientation:'portrait', unit:'mm', format:'a4', compress:true });
+    var imgW = pageW - margin*2;
+    for(var pi=0; pi<pages.length; pi++){
+      var pg = pages[pi], pc;
+      if(pg.block){
+        pc = await html2canvas(pg.block, { scale:2, useCORS:true, backgroundColor:'#ffffff', windowWidth:820, logging:false, y:pg.y0, height:pg.y1-pg.y0 });
+      } else {
+        var pageDiv = document.createElement('div');
+        pageDiv.style.cssText = 'background:#ffffff;width:780px;padding:10px 10px 0;box-sizing:border-box;position:fixed;top:0;left:0;z-index:2147483001;';
+        pg.blocks.forEach(function(c){ pageDiv.appendChild(c.cloneNode(true)); });
+        document.body.appendChild(pageDiv);
+        pc = await html2canvas(pageDiv, { scale:2, useCORS:true, backgroundColor:'#ffffff', windowWidth:820, logging:false });
+        document.body.removeChild(pageDiv);
+      }
+      if(pi>0) pdf.addPage();
+      var pImgH = pc.height * imgW / pc.width;
+      pdf.addImage(pc.toDataURL('image/jpeg',0.95),'JPEG',margin,margin,imgW,pImgH);
+    }
+    try{ document.body.removeChild(wrap); }catch(e){}
+    var fname = (opts.filename || title) + '_' + dateStr + '.pdf';
+    pdf.save(fname);
+    return true;
+  }catch(e){
+    try{ document.body.removeChild(wrap); }catch(_){}
+    alert('❌ 导出失败: ' + e.message);
+    return false;
+  }
+}
+/* 给每个页面（除已有专属导出按钮的复盘页）自动挂「📄 导出 PDF」按钮 */
+(function(){
+  var heads = document.querySelectorAll('.page-head');
+  for(var i=0;i<heads.length;i++){
+    var h = heads[i];
+    if(h.querySelector('.btn-print') || h.querySelector('#btnPdf')) continue;
+    var pg = h.closest ? h.closest('.page') : null;
+    if(!pg) continue;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn btn-outline btn-print';
+    b.textContent = '📄 导出 PDF';
+    b.title = '把本页内容导出为 PDF 文件（直接下载，A4 纵向分页）';
+    (function(target, head, btn){
+      btn.onclick = async function(){
+        var src = null, cands = target.querySelectorAll('[id$="Area"]');
+        for(var k=0;k<cands.length;k++){ if(cands[k].children.length){ src = cands[k]; break; } }
+        var h2 = head.querySelector('h2');
+        var old = btn.textContent;
+        btn.disabled = true; btn.textContent = '📄 生成中…';
+        try{
+          await exportPagePdf(target, { src: src || target, title: h2 ? h2.textContent.trim() : '数据导出' });
+        } finally {
+          btn.disabled = false; btn.textContent = old;
+        }
+      };
+    })(pg, h, b);
+    h.appendChild(b);
+  }
 })();
 </script>
 </body>
