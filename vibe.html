@@ -82,6 +82,8 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
 .stk{color:inherit;text-decoration:none;border-bottom:1px dotted rgba(120,150,190,.55);transition:color .12s,border-color .12s}
 .stk:hover{color:#2f6fb3;border-bottom-color:#2f6fb3}
 .stk::after{content:"↗";font-size:.62rem;opacity:.45;margin-left:2px;vertical-align:super}
+.ord{cursor:pointer;font-size:.6rem;color:#9bb0c6;margin-left:3px;user-select:none;display:inline-block}
+.ord:hover{color:#2f6fb3}
 .num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .up{color:var(--red)} .down{color:var(--green)}
 .tag{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.73rem;font-weight:700;white-space:nowrap}
@@ -901,19 +903,48 @@ async function gatherReview(){
   return reviewData;
   }
 /* 持仓置顶：把某只调到第一行（顺序持久化到本地，无需重新抓取行情） */
-function moveHoldTop(code){
+function moveHoldTop(code){ moveHoldRow(code, 0); }
+/* 持仓行排序：dir = 0 置顶 / -1 上移一行 / +1 下移一行（可把任意股票调到任意位置，顺序持久化到本地，无需重新抓行情） */
+function moveHoldRow(code, dir){
   code = String(code);
   var holds = lsGet('holds', []);
-  var i = -1;
-  for(var k=0;k<holds.length;k++){ if(String(holds[k].code)===code){ i=k; break; } }
-  if(i<=0) return;
-  holds.unshift(holds.splice(i,1)[0]);
+  var i = -1, k;
+  for(k=0;k<holds.length;k++){ if(String(holds[k].code)===code){ i=k; break; } }
+  if(i < 0) return;
+  var j = (dir === 0) ? 0 : Math.max(0, Math.min(holds.length-1, i + dir));
+  if(j === i) return;
+  holds.splice(j, 0, holds.splice(i,1)[0]);
   lsSet('holds', holds);
-  if(reviewData && reviewData.holdStocks && reviewData.holdStocks.length){
-    var hs = reviewData.holdStocks, j = -1;
-    for(var m=0;m<hs.length;m++){ if(String(hs[m].code)===code){ j=m; break; } }
-    if(j>0) hs.unshift(hs.splice(j,1)[0]);
+  /* 同步已抓取到的复盘数据顺序（供重新渲染时使用） */
+  if(window.reviewData && reviewData.holdStocks && reviewData.holdStocks.length){
+    var ord = {};
+    for(k=0;k<holds.length;k++) ord[String(holds[k].code)] = k;
+    reviewData.holdStocks.sort(function(a,b){
+      var ia = ord[String(a.code)], ib = ord[String(b.code)];
+      return (ia==null?9999:ia) - (ib==null?9999:ib);
+    });
     renderReview();
+  }
+  reorderHoldDom();
+}
+/* 就地重排所有持仓表的行（不动合计行，不重新抓行情） */
+function reorderHoldDom(){
+  var holds = lsGet('holds', []);
+  var ord = {}, k;
+  for(k=0;k<holds.length;k++) ord[String(holds[k].code)] = k;
+  var tbls = document.querySelectorAll('table[data-holds]');
+  for(var t=0;t<tbls.length;t++){
+    var tbl = tbls[t];
+    var trs = Array.prototype.slice.call(tbl.querySelectorAll('tr[data-code]'));
+    if(!trs.length) continue;
+    trs.sort(function(a,b){
+      var ia = ord[a.getAttribute('data-code')], ib = ord[b.getAttribute('data-code')];
+      return (ia==null?9999:ia) - (ib==null?9999:ib);
+    });
+    var parent = trs[0].parentNode;
+    for(var r=0;r<trs.length;r++) parent.appendChild(trs[r]);
+    var tot = parent.querySelector('tr.total');
+    if(tot) parent.appendChild(tot);   /* 合计行始终在最后 */
   }
 }
 function renderReview(){
@@ -964,11 +995,11 @@ function renderReview(){
   if(d.holdStocks && d.holdStocks.length){
     var tCost=0, tVal=0, tDay=0, tShares=0, hasDay=false;
     d.holdStocks.forEach(function(x){ tCost+=x.costP*x.shares; tVal+=x.price*x.shares; tShares+=x.shares; if(x.dayPnl!=null){ tDay+=x.dayPnl; hasDay=true; } });
-    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算 · 涨跌幅度=当日/5日/20日 · 拥挤度=换手率+量比+涨幅+主力净占比综合0-100，牛菲特卖点视角）</span></h3><div class="table-wrap"><table class="compact"><tr><th>名称</th><th>现价</th><th>当日</th><th>5日</th><th>20日</th><th title="当日成交量">成交量</th><th title="拥挤度 = 换手率+量比+涨幅+主力净占比，0-100">拥挤度</th><th title="主力净流入">主力净额</th><th title="当日盈利">当日</th><th title="浮动盈亏">浮盈</th><th title="收益率">收益</th><th>持股</th><th>成本</th><th>市值</th></tr>';
+    html += '<div class="card"><h3><span class="n">💼</span>我的持仓 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.holdStocks.length+' 只 · 浮动盈亏自动计算 · 涨跌幅度=当日/5日/20日 · 拥挤度=换手率+量比+涨幅+主力净占比综合0-100，牛菲特卖点视角）</span></h3><div class="table-wrap"><table class="compact" data-holds><tr><th>名称</th><th>现价</th><th>当日</th><th>5日</th><th>20日</th><th title="当日成交量">成交量</th><th title="拥挤度 = 换手率+量比+涨幅+主力净占比，0-100">拥挤度</th><th title="主力净流入">主力净额</th><th title="当日盈利">当日</th><th title="浮动盈亏">浮盈</th><th title="收益率">收益</th><th>持股</th><th>成本</th><th>市值</th></tr>';
     d.holdStocks.forEach(function(x){
       var ci = crowdInfo(x);
       var crowdHtml = ci.cls? '<span class="tag '+ci.cls+'">'+ci.lv+' '+ci.score+'</span>':'<span style="color:var(--text3)">'+ci.lv+' '+ci.score+'</span>';
-      html += '<tr><td class="td-b" style="white-space:nowrap">'+stockLink(x.code, x.name)+' <span class="rm" style="cursor:pointer;font-size:.7rem;margin-left:2px" title="置顶（移到第一行，顺序会记住）" onclick="moveHoldTop(\''+esc(x.code)+'\')">⬆</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="换手率'+fmtMain(x.turnover)+' · 量比'+fmtRatio(x.volRatio)+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
+      html += '<tr data-code="'+esc(x.code)+'"><td class="td-b" style="white-space:nowrap">'+stockLink(x.code, x.name)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(x.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',1)">▼</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="换手率'+fmtMain(x.turnover)+' · 量比'+fmtRatio(x.volRatio)+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
     });
     html += '<tr class="total"><td colspan="8" style="text-align:right">合计</td><td class="num '+pctCls(hasDay?tDay:null)+'">'+(hasDay?((tDay>=0?'+':'')+fmtMoney(tDay)):'-')+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+(((tVal-tCost)/tCost*100)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td><td class="num">'+tShares+'</td><td class="num">'+fmtMoney(tCost)+'</td><td class="num">'+fmtMoney(tVal)+'</td></tr>';
     html += '</table></div></div>';
@@ -1424,6 +1455,13 @@ function holdsAsOf(dateStr){
      });
   var out = [];
   for(var k in map) out.push(map[k]);
+  /* 按 vibe_holds 的当前顺序输出：用户在持仓表用 ⤒▲▼ 自定义的行序，刷新/编辑后依然保持 */
+  var ord = {}, cur0 = lsGet('holds', []);
+  for(var m=0;m<cur0.length;m++) ord[String(cur0[m].code)] = m;
+  out.sort(function(a,b){
+    var ia = ord[String(a.code)], ib = ord[String(b.code)];
+    return (ia==null?9999:ia) - (ib==null?9999:ib);
+  });
   return out;
 }
 function pushHoldLog(entry){
@@ -1501,7 +1539,7 @@ function renderHold(){
     });
     cacheNames(nmMap);
     backfillLogNames(nmMap);
-    var html = '<div class="table-wrap"><table><tr><th>名称</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
+    var html = '<div class="table-wrap"><table data-holds><tr><th>名称</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
     var totalCost=0, totalVal=0, totalDay=0, hasDay=false;
     holds.forEach(function(h, i){
       var q = res[i];
@@ -1514,7 +1552,7 @@ function renderHold(){
       var dayPnl = (isToday && q && q.price!=null && q.preClose!=null && q.preClose>0)? (q.price-q.preClose)*h.shares : null;
       totalCost+=cost; totalVal+=val;
       if(dayPnl!=null){ totalDay+=dayPnl; hasDay=true; }
-      html += '<tr><td class="td-b">'+stockLink(h.code, nm)+'</td>'
+      html += '<tr data-code="'+esc(h.code)+'"><td class="td-b" style="white-space:nowrap">'+stockLink(h.code, nm)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(h.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',1)">▼</span></td>'
         + '<td class="num">'+h.shares+' <span class="rm" title="修改持股数（支持 +500 / -300）" style="cursor:pointer" onclick="editHoldShares(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+Number(h.price).toFixed(2)+' <span class="rm" title="修改成本价" style="cursor:pointer" onclick="editHoldCost(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+(px!=null? Number(px).toFixed(2) : '-')+'</td>'
