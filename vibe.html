@@ -141,13 +141,21 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
 .form-grid input{width:100%}
 
 /* ===== AI 输出 ===== */
-.ai-output{background:#0f2236;color:#dbe5ef;border-radius:12px;padding:18px 20px;font-size:.9rem;line-height:1.85;margin-top:14px;display:none;white-space:pre-wrap;word-break:break-word;font-family:inherit}
+.ai-output{background:#ffffff;color:#1f3550;border:1px solid #d9e2ec;border-radius:12px;padding:18px 20px;font-size:.9rem;line-height:1.85;margin-top:14px;display:none;white-space:pre-wrap;word-break:break-word;font-family:inherit;box-shadow:0 1px 3px rgba(20,44,69,.06)}
 .ai-output.show{display:block}
-.ai-output .thinking{color:#8fa5ba;font-size:.82rem;border-left:3px solid #d4a017;padding-left:12px;margin:8px 0}
-.ai-output b, .ai-output strong{color:#fff}
-.ai-output h1,.ai-output h2,.ai-output h3{color:#e8c766;margin:10px 0 6px;font-size:1.02rem}
+.ai-output .thinking{color:#5b7b8f;font-size:.82rem;border-left:3px solid #d4a017;padding:6px 0 6px 12px;margin:8px 0;background:#f7f9fc}
+.ai-output b, .ai-output strong{color:#0f2236}
+.ai-output h1,.ai-output h2,.ai-output h3{color:#142c45;margin:10px 0 6px;font-size:1.02rem;border-bottom:1px solid #e6edf5;padding-bottom:4px}
+.ai-output h1:first-child,.ai-output h2:first-child,.ai-output h3:first-child{margin-top:0}
 .ai-output ul,.ai-output ol{padding-left:20px;margin:6px 0}
-.ai-output hr{border:none;border-top:1px solid #2a4a6b;margin:12px 0}
+.ai-output hr{border:none;border-top:1px solid #e0e8f1;margin:12px 0}
+.ai-output table{width:100%;border-collapse:collapse;font-size:.84rem;margin:8px 0}
+.ai-output th{background:#f2f5f9;color:#142c45;border:1px solid #dbe4ee;padding:5px 7px;text-align:left}
+.ai-output td{border:1px solid #e6edf5;padding:5px 7px;color:#26384d}
+.ai-output pre{background:#f7f9fc;border:1px solid #dbe4ee;border-radius:8px;padding:10px;color:#26384d;overflow-x:auto;white-space:pre-wrap}
+.ai-output code{background:#f2f5f9;color:#0f2236;border-radius:4px;padding:1px 5px}
+.ai-output blockquote{border-left:3px solid #d4a017;color:#41586f;background:#fdfaf3;margin:8px 0;padding:6px 12px}
+.ai-output a{color:#2f6fb3}
 .cursor{display:inline-block;width:8px;height:16px;background:#d4a017;vertical-align:middle;animation:blink 1s step-start infinite}
 @keyframes blink{50%{opacity:0}}
 
@@ -1818,7 +1826,7 @@ function renderMd(md){
   s = s.replace(/\n{3,}/g, '\n\n');
   s = s.replace(/\n/g, '<br>');
   s = s.replace(/\u0000BLOCK(\d+)\u0000/g, function(m, i){
-    return '<pre style="background:#0a1a2b;border:1px solid #2a4a6b;border-radius:8px;padding:10px;font-size:.8rem;overflow-x:auto;white-space:pre-wrap">'+blocks[+i]+'</pre>';
+    return '<pre style="background:#f7f9fc;border:1px solid #dbe4ee;border-radius:8px;padding:10px;font-size:.8rem;overflow-x:auto;white-space:pre-wrap;color:#26384d">'+blocks[+i]+'</pre>';
   });
   return s;
 }
