@@ -1041,11 +1041,39 @@ async function getFinance(secid){
   var seccode = code+'.'+market;
   var j = await fetchJSON('https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_FINANCE_MAINFINADATA&columns=ALL&filter=(SECUCODE%3D%22'+seccode+'%22)&pageNumber=1&pageSize=8&sortTypes=-1&sortColumns=REPORT_DATE&source=HSF10&client=PC');
   var rows = (j.result&&j.result.data)||[];
+  /* 东财字段名会变：新旧名一起兜底，取第一个非空值 */
+  function pickNum(r, names){
+    for(var i=0;i<names.length;i++){
+      var v = r[names[i]];
+      if(v===null || v===undefined || v==='' || v==='-'){ continue; }
+      var n = parseFloat(v);
+      if(isFinite(n)){ return n; }
+    }
+    return null;
+  }
   var out = rows.map(function(r){
-    return {date:r.REPORT_DATE_NAME, revenue:r.TOTAL_OPERATE_INCOME, revYoY:r.TOTAL_OPERATE_INCOME_YOY,
-      profit:r.PARENT_NETPROFIT, profYoY:r.PARENT_NETPROFIT_YOY, roe:r.ROE_JQ, gross:r.GROSS_PROFIT_RATIO, debt:r.ASSET_LIAB_RATIO};
-  });
+    return {
+      date: r.REPORT_DATE_NAME || String(r.REPORT_DATE||'').slice(0,10),
+      revenue: pickNum(r, ['TOTALOPERATEREVE','TOTAL_OPERATE_INCOME','OPERATE_INCOME_PK','OPERATE_INCOME']),
+      revYoY:  pickNum(r, ['TOTALOPERATEREVETZ','TOTAL_OPERATE_INCOME_YOY','OI_YOYRATIO_PK','OPERATE_INCOME_YOY']),
+      profit:  pickNum(r, ['PARENTNETPROFIT','PARENT_NETPROFIT','NETPROFIT']),
+      profYoY: pickNum(r, ['PARENTNETPROFITTZ','PARENT_NETPROFIT_YOY','NETPROFIT_YOY']),
+      roe:     pickNum(r, ['ROEJQ','ROE_JQ','ROEKCJQ','ROE']),
+      gross:   pickNum(r, ['XSMLL','GROSS_PROFIT_RATIO','MLR']),
+      debt:    pickNum(r, ['ZCFZL','ASSET_LIAB_RATIO'])
+    };
+  }).filter(function(x){ return x.revenue!=null || x.profit!=null; });
   return out;
+}
+
+/* 财务字段探测：用于诊断接口字段变更（控制台调用 probeFinance('0.002714')） */
+async function probeFinance(secid){
+  var parts = String(secid).split('.');
+  var seccode = (parts[1]||parts[0])+'.'+(parts[0]==='1'?'SH':'SZ');
+  var j = await fetchJSON('https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_FINANCE_MAINFINADATA&columns=ALL&filter=(SECUCODE%3D%22'+seccode+'%22)&pageNumber=1&pageSize=1&sortTypes=-1&sortColumns=REPORT_DATE&source=HSF10&client=PC');
+  var r = ((j.result&&j.result.data)||[])[0]||{};
+  console.log('字段总数', Object.keys(r).length, r);
+  return r;
 }
 
 /* ---------- 数据层：资讯（新浪 7x24 快讯 JSONP，无 CORS 限制） ---------- */
@@ -1661,6 +1689,10 @@ function renderStock(q, fin, ff){
       html += '<tr><td class="td-b">'+esc(r.date)+'</td><td class="num">'+fmtMoney(r.revenue)+'</td><td class="num '+pctCls(r.revYoY)+'">'+(r.revYoY!=null?r.revYoY.toFixed(2)+'%':'-')+'</td><td class="num">'+fmtMoney(r.profit)+'</td><td class="num '+pctCls(r.profYoY)+'">'+(r.profYoY!=null?r.profYoY.toFixed(2)+'%':'-')+'</td><td class="num">'+(r.roe!=null?r.roe.toFixed(2)+'%':'-')+'</td><td class="num">'+(r.gross!=null?r.gross.toFixed(2)+'%':'-')+'</td><td class="num">'+(r.debt!=null?r.debt.toFixed(2)+'%':'-')+'</td></tr>';
     });
     html += '</table></div></div>';
+  }else{
+    html += '<div class="card"><h3><span class="n">📑</span>财报速览</h3>'
+      + '<div class="hint">⚠️ 暂未取到财务数据 —— 可能是东财接口字段变更，或该标的无财报（港股/美股/新股）。'
+      + '可在浏览器控制台执行 <code>probeFinance(\''+esc(String(q.secid||'')) +'\')</code> 诊断实际返回字段。</div></div>';
   }
   /* 资金面 */
   if(ff.length){
