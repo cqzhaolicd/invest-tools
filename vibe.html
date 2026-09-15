@@ -1066,7 +1066,127 @@ async function getFinance(secid){
   return out;
 }
 
-/* 财务字段探测：用于诊断接口字段变更（控制台调用 probeFinance('0.002714')） */
+/* ---------- 数据层：行业景气（生猪养殖产业链，数据由服务端 agri_export.py 导出） ---------- */
+function isAgriIndustry(ind){
+  return /养殖|饲料|畜牧|农业|种植|农产品|猪肉|农副|食品加工|肉制品/.test(String(ind||''));
+}
+async function getAgriData(){
+  var c = cacheGet('agri_json', 600000); if(c) return c;      // 10 分钟缓存
+  var j = await fetchJSON('data/agri.json?t=' + Math.floor(Date.now()/600000));
+  cacheSet('agri_json', j); return j;
+}
+/* 折线图（可选阈值线 + 当前点标记） */
+function sparkSVG(vals, w, h, color, opt){
+  opt = opt || {};
+  if(!vals || vals.length < 2){ return ''; }
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+  if(opt.baseline != null){ mn = Math.min(mn, opt.baseline); mx = Math.max(mx, opt.baseline); }
+  var pad = (mx - mn) * 0.08 || 1;
+  mn -= pad; mx += pad;
+  var rng = (mx - mn) || 1;
+  var X = function(i){ return (i / (vals.length - 1)) * w; };
+  var Y = function(v){ return h - 3 - ((v - mn) / rng) * (h - 6); };
+  var pts = vals.map(function(v, i){ return X(i).toFixed(1) + ',' + Y(v).toFixed(1); }).join(' ');
+  var g = '<svg width="'+w+'" height="'+h+'" style="display:block">';
+  if(opt.baseline != null){
+    var by = Y(opt.baseline);
+    g += '<line x1="0" y1="'+by.toFixed(1)+'" x2="'+w+'" y2="'+by.toFixed(1)
+       + '" stroke="#e8a33d" stroke-width="1" stroke-dasharray="4,3"/>';
+    g += '<text x="3" y="'+(by-3).toFixed(1)+'" font-size="9" fill="#e8a33d">'+(opt.baseLabel||opt.baseline)+'</text>';
+  }
+  g += '<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.6" stroke-linejoin="round"/>';
+  var lx = X(vals.length-1), ly = Y(vals[vals.length-1]);
+  g += '<circle cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="2.6" fill="'+color+'"/>';
+  g += '</svg>';
+  return g;
+}
+/* 猪粮比预警档（发改委《完善政府猪肉储备调节机制》） */
+function ratioLevel(r){
+  if(r == null){ return {txt:'—', cl:'', hint:''}; }
+  if(r < 4)  { return {txt:'一级预警', cl:'down', hint:'猪粮比 <4:1 · 过度下跌一级预警，通常触发中央收储'}; }
+  if(r < 5)  { return {txt:'二级预警', cl:'down', hint:'猪粮比 <5:1 · 过度下跌二级预警'}; }
+  if(r < 6)  { return {txt:'三级预警', cl:'down', hint:'猪粮比 <6:1 · 低于盈亏平衡，行业普遍亏损'}; }
+  if(r < 8)  { return {txt:'正常', cl:'up',   hint:'猪粮比 6:1~8:1 · 处于合理盈利区间'}; }
+  return       {txt:'偏高', cl:'up',   hint:'猪粮比 >8:1 · 养殖利润偏高，关注产能扩张'};
+}
+function pctClsS(v){ return (v==null)? '' : (v>=0? 'up' : 'down'); }
+function fmtPctS(v){ return (v==null)? '-' : (v>=0? '+' : '') + v.toFixed(2) + '%'; }
+
+function renderAgriCard(a, industry){
+  if(!a || !a.latest || !a.latest.hog){ return ''; }
+  var L = a.latest, S = a.series || {};
+  var hog = L.hog, corn = L.corn, soyo = L.soyo, rat = L.ratio || {};
+  var ratio = rat.value, lv = ratioLevel(ratio);
+  var h = '';
+  h += '<div class="card"><h3><span class="n">🐖</span>行业景气 · 生猪养殖产业链 '
+    + '<span style="font-weight:400;font-size:.8rem;color:var(--text3)">（自动补齐「需人工核实」的行业数据'
+    + (industry? ' · 本股行业：'+esc(industry) : '') + ' · 更新 ' + esc(String(a.generatedAt||'').slice(0,16)) + '）</span></h3>';
+
+  /* 三项期货现货价 */
+  h += '<div class="idx-grid">';
+  [['hog','生猪'],['corn','玉米'],['soyo','豆粕']].forEach(function(p2){
+    var x = L[p2[0]];
+    if(!x){ return; }
+    h += '<div class="idx"><div class="nm">'+esc(x.name)+'</div>'
+      + '<div class="val" style="font-size:1.1rem">'+x.price.toLocaleString()+'</div>'
+      + '<div class="chg '+pctClsS(x.pct)+'">'+fmtPctS(x.pct)+'</div>'
+      + '<div style="font-size:.72rem;color:var(--text3);line-height:1.5">'
+      + (x.price/1000).toFixed(2)+' 元/公斤<br>20日 '+fmtPctS(x.chg20)+' ／ 60日 '+fmtPctS(x.chg60)+'</div></div>';
+  });
+  h += '</div>';
+
+  /* 猪粮比 + 历史走势 */
+  if(ratio != null){
+    var rs = (S.ratio||[]).map(function(x){ return x.r; });
+    var pos = Math.max(0, Math.min(100, (ratio - 3) / (9 - 3) * 100));
+    h += '<div style="margin-top:16px"><div style="font-weight:600;margin-bottom:6px">⚖️ 猪粮比 = 生猪价 ÷ 玉米价 = '
+      + '<b class="'+lv.cl+'" style="font-size:1.2rem">'+ratio.toFixed(2)+'</b> : 1 &nbsp;'
+      + '<span class="tag '+(lv.cl==='up'?'tag-gold':'tag-red')+'">'+lv.txt+'</span>'
+      + '<span style="font-weight:400;font-size:.78rem;color:var(--text3)">（近 120 个交易日有 '
+      + (rat.daysBelow6!=null? rat.daysBelow6 : '?') + ' 天低于盈亏平衡线 6.0）</span></div>'
+      + '<div class="hint" style="margin-bottom:8px">'+lv.hint+'</div>'
+      + '<div style="position:relative;height:20px;background:linear-gradient(90deg,#e0503a 0%,#e0503a 17%,#e8a33d 17%,#e8a33d 33%,#8fa5ba 33%,#8fa5ba 50%,#3aa76d 50%,#3aa76d 100%);border-radius:5px">'
+      + '<div style="position:absolute;left:'+pos.toFixed(1)+'%;top:-4px;width:3px;height:28px;background:#0f1b2a;border-radius:2px" title="当前 '+ratio.toFixed(2)+'"></div></div>'
+      + '<div class="hint" style="display:flex;justify-content:space-between;margin-top:4px">'
+      + '<span>3:1 一级预警</span><span>5:1 二级预警</span><span>6:1 盈亏平衡</span><span>9:1 偏高</span></div>'
+      + '</div>';
+  }
+  /* 走势图：猪粮比 + 生猪 */
+  var charts = [
+    ['📉 猪粮比走势', (S.ratio||[]).map(function(x){ return x.r; }), S.ratio||[], 6.0, '盈亏平衡 6.0', '#e0503a'],
+    ['📈 生猪价格走势', (S.hog||[]).map(function(x){ return x.c/1000; }), S.hog||[], null, null, '#3aa76d']
+  ];
+  h += '<div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:18px">';
+  charts.forEach(function(c){
+    var vals = c[1]; if(vals.length < 5){ return; }
+    var ser = c[2], first = ser[0], last = ser[ser.length-1];
+    var lastV = vals[vals.length-1];
+    var opts = {baseline: c[3], baseLabel: c[4]};
+    var vmax = Math.max.apply(null, vals), vmin = Math.min.apply(null, vals);
+    var isR = (c[3] != null);
+    h += '<div style="flex:1;min-width:330px"><div style="font-weight:600;margin-bottom:4px">'+c[0]
+      + '<span style="font-weight:400;font-size:.78rem;color:var(--text3)">（'+first.d+' ~ '+last.d
+      + '，'+(isR? '比值' : '元/公斤')+'）</span></div>'
+      + sparkSVG(vals, 560, 130, c[5], opts)
+      + '<div style="font-size:.78rem;color:var(--text3);line-height:1.7">最新 <b>'+lastV.toFixed(2)+'</b>'
+      + '　区间 ['+vmin.toFixed(2)+' ~ '+vmax.toFixed(2)+']'
+      + '　距区间高 '+fmtPctS((lastV/vmax-1)*100)
+      + '　距区间低 '+fmtPctS((lastV/vmin-1)*100)
+      + '</div></div>';
+  });
+  h += '</div>';
+
+  /* 口径说明 */
+  h += '<div class="hint" style="margin-top:12px">'
+    + '✅ <b>已自动补齐</b>：生猪/玉米/豆粕期货价（连续合约）、<b>猪粮比</b>及其历史走势、生猪价格周期位置 —— 数据源新浪财经期货日K（服务端定时导出，全历史重算）。<br>'
+    + '⚠️ <b>仍需人工核实</b>：<b>能繁母猪存栏量</b>由农业农村部月度发布，无免费接口（涌益/钢联/Wind 为付费源），请到 '
+    + '<a href="http://www.moa.gov.cn/" target="_blank" rel="noopener">农业农村部官网</a> 或 '
+    + '<a href="https://data.stats.gov.cn/" target="_blank" rel="noopener">国家统计局</a> 查「能繁母猪存栏」环比是否连续下降。<br>'
+    + 'ℹ️ 期货为<b>预期价</b>，与现货存在基差 —— 看趋势与水平比看绝对值可靠。猪粮比阈值口径：发改委《完善政府猪肉储备调节机制》。</div>';
+  h += '</div>';
+  return h;
+}
+
 async function probeFinance(secid){
   var parts = String(secid).split('.');
   var seccode = (parts[1]||parts[0])+'.'+(parts[0]==='1'?'SH':'SZ');
@@ -1666,13 +1786,17 @@ async function loadStock(){
     var q = await getStockQuote(secid);
     var fin = await getFinance(secid).catch(function(){ return []; });
     var ff = await getStockFundFlow(secid).catch(function(){ return []; });
-    renderStock(q, fin, ff);
+    var agri = null;
+    if(isAgriIndustry(q.industry)){
+      agri = await getAgriData().catch(function(){ return null; });
+    }
+    renderStock(q, fin, ff, agri);
   }catch(e){
     showErr('stockErr','❌ '+e.message+'（提示：请输入6位代码，如 600519 / 000001 / 00700 / AAPL）');
   }
   $('stockLoading').style.display = 'none';
 }
-function renderStock(q, fin, ff){
+function renderStock(q, fin, ff, agri){
   var html = '';
   var lastMain = (ff&&ff.length)? +ff[ff.length-1].main : null;
   /* 行情卡 */
@@ -1694,6 +1818,9 @@ function renderStock(q, fin, ff){
       + '<div class="hint">⚠️ 暂未取到财务数据 —— 可能是东财接口字段变更，或该标的无财报（港股/美股/新股）。'
       + '可在浏览器控制台执行 <code>probeFinance(\''+esc(String(q.secid||'')) +'\')</code> 诊断实际返回字段。</div></div>';
   }
+  /* 行业景气（生猪养殖产业链） */
+  var agriHtml = renderAgriCard(agri, q.industry);
+  if(agriHtml){ html += agriHtml; }
   /* 资金面 */
   if(ff.length){
     var maxAbs = 1;
