@@ -2328,6 +2328,69 @@ function renderSequoia(){
       h += '</tr>';
     });
     h += '</table></div>';
+    /* 分市场环境（T+20 超额） */
+    var rgd = bt.regimeDays || {};
+    if(bt.byRegime){
+      h += '<div style="margin-top:14px"><div style="font-weight:600;margin-bottom:6px">🌡️ 分市场环境（单元格：T+20 超额 / 超额胜率）</div>';
+      h += '<div class="hint" style="margin-bottom:6px">环境判定用「全市场等权指数」的 MA20/MA60/MA120，与页面 ①市场 同一套规则。回测期内天数：'
+         + ['牛市','熊市','震荡'].map(function(r){ return '<b>'+r+'</b> '+(rgd[r]||0)+' 天'; }).join(' · ') + '。</div>';
+      h += '<div class="table-wrap"><table><tr><th>分组</th>';
+      ['牛市','熊市','震荡'].forEach(function(r){ h += '<th>'+r+'<div style="font-weight:400;font-size:.72rem;color:var(--text3)">'+(rgd[r]||0)+'天</div></th>'; });
+      h += '</tr>';
+      GGO.forEach(function(g){
+        h += '<tr><td class="td-b">'+g+'</td>';
+        ['牛市','熊市','震荡'].forEach(function(r){
+          var s = ((bt.byRegime[r]||{})[g]||{})['T+20'] || {};
+          if(s.excessAvg==null){ h += '<td class="num" style="color:var(--text3)">—</td>'; return; }
+          var thin = (rgd[r]||0) < 30;
+          h += '<td class="num '+(s.excessAvg>0?'up':'down')+'"><b>'+(s.excessAvg>0?'+':'')+s.excessAvg+'%</b>'
+             + '<div style="font-size:.72rem;color:var(--text3)">'+(s.excessWin!=null?s.excessWin+'%':'')+(thin?' ⚠️样本少':'')+'</div></td>';
+        });
+        h += '</tr>';
+      });
+      h += '</table></div></div>';
+    }
+    /* 拥挤度分档（右侧确认） */
+    if(bt.crowdTest){
+      h += '<div style="margin-top:14px"><div style="font-weight:600;margin-bottom:6px">⑦ 拥挤度分档检验 · 右侧确认（单元格：超额 / 超额胜率）</div>';
+      h += '<div class="hint" style="margin-bottom:6px">检验「<b>拥挤度冷清 + 右侧确认</b>」是否更优。档位为选股当日收盘的拥挤度（代理口径：换手率45+量比25+涨幅15，按85分制折算）。</div>';
+      h += '<div class="table-wrap"><table><tr><th>拥挤度档位</th><th>样本</th>';
+      HZ.forEach(function(n){ h += '<th>T+'+n+'</th>'; });
+      h += '</tr>';
+      var bc = {'冷清':'', '正常':'', '偏热':'tag-gold', '过热':'tag-red'};
+      ['冷清','正常','偏热','过热'].forEach(function(b){
+        var row = (bt.crowdTest['右侧确认']||{})[b] || {};
+        h += '<tr><td class="td-b">'+(bc[b]? '<span class="tag '+bc[b]+'">'+b+'</span>' : '<b>'+b+'</b>')+'</td>'
+           + '<td class="num">'+((row['T+1']||{}).n||0)+'</td>';
+        HZ.forEach(function(n){
+          var s = row['T+'+n] || {};
+          if(s.excessAvg==null){ h += '<td class="num" style="color:var(--text3)">—</td>'; return; }
+          h += '<td class="num '+(s.excessAvg>0?'up':'down')+'"><b>'+(s.excessAvg>0?'+':'')+s.excessAvg+'%</b>'
+             + '<div style="font-size:.72rem;color:var(--text3)">'+(s.excessWin!=null?s.excessWin+'%':'')+'</div></td>';
+        });
+        h += '</tr>';
+      });
+      h += '</table></div>';
+      // 其它组的拥挤度明细
+      h += '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.85rem;color:var(--text3)">展开：其它分组的拥挤度分档</summary>';
+      ['磨底','左侧试仓','主升启动'].forEach(function(g){
+        h += '<div style="margin-top:8px;font-size:.85rem"><b>'+g+'</b></div><div class="table-wrap"><table><tr><th>档位</th><th>样本</th>';
+        HZ.forEach(function(n){ h += '<th>T+'+n+'</th>'; });
+        h += '</tr>';
+        ['冷清','正常','偏热','过热'].forEach(function(b){
+          var row = (bt.crowdTest[g]||{})[b] || {};
+          h += '<tr><td>'+b+'</td><td class="num">'+((row['T+1']||{}).n||0)+'</td>';
+          HZ.forEach(function(n){
+            var s = row['T+'+n] || {};
+            h += '<td class="num '+(s.excessAvg==null?'':(s.excessAvg>0?'up':'down'))+'">'
+              + (s.excessAvg==null? '—' : ((s.excessAvg>0?'+':'')+s.excessAvg+'% <span style="color:var(--text3);font-size:.72rem">'+(s.excessWin!=null?s.excessWin+'%':'')+'</span>'))+'</td>';
+          });
+          h += '</tr>';
+        });
+        h += '</table></div>';
+      });
+      h += '</details></div>';
+    }
     // 明细（胜率/均值/盈亏比）
     h += '<details style="margin-top:10px"><summary style="cursor:pointer;font-size:.85rem;color:var(--text3)">展开：各组次日均值/胜率/盈亏详情</summary><div class="table-wrap" style="margin-top:8px"><table><tr><th>分组</th><th>周期</th><th>样本</th><th>次日均值</th><th>中位数</th><th>胜率</th><th>均盈</th><th>均亏</th><th>最大涨</th><th>最大跌</th><th>未破位率</th></tr>';
     GGO.forEach(function(g){
@@ -2379,7 +2442,13 @@ function renderSequoia(){
       });
       h += '</div>';
     }
-    h += '<div class="hint" style="margin-top:10px">⚠️ <b>如实说明</b>：本表是<b>规则命中率验证</b>，不是收益承诺。回测区间为单一市场环境（'+(bt.range?bt.range[0]:'')+'~'+(bt.range?bt.range[1]:'')+'），样本量约 '+((sm['磨底']||{})['T+1']||{}).n+'/组；信号本质是<b>位置类</b>而非<b>次日择时类</b>，请以 T+5~T+20 的超额表现为主参考。客观统计，非投资建议。</div></div>';
+    h += '<div class="hint" style="margin-top:10px">⚠️ <b>如实说明（结论会随样本变化，务必看完）</b><ol style="margin:6px 0 0 18px;padding:0">'
+      + '<li><b>次日胜率全部低于 50%</b>（41-48%）—— 这是<b>位置类信号</b>，天然不适合次日择时，请以 T+5~T+20 的超额为主参考。</li>'
+      + '<li><b>右侧确认最稳</b>：T+20 超额为正且随周期递增；<b>主升启动最弱</b>（全周期接近 0 或负），追高需谨慎。</li>'
+      + '<li><b>⑦ 拥挤度是关键过滤器</b>：右侧确认 × 拥挤度<b>冷清</b> 档 T+20 超额显著高于偏热/过热档，且呈单调递减 —— 说明「人多不多」确实决定位置信号的有效性。</li>'
+      + '<li>回测区间</b>'+(bt.range?bt.range[0]:'')+'~'+(bt.range?bt.range[1]:'')+'（'+bt.days+' 个交易日），样本约 '+((sm['磨底']||{})['T+1']||{}).n+'/组；但市场环境高度不均（牛 '+(rgd['牛市']||0)+' 天 / 熊 '+(rgd['熊市']||0)+' 天 / 震荡 '+(rgd['震荡']||0)+' 天），<b>牛市结论样本不足不可采信</b>。</li>'
+      + '<li>未扣交易成本（约 0.1-0.2%/次）；超额胜率普遍 ≤52%，说明超额靠<b>右偏（少数大赢家）</b>拉动，需分散持有。</li></ol>'
+      + '客观统计，非投资建议。</div></div>';
   }
   if(d.cycle && d.cycle.length){
     var reds = d.cycle.filter(function(b){ return b.keyRed; }).length;
