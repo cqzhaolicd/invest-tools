@@ -2301,6 +2301,86 @@ function renderSequoia(){
     });
     h += '<div class="hint" style="margin-top:8px">规则与投资中心「自选股 · 位置判断」<b>完全同源</b>（《股票维度参考》15 条矩阵）；②行业周期为个股自身推断（距 500 日高点回撤 + 半年线/年线），与 Sequoia 周期板块同口径。数据为交易日盘后快照，<b>客观名单，非投资建议</b>。</div></div>';
   }
+  /* 命中率跟踪（历史回测 + 前向跟踪） */
+  if(d.dimTracking && d.dimTracking.backtest){
+    var dt = d.dimTracking, bt = dt.backtest, sm = bt.summary || {}, HZ = bt.horizons || [1,3,5,10,20];
+    var GGO = ['磨底','左侧试仓','右侧确认','主升启动'];
+    var gtag = dt.groupTag || {};
+    h += '<div class="card"><h3><span class="n">📈</span>命中率跟踪 '
+      + '<span style="font-weight:400;font-size:.8rem;color:var(--text3)">（历史回测 '+(bt.range?bt.range[0]:'')+' ~ '+(bt.range?bt.range[1]:'')+' · '+bt.days+' 个交易日 · 每日每组取前 '+(bt.topn||10)+' 只 · 只用当日及之前数据，无未来函数）</span></h3>';
+    h += '<div class="hint" style="margin-bottom:8px">口径：<b>超额</b> = 个股收益 − 当日全市场同周期收益中位数（剔除市场整体涨跌的影响）；<b>胜率</b>为个股上涨占比，<b>超额胜率</b>为跑赢中位数的占比。单元格格式：<b>超额均值 / 超额胜率</b>。</div>';
+    h += '<div class="table-wrap"><table><tr><th>分组</th><th>判定</th><th>样本</th>';
+    HZ.forEach(function(n){ h += '<th title="基准日收盘起第 '+n+' 个交易日">T+'+n+'</th>'; });
+    h += '</tr>';
+    GGO.forEach(function(g){
+      var row = sm[g] || {};
+      var clsMap = {'磨底':'tag-gold','左侧试仓':'tag-green','右侧确认':'tag-green','主升启动':'tag-red'};
+      h += '<tr><td class="td-b"><span class="tag '+(clsMap[g]||'')+'">'+g+'</span></td>'
+        + '<td style="font-size:.78rem;color:var(--text3)">'+esc(gtag[g]||'')+'</td>'
+        + '<td class="num">'+((row['T+1']||{}).n||0)+'</td>';
+      HZ.forEach(function(n){
+        var s = row['T+'+n] || {};
+        if(s.excessAvg==null){ h += '<td class="num" style="color:var(--text3)">—</td>'; return; }
+        var cl = s.excessAvg>0? 'up':'down';
+        h += '<td class="num '+cl+'"><b>'+(s.excessAvg>0?'+':'')+s.excessAvg+'%</b>'
+          + '<div style="font-size:.72rem;color:var(--text3)">'+(s.excessWin!=null?s.excessWin+'%':'')+'</div></td>';
+      });
+      h += '</tr>';
+    });
+    h += '</table></div>';
+    // 明细（胜率/均值/盈亏比）
+    h += '<details style="margin-top:10px"><summary style="cursor:pointer;font-size:.85rem;color:var(--text3)">展开：各组次日均值/胜率/盈亏详情</summary><div class="table-wrap" style="margin-top:8px"><table><tr><th>分组</th><th>周期</th><th>样本</th><th>次日均值</th><th>中位数</th><th>胜率</th><th>均盈</th><th>均亏</th><th>最大涨</th><th>最大跌</th><th>未破位率</th></tr>';
+    GGO.forEach(function(g){
+      HZ.forEach(function(n){
+        var s = (sm[g]||{})['T+'+n] || {};
+        if(!s.n) return;
+        h += '<tr><td class="td-b">'+g+'</td><td class="num">T+'+n+'</td><td class="num">'+s.n+'</td>'
+          + '<td class="num '+pctCls(s.avg)+'">'+fmtPct(s.avg)+'</td>'
+          + '<td class="num '+pctCls(s.median)+'">'+fmtPct(s.median)+'</td>'
+          + '<td class="num">'+s.win+'%</td>'
+          + '<td class="num up">'+(s.avgWin!=null?('+'+s.avgWin+'%'):'-')+'</td>'
+          + '<td class="num down">'+(s.avgLoss!=null?(s.avgLoss+'%'):'-')+'</td>'
+          + '<td class="num up">+'+s.maxUp+'%</td><td class="num down">'+s.maxDown+'%</td>'
+          + '<td class="num">'+s.noBreak+'%</td></tr>';
+      });
+    });
+    h += '</table></div></details>';
+    // 前向跟踪
+    var fw = (dt.forward && dt.forward.snapshots) || [];
+    if(fw.length){
+      h += '<div style="margin-top:14px"><div style="font-weight:600;margin-bottom:6px">🎯 前向跟踪（每次扫描自动存快照，次日收盘后自动回填）</div>';
+      fw.slice(-3).reverse().forEach(function(s){
+        h += '<div style="margin-bottom:10px"><div style="font-size:.85rem;margin-bottom:4px">'
+          + '<b>'+esc(s.date)+'</b> 快照 · 状态：<span class="tag '+(s.status==='已验证'?'tag-green':'tag-gold')+'">'+esc(s.status)+'</span>'
+          + (s.horizons && s.horizons['T+1'] && s.horizons['T+1'].nextDate? (' · T+1 对应 '+esc(s.horizons['T+1'].nextDate)) : '')
+          + '</div>';
+        GGO.forEach(function(g){
+          var hs = (s.horizons||{})['T+1']||{}, gs = (hs.groups||{})[g]||{};
+          var rows = gs.rows||[];
+          if(!rows.length) return;
+          h += '<details style="margin:2px 0 0 10px"><summary style="cursor:pointer;font-size:.82rem">'+g
+            + '（'+rows.length+' 只'+(gs.n? (' · 已验证 '+gs.n+' 只'):' · 待数据')+'）</summary>'
+            + '<div class="table-wrap" style="margin-top:4px"><table><tr><th>代码</th><th>名称</th><th>动作</th>';
+          HZ.forEach(function(n){ h += '<th>T+'+n+'</th>'; });
+          h += '</tr>';
+          rows.forEach(function(r0){
+            h += '<tr><td class="num">'+esc(r0.code)+'</td><td class="td-b">'+esc(r0.name)+'</td><td style="font-size:.78rem">'+esc(r0.act)+'</td>';
+            HZ.forEach(function(n){
+              var cell = ((s.horizons||{})['T+'+n]||{}).groups||{};
+              var rr = (cell[g]&&cell[g].rows||[]).find(function(z){ return z.code===r0.code; });
+              var v = rr? rr.ret : null;
+              h += '<td class="num '+pctCls(v)+'">'+(v==null? '<span style="color:var(--text3)">—</span>' : fmtPct(v))+'</td>';
+            });
+            h += '</tr>';
+          });
+          h += '</table></div></details>';
+        });
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    h += '<div class="hint" style="margin-top:10px">⚠️ <b>如实说明</b>：本表是<b>规则命中率验证</b>，不是收益承诺。回测区间为单一市场环境（'+(bt.range?bt.range[0]:'')+'~'+(bt.range?bt.range[1]:'')+'），样本量约 '+((sm['磨底']||{})['T+1']||{}).n+'/组；信号本质是<b>位置类</b>而非<b>次日择时类</b>，请以 T+5~T+20 的超额表现为主参考。客观统计，非投资建议。</div></div>';
+  }
   if(d.cycle && d.cycle.length){
     var reds = d.cycle.filter(function(b){ return b.keyRed; }).length;
     h += '<div class="card"><h3><span class="n">🔄</span>周期股策略 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（典型周期板块定位 · 等权指数半年线/年线 · 每板块 5 龙头'+(reds?(' · 🔴 底部≥6个月 '+reds+' 个'):'')+'）</span></h3>';
