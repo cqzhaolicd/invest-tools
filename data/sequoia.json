@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-15 19:51:50",
+ "generatedAt": "2026-09-15 19:57:29",
  "dataDate": "2026-09-15",
  "universe": 5558,
  "total": 225,
@@ -1667,7 +1667,7 @@
    "snapshots": [
     {
      "date": "2026-09-15",
-     "status": "已验证",
+     "status": "待次日数据",
      "horizons": {
       "T+1": {
        "nextDate": null,
@@ -3289,7 +3289,7 @@
     10,
     20
    ],
-   "generatedAt": "2026-09-15 19:51:48"
+   "generatedAt": "2026-09-15 19:57:27"
   },
   "groupTag": {
    "磨底": "等放量金叉（观察）",
