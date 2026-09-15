@@ -451,7 +451,16 @@ async function getKlineTencent(code, n, fq){
   var j = await r.json();
   var d = ((j||{}).data||{})[sym] || {};
   var arr = (fq? d.qfqday : d.day) || d.qfqday || d.day || [];
-  return arr.map(function(x){ return {date: x[0], close: parseFloat(x[2])}; });
+  return arr.map(function(x){ return {date: x[0], close: parseFloat(x[2]), vol: parseFloat(x[5])||0}; });
+}
+/* 上证指数日K（用于①市场维度）：腾讯接口需 sh000001 前缀，不能走 tencentSymbol */
+async function getIndexKline(){
+  var u = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh000001,day,,,300,&_=' + Date.now();
+  var r = await fetch(u, {headers:{'Referer':'https://gu.qq.com/'}});
+  var j = await r.json();
+  var d = ((j||{}).data||{})['sh000001'] || {};
+  var arr = d.day || d.qfqday || [];
+  return arr.map(function(x){ return {date: x[0], close: parseFloat(x[2]), vol: parseFloat(x[5])||0}; });
 }
 /* 区间涨跌幅：优先腾讯日K(前复权)，失败回退东财 push2his；算 5日/20日 涨跌幅 */
 async function getRangePct(secid){
@@ -490,6 +499,233 @@ function crowdInfo(x){
   var lv = score>=70?'过热': score>=45?'偏热': score>=20?'正常':'冷清';
   var cls = score>=70?'tag-red': score>=45?'tag-gold': score>=20?'tag-green':'';
   return {score:score, lv:lv, cls:cls};
+}
+
+/* ============================================================
+ * 股票维度参考 · 七维度「位置判断/动作」引擎
+ * 依据：Obsidian《股票维度参考_20260915》（15 条矩阵）
+ *   ① 市场      ← 上证指数日K（MA20/MA60/MA120）
+ *   ② 行业周期  ← data/sequoia.json 的 cycle（底部/探底/上行/下行）；未匹配时用个股自身K线推断
+ *   ③ MACD零轴  ← 个股日K 自算 MACD(12,26,9)
+ *   ④ 信号      ← 金叉 / 死叉 / 顶背离 / 底背离
+ *   ⑤ 量能      ← 今日量 ÷ 前5日均量（≥1.5 放量 / ≤0.7 缩量）
+ *   ⑥ 次数      ← 近 20 日同类信号出现次数（≥2 = 多次）
+ *   ⑦ 拥挤度    ← crowdInfo()（与持仓页同一算法）
+ * ============================================================ */
+function emaArr(v, n){
+  var k = 2/(n+1), out = [], prev = null;
+  for(var i=0;i<v.length;i++){
+    prev = (prev==null)? v[i] : (v[i]*k + prev*(1-k));
+    out.push(prev);
+  }
+  return out;
+}
+function macdCalc(closes){
+  if(!closes || closes.length < 35) return null;
+  var e12 = emaArr(closes,12), e26 = emaArr(closes,26), dif = [], i;
+  for(i=0;i<closes.length;i++) dif.push(e12[i]-e26[i]);
+  var dea = emaArr(dif,9), hist = [];
+  for(i=0;i<dif.length;i++) hist.push(2*(dif[i]-dea[i]));
+  return {dif:dif, dea:dea, hist:hist};
+}
+function argmaxIn(a,from,to){ var bi=from; for(var i=from+1;i<to;i++) if(a[i]>a[bi]) bi=i; return bi; }
+function argminIn(a,from,to){ var bi=from; for(var i=from+1;i<to;i++) if(a[i]<a[bi]) bi=i; return bi; }
+function avgRange(a,from,to){ if(to<=from) return null; var s=0; for(var i=from;i<to;i++) s+=a[i]; return s/(to-from); }
+function maFromEnd(a,n){ var L=a.length; if(L<n) return null; return avgRange(a,L-n,L); }
+/* 背离：近 20 日极值 vs 前 40 日极值（价格创新高/低，但 DIF 未同步） */
+function detectDiv(closes, dif){
+  var out = [], n = closes.length;
+  if(n < 70) return out;
+  var a0=n-60, a1=n-20, b0=n-20, b1=n;
+  var pH0=argmaxIn(closes,a0,a1), pH1=argmaxIn(closes,b0,b1);
+  var pL0=argminIn(closes,a0,a1), pL1=argminIn(closes,b0,b1);
+  if(closes[pH1] > closes[pH0] && dif[pH1] < dif[pH0]) out.push('顶背离');
+  if(closes[pL1] < closes[pL0] && dif[pL1] > dif[pL0]) out.push('底背离');
+  return out;
+}
+/* 最近一次金叉/死叉（默认回看 30 根，返回 bar 数） */
+function lastCross(dif, dea, bars){
+  var n = dif.length; bars = bars||30;
+  for(var i=n-1;i>0 && i>=n-bars;i--){
+    var up = dif[i]>dea[i], upPrev = dif[i-1]>dea[i-1];
+    if(up && !upPrev) return {type:'金叉', ago:n-1-i};
+    if(!up && upPrev) return {type:'死叉', ago:n-1-i};
+  }
+  return null;
+}
+/* 近 bars 根内同类交叉次数（⑥次数） */
+function countCross(dif, dea, type, bars){
+  var n = dif.length; bars = bars||20; var c = 0;
+  for(var i=Math.max(1,n-bars);i<n;i++){
+    var up = dif[i]>dea[i], upPrev = dif[i-1]>dea[i-1];
+    if(type==='金叉' && up && !upPrev) c++;
+    if(type==='死叉' && !up && upPrev) c++;
+  }
+  return c;
+}
+/* ⑤ 量能：今日量 ÷ 前 5 日均量（不含今日） */
+function volState(kl){
+  if(!kl || kl.length < 7) return {state:null, ratio:null};
+  var vols = kl.map(function(k){ return k.vol||0; }), n = vols.length;
+  var base = avgRange(vols, n-6, n-1), today = vols[n-1];
+  if(!base || base<=0) return {state:null, ratio:null};
+  var r = today/base;
+  return {state: r>=1.5? '放量' : (r<=0.7? '缩量' : '平量'), ratio:r};
+}
+/* ① 市场：上证指数均线结构 */
+function marketState(idxKl){
+  if(!idxKl || idxKl.length < 130) return {mkt:'未知', why:'指数K线不足'};
+  var c = idxKl.map(function(k){ return k.close; }), n = c.length, close = c[n-1];
+  var ma20 = maFromEnd(c,20), ma60 = maFromEnd(c,60), ma120 = maFromEnd(c,120);
+  var mkt, why;
+  if(ma20!=null && ma60!=null && ma120!=null && ma20>ma60 && close>ma120){
+    mkt='牛市'; why='上证 MA20>MA60 且 收盘>MA120';
+  } else if(ma20!=null && ma60!=null && ma120!=null && ma20<ma60 && close<ma120){
+    mkt='熊市'; why='上证 MA20<MA60 且 收盘<MA120';
+  } else {
+    mkt = (ma120!=null && close>=ma120)? '震荡偏多' : '震荡偏空';
+    why = '上证均线交错，方向未明';
+  }
+  return {mkt:mkt, why:why, close:close, ma20:ma20, ma60:ma60, ma120:ma120};
+}
+/* ② 行业周期：优先用 Sequoia 板块周期，缺失时用个股自身K线推断（与 Sequoia 同口径：回撤+半年线/年线） */
+function cycleFromStock(kl){
+  if(!kl || kl.length < 130) return null;
+  var c = kl.map(function(k){ return k.close; }), n = c.length, close = c[n-1];
+  var hi = Math.max.apply(null, c.slice(Math.max(0, n-500)));
+  var dd = (close/hi-1)*100;
+  var ma120 = maFromEnd(c,120), ma250 = maFromEnd(c,250);
+  if(dd<=-25 && (ma250==null || ma120<ma250))
+    return {pos:'底部', why:'个股距高点回撤'+dd.toFixed(1)+'%'+(ma250!=null?'，半年线未上年线':'')};
+  if(ma250!=null && ma120>ma250 && dd>=-10)
+    return {pos:'顶部', why:'个股距高点仅'+dd.toFixed(1)+'%，多头排列'};
+  return {pos:'腰部', why:'个股距高点回撤'+dd.toFixed(1)+'%，中段位置'};
+}
+function stripRoman(s){ return String(s||'').replace(/[ⅠⅡⅢⅣⅤ]/g,''); }
+/* 板块名变体：整名 + 去括号后的主体 + 括号内的别名
+   例「猪产业（养殖）」→ ['猪产业（养殖）','猪产业','养殖']，使「养殖业」也能命中 */
+function sectorNameVariants(name){
+  var raw = String(name||''), out = [raw];
+  var noParen = raw.replace(/[（(].*?[)）]/g,'');
+  if(noParen && noParen!==raw) out.push(noParen);
+  var m = raw.match(/[（(](.*?)[)）]/g);
+  if(m) m.forEach(function(x){ var inner = x.replace(/[（()）]/g,'').trim(); if(inner) out.push(inner); });
+  return out.map(stripRoman).filter(function(x){ return x.length>=2; });
+}
+function sectorCycleOf(industry, cycle){
+  if(!industry || !cycle || !cycle.length) return null;
+  var ind = stripRoman(industry);
+  for(var i=0;i<cycle.length;i++){
+    var vars = sectorNameVariants(cycle[i].name), hit = false;
+    for(var v=0;v<vars.length;v++){
+      var nm = vars[v];
+      if(nm===ind || nm.indexOf(ind)>=0 || ind.indexOf(nm)>=0){ hit = true; break; }
+    }
+    if(!hit) continue;
+    var sec = cycle[i], st = sec.stage, sd = sec.stageDays||0, pos, why;
+    var dd = (sec.drawdown!=null? sec.drawdown.toFixed(1)+'%' : '—');
+    /* 映射原则：只映射 Sequoia 数据真正支持的结论。
+       其 stage 仅有 底部/探底/上行/下行 —— 没有「顶部」阶段，
+       因此「下行」不下「顶部」结论（避免把深跌的猪产业误判成顶部），
+       顶部只在个股自身K线满足条件时由 cycleFromStock 给出。 */
+    if(st==='底部' || st==='探底'){ pos='底部'; why='板块「'+sec.name+'」'+st+'（'+sd+'天，回撤'+dd+'）'; }
+    else if(st==='上行'){ pos='腰部'; why='板块「'+sec.name+'」上行'+sd+'天（回撤'+dd+'）'; }
+    else if(st==='下行'){ pos='腰部'; why='板块「'+sec.name+'」下行'+sd+'天（回撤'+dd+'，中段）'; }
+    else if(st==='顶部'){ pos='顶部'; why='板块「'+sec.name+'」顶部（'+sd+'天）'; }
+    else return null;
+    return {pos:pos, why:why, stage:st, stageDays:sd, drawdown:sec.drawdown, name:sec.name};
+  }
+  return null;
+}
+/* 汇总七维度 */
+function buildDims(x, kl, ctx){
+  var d = {ok:false};
+  if(!kl || kl.length < 130) return d;
+  var closes = kl.map(function(k){ return k.close; });
+  var m = macdCalc(closes);
+  if(!m) return d;
+  var n = closes.length;
+  d.dif = m.dif[n-1]; d.dea = m.dea[n-1];
+  d.macdPos = m.dif[n-1] > 0 ? '零轴上' : '零轴下';
+  d.cross = lastCross(m.dif, m.dea, 30);
+  d.signal = d.cross ? d.cross.type : '无';
+  d.signalAgo = d.cross ? d.cross.ago : null;
+  d.divs = detectDiv(closes, m.dif);
+  d.count = d.cross ? countCross(m.dif, m.dea, d.cross.type, 20) : 0;
+  d.times = d.count>=2 ? '多次' : '单次';
+  var vs = volState(kl); d.volState = vs.state; d.volRatio5 = vs.ratio;
+  d.crowd = crowdInfo(x);
+  d.mkt = (ctx && ctx.mkt) ? ctx.mkt : {mkt:'未知', why:'指数未取到'};
+  var sc = sectorCycleOf(x.industry, ctx && ctx.cycle);
+  d.cycle = sc || cycleFromStock(kl);
+  d.cycleSrc = sc ? '板块' : '个股推断';
+  d.close = closes[n-1];
+  d.ma120 = maFromEnd(closes,120);
+  d.ma250 = maFromEnd(closes,250);
+  d.ok = true;
+  return d;
+}
+/* 核心：七维度 → 位置判断 / 动作（15 条矩阵的规则梯） */
+function judgePosition(d){
+  if(!d || !d.ok) return {pos:'数据不足', act:'—', tone:'mute', why:'K线不足130根'};
+  var cyc = d.cycle.pos, mp = d.macdPos, sg = d.signal, vs = d.volState;
+  var multi = (d.count>=2), crowd = d.crowd, divs = d.divs || [];
+  var bull = (d.mkt.mkt==='牛市' || d.mkt.mkt==='震荡偏多');
+  var hasBD = divs.indexOf('底背离')>=0, hasTD = divs.indexOf('顶背离')>=0;
+  var pos='—', act='—', tone='mute', why=[];
+  why.push(d.mkt.mkt+'市场');
+  why.push('板块/个股周期：'+cyc);
+  why.push(mp+' '+sg+(d.signalAgo!=null?('('+d.signalAgo+'日前)'):''));
+  why.push((vs||'—')+(multi?(' · 近20日'+d.count+'次'+sg):' · 单次'));
+  why.push('拥挤度'+crowd.score+' '+crowd.lv);
+  if(cyc==='底部'){
+    pos='底部';
+    if(sg==='金叉' && (vs==='放量' || vs==='平量')){
+      if(multi){ act='右侧确认 · 加仓'; tone='up'; }
+      else { act='左侧试仓'; tone='up'; }
+      if(hasBD) act += '（底背离共振）';
+    } else if(sg==='死叉' && vs==='缩量'){
+      act = multi? '底部钝化 · 等放量金叉' : '磨底波动 · 观望'; tone='mute';
+    } else if(sg==='死叉' && vs==='放量'){
+      act='底部破位 · 警惕'; tone='down';
+    } else {
+      act='底部震荡 · 观察'; tone='mute';
+    }
+  } else if(cyc==='顶部'){
+    pos='顶部';
+    if(hasTD){
+      act = multi? '清仓信号' : '顶部预警'; tone='down';
+    } else if(sg==='死叉' && vs==='放量'){
+      act = multi? (bull? '牛转熊确认' : '趋势下跌确认') : (bull? '第一卖点' : '趋势下跌确认');
+      tone='down';
+    } else if(sg==='死叉' && vs==='缩量'){
+      act='缩量阴跌 · 别抄底'; tone='down';
+    } else {
+      act='顶部区 · 警惕'; tone='down';
+    }
+  } else {
+    pos='腰部';
+    if(mp==='零轴上' && sg==='金叉' && (vs==='放量' || vs==='平量')){
+      act = multi? '主升加速 · 持股' : '主升启动'; tone='up';
+    } else if(mp==='零轴上' && sg==='死叉' && vs==='缩量'){
+      act = multi? '震荡钝化 · 等方向' : '普通洗盘 · 持股'; tone='mute';
+    } else if(mp==='零轴下' && sg==='死叉' && vs==='放量'){
+      act = multi? '主跌加速 · 接近尾声' : '续跌信号 · 观察'; tone='down';
+    } else if(mp==='零轴上' && sg==='死叉' && vs==='放量'){
+      act='高位转弱 · 减仓'; tone='down';
+    } else if(mp==='零轴下' && sg==='金叉' && vs==='放量'){
+      act='水位上移 · 试探'; tone='up';
+    } else {
+      act='腰部震荡 · 跟踪'; tone='mute';
+    }
+  }
+  /* ⑦ 拥挤度修正（维度⑦的作用：位置的验证/否定） */
+  var extra='';
+  if(crowd.score>=70 && cyc==='腰部'){ extra='⚠️拥挤度过热，不加仓'; }
+  else if(crowd.score>=70 && cyc==='顶部'){ extra='🔴拥挤度过热，卖点强化'; }
+  else if(crowd.score<20 && cyc==='底部'){ extra='✅拥挤度冷清，埋伏区'; }
+  else if(crowd.score<20 && cyc==='顶部'){ extra='⚠️无人接盘，阴跌延续'; }
+  return {pos:pos, act:act, tone:tone, extra:extra, why:why.join(' · ')};
 }
 function pctCls(v){ if(v==null||isNaN(v)||v===0) return ''; return v>0?'up':'down'; }
 function showErr(id, msg){ var el=$(id); if(!el) return; if(msg){ el.textContent=msg; el.classList.add('show'); } else el.classList.remove('show'); }
@@ -850,6 +1086,23 @@ async function gatherReview(){
     for(var i=0;i<watch.length;i++){
       try{ watchStocks.push(await getStockQuote(toSecid(watch[i]))); }catch(e){}
     }
+    /* 自选股「位置判断/动作」：① 市场（上证指数） + ② 行业周期（Sequoia 板块） + ③~⑦ 个股K线推算
+       3 并发 + 250ms 节流，避免腾讯/东财 K线接口风控 */
+    var dimCtx = {mkt:null, cycle:null};
+    try{ dimCtx.mkt = marketState(await getIndexKline()); }catch(e){ dimCtx.mkt=null; }
+    try{
+      var jSeq = await fetchJSON('./data/sequoia.json?t='+Date.now());
+      dimCtx.cycle = (jSeq && jSeq.cycle) || null;
+    }catch(e){ dimCtx.cycle = null; }
+    for(var wb=0; wb<watchStocks.length; wb+=3){
+      await Promise.all(watchStocks.slice(wb,wb+3).map(function(ws){
+        return getKlineTencent(ws.code, 300, true).then(function(kl){
+          ws.dims = buildDims(ws, kl, dimCtx);
+          ws.judge = judgePosition(ws.dims);
+        }).catch(function(){});
+      }));
+      if(wb+3<watchStocks.length) await new Promise(function(res){ setTimeout(res, 250); });
+    }
     var holds = lsGet('holds', []);
     var holdStocks = [];
     for(var j=0;j<holds.length;j++){
@@ -901,7 +1154,7 @@ async function gatherReview(){
       return null;
     }).filter(Boolean);
     reviewData = { nkbnk:nkbnk, indexes:idx, sentiment:sent, sectors:secsAll.slice(0,12), sectorsBad:secsAll.slice(-5), turnover:turn,
-      watchStocks:watchStocks, holdStocks:holdStocks, mySectors:mySectors, myFocus:myFocus,
+      watchStocks:watchStocks, holdStocks:holdStocks, mySectors:mySectors, myFocus:myFocus, dimCtx:dimCtx,
       time: new Date().toLocaleString('zh-CN',{hour12:false}) };
     renderReview();
   }catch(e){
@@ -993,11 +1246,21 @@ function renderReview(){
   html += '</div></div>';
   /* 我的自选股 */
   if(d.watchStocks && d.watchStocks.length){
-    html += '<div class="card"><h3><span class="n">⭐</span>我的自选股 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.watchStocks.length+' 只 · 自动抓取）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>现价</th><th>涨跌幅</th><th>当日成交量</th><th>主力净流入</th><th>PE(TTM)</th><th>总市值</th></tr>';
+    var mkTxt = (d.dimCtx && d.dimCtx.mkt && d.dimCtx.mkt.mkt && d.dimCtx.mkt.mkt!=='未知')? (' · ①市场：'+esc(d.dimCtx.mkt.mkt)) : '';
+    html += '<div class="card"><h3><span class="n">⭐</span>我的自选股 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+d.watchStocks.length+' 只 · 自动抓取'+mkTxt+' · 位置判断=《股票维度参考》七维度矩阵）</span></h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>行业</th><th>现价</th><th>涨跌幅</th><th>当日成交量</th><th>主力净流入</th><th title="依据《股票维度参考》七维度矩阵：①市场 ②行业周期 ③MACD零轴 ④信号 ⑤量能 ⑥次数 ⑦拥挤度">位置判断 / 动作</th><th>PE(TTM)</th><th>总市值</th></tr>';
     d.watchStocks.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
+      var j = x.judge;
+      var jHtml;
+      if(j && j.pos!=='数据不足'){
+        var cls = j.tone==='up'? 'tag-green' : (j.tone==='down'? 'tag-red' : 'tag-gold');
+        jHtml = '<span class="tag '+cls+'" title="'+esc(j.why)+'">'+esc(j.pos)+' · '+esc(j.act)+'</span>'
+              + (j.extra? '<div style="font-size:.72rem;color:var(--text3);margin-top:2px;white-space:nowrap">'+esc(j.extra)+'</div>' : '');
+      } else {
+        jHtml = '<span style="color:var(--text3)">'+(j? esc(j.pos) : '—')+'</span>';
+      }
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="jd">'+jHtml+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
     });
-    html += '</table></div></div>';
+    html += '</table></div><div class="hint" style="margin-top:8px">判断口径：① 市场=上证均线结构 ｜ ② 行业周期=Sequoia 板块周期（未覆盖行业按个股回撤+半年线/年线推断）｜ ③④ MACD(12,26,9) 零轴与金叉/死叉/背离 ｜ ⑤ 量能=今日量÷前5日均量（≥1.5放/≤0.7缩）｜ ⑥ 次数=近20日同信号次数 ｜ ⑦ 拥挤度=持仓页同一算法。<b>悬停标签可看七维度明细</b>。规则化判断，非投资建议。</div></div>';
   }
   /* 我的持仓 */
   if(d.holdStocks && d.holdStocks.length){
