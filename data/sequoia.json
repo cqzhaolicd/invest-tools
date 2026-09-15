@@ -1,8 +1,8 @@
 {
- "generatedAt": "2026-09-15 20:10:56",
+ "generatedAt": "2026-09-15 20:57:52",
  "dataDate": "2026-09-15",
  "universe": 5558,
- "total": 225,
+ "total": 227,
  "strategies": [
   {
    "name": "MaVolumeStrategy",
@@ -689,37 +689,6 @@
   "groups": {
    "磨底": [
     {
-     "code": "000915",
-     "name": "华特达因",
-     "pos": "底部",
-     "act": "底部钝化 · 等放量金叉",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 1,
-     "volState": "缩量",
-     "volRatio5": 0.19,
-     "count": 2,
-     "times": "多次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -26.53,
-     "dif": -0.4681,
-     "dea": -0.1208,
-     "close_hfq": 104.28,
-     "ma120": 112.31,
-     "ma250": 122.07,
-     "turnoverPct": 0.69,
-     "pctChg": -1.71,
-     "crowd": {
-      "score": 2,
-      "lv": "冷清"
-     },
-     "amount": 39669027.0,
-     "i": 655
-    },
-    {
      "code": "603899",
      "name": "晨光股份",
      "pos": "底部",
@@ -746,214 +715,9 @@
       "lv": "冷清"
      },
      "amount": 37820223.0,
-     "i": 655
-    },
-    {
-     "code": "688039",
-     "name": "当虹科技",
-     "pos": "底部",
-     "act": "底部钝化 · 等放量金叉",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 0,
-     "volState": "缩量",
-     "volRatio5": 0.29,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -52.49,
-     "dif": -0.524,
-     "dea": -0.4275,
-     "close_hfq": 45.6,
-     "ma120": 55.46,
-     "ma250": 64.08,
-     "turnoverPct": 0.02,
-     "pctChg": -0.85,
-     "crowd": {
-      "score": 0,
-      "lv": "冷清"
-     },
-     "amount": 56920209.0,
-     "i": 655
-    },
-    {
-     "code": "688208",
-     "name": "道通科技",
-     "pos": "底部",
-     "act": "磨底波动 · 观望",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 0,
-     "volState": "缩量",
-     "volRatio5": 0.3,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -38.98,
-     "dif": -0.5138,
-     "dea": -0.495,
-     "close_hfq": 40.91,
-     "ma120": 48.38,
-     "ma250": 53.14,
-     "turnoverPct": 0.0,
-     "pctChg": -1.21,
-     "crowd": {
-      "score": 0,
-      "lv": "冷清"
-     },
-     "amount": 69284538.0,
-     "i": 655
-    },
-    {
-     "code": "300697",
-     "name": "电工合金",
-     "pos": "底部",
-     "act": "底部钝化 · 等放量金叉",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "死叉",
-     "signalAgo": 2,
-     "volState": "缩量",
-     "volRatio5": 0.32,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -31.82,
-     "dif": 0.311,
-     "dea": 0.6863,
-     "close_hfq": 44.84,
-     "ma120": 47.31,
-     "ma250": 49.96,
-     "turnoverPct": 3.15,
-     "pctChg": -1.23,
-     "crowd": {
-      "score": 11,
-      "lv": "冷清"
-     },
-     "amount": 154012248.0,
-     "i": 655
-    },
-    {
-     "code": "002881",
-     "name": "美格智能",
-     "pos": "底部",
-     "act": "磨底波动 · 观望",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "死叉",
-     "signalAgo": 2,
-     "volState": "缩量",
-     "volRatio5": 0.34,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -43.12,
-     "dif": 1.6955,
-     "dea": 2.6847,
-     "close_hfq": 90.86,
-     "ma120": 90.53,
-     "ma250": 97.09,
-     "turnoverPct": 3.49,
-     "pctChg": -0.47,
-     "crowd": {
-      "score": 12,
-      "lv": "冷清"
-     },
-     "amount": 259743818.0,
-     "i": 655
-    },
-    {
-     "code": "301633",
-     "name": "港迪技术",
-     "pos": "底部",
-     "act": "磨底波动 · 观望",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 3,
-     "volState": "缩量",
-     "volRatio5": 0.35,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "顶背离"
-     ],
-     "drawdown": -61.8,
-     "dif": -0.265,
-     "dea": 1.0182,
-     "close_hfq": 52.39,
-     "ma120": 56.61,
-     "ma250": 64.63,
-     "turnoverPct": 2.74,
-     "pctChg": -3.02,
-     "crowd": {
-      "score": 10,
-      "lv": "冷清"
-     },
-     "amount": 36515294.0,
-     "i": 452
-    },
-    {
-     "code": "605300",
-     "name": "佳禾食品",
-     "pos": "底部",
-     "act": "底部钝化 · 等放量金叉",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "死叉",
-     "signalAgo": 2,
-     "volState": "缩量",
-     "volRatio5": 0.35,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -46.72,
-     "dif": 0.1277,
-     "dea": 0.2108,
-     "close_hfq": 10.16,
-     "ma120": 10.41,
-     "ma250": 11.51,
-     "turnoverPct": 1.21,
-     "pctChg": -1.55,
-     "crowd": {
-      "score": 4,
-      "lv": "冷清"
-     },
-     "amount": 53896721.0,
-     "i": 655
-    },
-    {
-     "code": "300357",
-     "name": "我武生物",
-     "pos": "底部",
-     "act": "底部钝化 · 等放量金叉",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 17,
-     "volState": "缩量",
-     "volRatio5": 0.35,
-     "count": 2,
-     "times": "多次",
-     "divs": [
-      "顶背离"
-     ],
-     "drawdown": -45.88,
-     "dif": -7.3507,
-     "dea": -4.9255,
-     "close_hfq": 107.11,
-     "ma120": 134.42,
-     "ma250": 151.0,
-     "turnoverPct": 1.07,
-     "pctChg": -0.69,
-     "crowd": {
-      "score": 4,
-      "lv": "冷清"
-     },
-     "amount": 98120662.0,
-     "i": 655
+     "i": 655,
+     "industry": "文娱用品",
+     "isLeader": true
     },
     {
      "code": "002557",
@@ -982,165 +746,262 @@
       "lv": "冷清"
      },
      "amount": 54598477.0,
-     "i": 655
+     "i": 655,
+     "industry": "休闲食品",
+     "isLeader": true
+    },
+    {
+     "code": "600612",
+     "name": "老凤祥",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.37,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -44.82,
+     "dif": -83.5608,
+     "dea": -49.6605,
+     "close_hfq": 5836.33,
+     "ma120": 6463.43,
+     "ma250": 7341.31,
+     "turnoverPct": 0.42,
+     "pctChg": -1.6,
+     "crowd": {
+      "score": 1,
+      "lv": "冷清"
+     },
+     "amount": 42418237.0,
+     "i": 655,
+     "industry": "饰品",
+     "isLeader": true
+    },
+    {
+     "code": "301078",
+     "name": "孩子王",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.4,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -57.38,
+     "dif": -0.0376,
+     "dea": 0.0014,
+     "close_hfq": 7.07,
+     "ma120": 8.01,
+     "ma250": 9.46,
+     "turnoverPct": 1.15,
+     "pctChg": -1.67,
+     "crowd": {
+      "score": 4,
+      "lv": "冷清"
+     },
+     "amount": 100015679.0,
+     "i": 655,
+     "industry": "专业连锁Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "600315",
+     "name": "上海家化",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.42,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -38.25,
+     "dif": 0.426,
+     "dea": 0.9613,
+     "close_hfq": 102.58,
+     "ma120": 107.66,
+     "ma250": 122.55,
+     "turnoverPct": 0.58,
+     "pctChg": -1.23,
+     "crowd": {
+      "score": 2,
+      "lv": "冷清"
+     },
+     "amount": 69291223.0,
+     "i": 655,
+     "industry": "化妆品",
+     "isLeader": true
+    },
+    {
+     "code": "300146",
+     "name": "汤臣倍健",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 4,
+     "volState": "缩量",
+     "volRatio5": 0.42,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -37.9,
+     "dif": -4.9269,
+     "dea": -2.7488,
+     "close_hfq": 316.75,
+     "ma120": 342.99,
+     "ma250": 371.96,
+     "turnoverPct": 0.67,
+     "pctChg": -0.54,
+     "crowd": {
+      "score": 2,
+      "lv": "冷清"
+     },
+     "amount": 69769610.0,
+     "i": 655,
+     "industry": "食品加工",
+     "isLeader": true
+    },
+    {
+     "code": "000798",
+     "name": "中水渔业",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 0,
+     "volState": "缩量",
+     "volRatio5": 0.43,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -40.05,
+     "dif": 1.4708,
+     "dea": 1.5376,
+     "close_hfq": 22.93,
+     "ma120": 20.25,
+     "ma250": 22.08,
+     "turnoverPct": 8.87,
+     "pctChg": -3.09,
+     "crowd": {
+      "score": 31,
+      "lv": "正常"
+     },
+     "amount": 328293551.0,
+     "i": 655,
+     "industry": "渔业",
+     "isLeader": true
+    },
+    {
+     "code": "000560",
+     "name": "我爱我家",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 1,
+     "volState": "缩量",
+     "volRatio5": 0.45,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -36.27,
+     "dif": 0.7421,
+     "dea": 0.9925,
+     "close_hfq": 13.72,
+     "ma120": 13.66,
+     "ma250": 15.03,
+     "turnoverPct": 9.43,
+     "pctChg": -3.38,
+     "crowd": {
+      "score": 33,
+      "lv": "正常"
+     },
+     "amount": 578336076.0,
+     "i": 655,
+     "industry": "房地产服务",
+     "isLeader": true
+    },
+    {
+     "code": "600629",
+     "name": "华建集团",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.47,
+     "count": 2,
+     "times": "多次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -53.55,
+     "dif": 4.5091,
+     "dea": 6.8711,
+     "close_hfq": 174.74,
+     "ma120": 169.25,
+     "ma250": 185.76,
+     "turnoverPct": 1.35,
+     "pctChg": -2.1,
+     "crowd": {
+      "score": 5,
+      "lv": "冷清"
+     },
+     "amount": 248619530.0,
+     "i": 655,
+     "industry": "工程咨询服务Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "605090",
+     "name": "九丰能源",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 10,
+     "volState": "缩量",
+     "volRatio5": 0.47,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -37.26,
+     "dif": -0.8491,
+     "dea": -0.581,
+     "close_hfq": 51.57,
+     "ma120": 59.27,
+     "ma250": 60.03,
+     "turnoverPct": 0.55,
+     "pctChg": -0.19,
+     "crowd": {
+      "score": 2,
+      "lv": "冷清"
+     },
+     "amount": 127843867.0,
+     "i": 655,
+     "industry": "燃气Ⅱ",
+     "isLeader": true
     }
    ],
    "左侧试仓": [
-    {
-     "code": "301155",
-     "name": "海力风电",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 2.41,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -55.66,
-     "dif": -0.8881,
-     "dea": -1.3467,
-     "close_hfq": 45.05,
-     "ma120": 52.94,
-     "ma250": 69.39,
-     "turnoverPct": 11.85,
-     "pctChg": 12.82,
-     "crowd": {
-      "score": 73,
-      "lv": "过热"
-     },
-     "amount": 624924999.0,
-     "i": 655
-    },
-    {
-     "code": "601567",
-     "name": "三星电气",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 2.36,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -56.66,
-     "dif": -2.3932,
-     "dea": -2.5804,
-     "close_hfq": 85.06,
-     "ma120": 104.13,
-     "ma250": 125.53,
-     "turnoverPct": 2.87,
-     "pctChg": 1.2,
-     "crowd": {
-      "score": 23,
-      "lv": "正常"
-     },
-     "amount": 569747712.0,
-     "i": 655
-    },
-    {
-     "code": "688349",
-     "name": "三一重能",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 2.13,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -48.17,
-     "dif": -0.5263,
-     "dea": -0.5356,
-     "close_hfq": 18.54,
-     "ma120": 21.8,
-     "ma250": 25.7,
-     "turnoverPct": 0.01,
-     "pctChg": 1.2,
-     "crowd": {
-      "score": 11,
-      "lv": "冷清"
-     },
-     "amount": 168723872.0,
-     "i": 655
-    },
-    {
-     "code": "600930",
-     "name": "华电新能",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 16,
-     "volState": "放量",
-     "volRatio5": 1.74,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -48.25,
-     "dif": -0.0771,
-     "dea": -0.1035,
-     "close_hfq": 4.0,
-     "ma120": 5.25,
-     "ma250": 5.82,
-     "turnoverPct": 1.72,
-     "pctChg": 0.5,
-     "crowd": {
-      "score": 13,
-      "lv": "冷清"
-     },
-     "amount": 727561020.0,
-     "i": 285
-    },
-    {
-     "code": "603160",
-     "name": "汇顶科技",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 11,
-     "volState": "放量",
-     "volRatio5": 1.62,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -44.93,
-     "dif": -0.0816,
-     "dea": -0.2126,
-     "close_hfq": 54.32,
-     "ma120": 61.03,
-     "ma250": 72.1,
-     "turnoverPct": 1.0,
-     "pctChg": 3.19,
-     "crowd": {
-      "score": 16,
-      "lv": "冷清"
-     },
-     "amount": 242956999.0,
-     "i": 645
-    },
     {
      "code": "000425",
      "name": "徐工机械",
@@ -1170,726 +1031,648 @@
       "lv": "冷清"
      },
      "amount": 913933451.0,
-     "i": 655
+     "i": 655,
+     "industry": "工程机械",
+     "isLeader": true
     },
     {
-     "code": "002472",
-     "name": "双环传动",
+     "code": "600977",
+     "name": "中国电影",
      "pos": "底部",
      "act": "左侧试仓（底背离共振）",
      "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 7,
-     "volState": "平量",
-     "volRatio5": 1.36,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -29.22,
-     "dif": -2.6238,
-     "dea": -3.0133,
-     "close_hfq": 191.91,
-     "ma120": 207.6,
-     "ma250": 215.51,
-     "turnoverPct": 3.45,
-     "pctChg": 1.74,
-     "crowd": {
-      "score": 16,
-      "lv": "冷清"
-     },
-     "amount": 940647243.0,
-     "i": 655
-    },
-    {
-     "code": "000531",
-     "name": "穗恒运A",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴下",
+     "macdPos": "零轴上",
      "signal": "金叉",
      "signalAgo": 13,
      "volState": "平量",
-     "volRatio5": 1.29,
+     "volRatio5": 0.84,
      "count": 1,
      "times": "单次",
      "divs": [
       "底背离"
      ],
-     "drawdown": -30.67,
-     "dif": -0.1341,
-     "dea": -0.6704,
-     "close_hfq": 97.72,
-     "ma120": 108.63,
-     "ma250": 110.22,
-     "turnoverPct": 1.59,
-     "pctChg": 0.17,
+     "drawdown": -41.1,
+     "dif": 0.0811,
+     "dea": 0.0419,
+     "close_hfq": 13.76,
+     "ma120": 14.67,
+     "ma250": 16.21,
+     "turnoverPct": 0.86,
+     "pctChg": -1.92,
      "crowd": {
-      "score": 8,
+      "score": 3,
       "lv": "冷清"
      },
-     "amount": 83907352.0,
-     "i": 655
+     "amount": 203045761.0,
+     "i": 655,
+     "industry": "影视院线",
+     "isLeader": true
     },
     {
-     "code": "301398",
-     "name": "星源卓镁",
+     "code": "601006",
+     "name": "大秦铁路",
      "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
+     "act": "左侧试仓",
      "cycle": "底部",
      "macdPos": "零轴上",
      "signal": "金叉",
      "signalAgo": 12,
      "volState": "平量",
-     "volRatio5": 1.22,
+     "volRatio5": 1.34,
      "count": 1,
      "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -44.01,
-     "dif": 1.0639,
-     "dea": 0.7306,
-     "close_hfq": 53.38,
-     "ma120": 57.28,
-     "ma250": 67.39,
-     "turnoverPct": 1.79,
-     "pctChg": 3.93,
+     "divs": [],
+     "drawdown": -27.01,
+     "dif": 0.0112,
+     "dea": 0.0091,
+     "close_hfq": 12.97,
+     "ma120": 13.4,
+     "ma250": 13.96,
+     "turnoverPct": 0.64,
+     "pctChg": -0.99,
      "crowd": {
-      "score": 14,
+      "score": 6,
       "lv": "冷清"
      },
-     "amount": 71484618.0,
-     "i": 655
+     "amount": 604806203.0,
+     "i": 655,
+     "industry": "铁路公路",
+     "isLeader": true
     },
     {
-     "code": "301291",
-     "name": "明阳电气",
+     "code": "300498",
+     "name": "温氏股份",
      "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 15,
+     "volState": "平量",
+     "volRatio5": 1.21,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -26.46,
+     "dif": 0.7186,
+     "dea": 0.6778,
+     "close_hfq": 32.96,
+     "ma120": 31.47,
+     "ma250": 34.52,
+     "turnoverPct": 0.8,
+     "pctChg": 1.42,
+     "crowd": {
+      "score": 5,
+      "lv": "冷清"
+     },
+     "amount": 711699666.0,
+     "i": 655,
+     "industry": "养殖业",
+     "isLeader": true
+    },
+    {
+     "code": "601098",
+     "name": "中南传媒",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 6,
+     "volState": "平量",
+     "volRatio5": 1.07,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -26.42,
+     "dif": -0.0335,
+     "dea": -0.0641,
+     "close_hfq": 18.35,
+     "ma120": 18.59,
+     "ma250": 19.25,
+     "turnoverPct": 0.66,
+     "pctChg": 0.88,
+     "crowd": {
+      "score": 3,
+      "lv": "冷清"
+     },
+     "amount": 121363902.0,
+     "i": 655,
+     "industry": "出版",
+     "isLeader": true
+    },
+    {
+     "code": "300979",
+     "name": "华利集团",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "平量",
+     "volRatio5": 0.91,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -53.5,
+     "dif": -0.2242,
+     "dea": -0.2598,
+     "close_hfq": 39.6,
+     "ma120": 41.62,
+     "ma250": 51.54,
+     "turnoverPct": 0.15,
+     "pctChg": -0.2,
+     "crowd": {
+      "score": 1,
+      "lv": "冷清"
+     },
+     "amount": 60863343.0,
+     "i": 655,
+     "industry": "纺织制造",
+     "isLeader": true
+    },
+    {
+     "code": "600104",
+     "name": "上汽集团",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 14,
+     "volState": "平量",
+     "volRatio5": 0.85,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -44.52,
+     "dif": 3.1929,
+     "dea": 1.7241,
+     "close_hfq": 128.58,
+     "ma120": 129.96,
+     "ma250": 152.83,
+     "turnoverPct": 0.8,
+     "pctChg": -2.58,
+     "crowd": {
+      "score": 3,
+      "lv": "冷清"
+     },
+     "amount": 1058767327.0,
+     "i": 655,
+     "industry": "乘用车",
+     "isLeader": true
+    },
+    {
+     "code": "002230",
+     "name": "科大讯飞",
+     "pos": "底部",
+     "act": "左侧试仓",
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "金叉",
      "signalAgo": 1,
      "volState": "平量",
-     "volRatio5": 1.1,
+     "volRatio5": 0.83,
      "count": 1,
      "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -51.48,
-     "dif": -1.472,
-     "dea": -1.5612,
-     "close_hfq": 35.71,
-     "ma120": 47.05,
-     "ma250": 48.76,
-     "turnoverPct": 3.4,
-     "pctChg": -1.03,
+     "divs": [],
+     "drawdown": -38.63,
+     "dif": -7.4759,
+     "dea": -7.8076,
+     "close_hfq": 532.98,
+     "ma120": 599.37,
+     "ma250": 664.15,
+     "turnoverPct": 0.68,
+     "pctChg": -1.52,
      "crowd": {
-      "score": 13,
+      "score": 2,
       "lv": "冷清"
      },
-     "amount": 193310676.0,
-     "i": 655
+     "amount": 589735875.0,
+     "i": 655,
+     "industry": "软件开发",
+     "isLeader": true
+    },
+    {
+     "code": "000592",
+     "name": "平潭发展",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 13,
+     "volState": "平量",
+     "volRatio5": 0.82,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -52.86,
+     "dif": 2.8771,
+     "dea": 2.2234,
+     "close_hfq": 51.99,
+     "ma120": 54.63,
+     "ma250": 58.32,
+     "turnoverPct": 17.25,
+     "pctChg": -2.22,
+     "crowd": {
+      "score": 53,
+      "lv": "偏热"
+     },
+     "amount": 2656905172.0,
+     "i": 652,
+     "industry": "林业Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "600967",
+     "name": "内蒙一机",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 10,
+     "volState": "平量",
+     "volRatio5": 0.8,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -53.06,
+     "dif": 4.4096,
+     "dea": 3.5329,
+     "close_hfq": 78.2,
+     "ma120": 73.09,
+     "ma250": 88.27,
+     "turnoverPct": 7.22,
+     "pctChg": -6.21,
+     "crowd": {
+      "score": 25,
+      "lv": "正常"
+     },
+     "amount": 1677509628.0,
+     "i": 655,
+     "industry": "地面兵装Ⅱ",
+     "isLeader": true
     }
    ],
    "右侧确认": [
     {
-     "code": "000981",
-     "name": "山子高科",
+     "code": "002402",
+     "name": "和而泰",
      "pos": "底部",
-     "act": "右侧确认 · 加仓",
+     "act": "右侧确认 · 加仓（底背离共振）",
      "cycle": "底部",
-     "macdPos": "零轴上",
+     "macdPos": "零轴下",
      "signal": "金叉",
      "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 7.2,
-     "count": 3,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -46.75,
-     "dif": 0.0667,
-     "dea": -0.0873,
-     "close_hfq": 17.51,
-     "ma120": 19.12,
-     "ma250": 21.31,
-     "turnoverPct": 15.74,
-     "pctChg": 5.93,
-     "crowd": {
-      "score": 94,
-      "lv": "过热"
-     },
-     "amount": 4627797351.0,
-     "i": 655
-    },
-    {
-     "code": "002223",
-     "name": "鱼跃医疗",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 2.17,
-     "count": 3,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -40.39,
-     "dif": -1.7568,
-     "dea": -2.0561,
-     "close_hfq": 266.84,
-     "ma120": 280.16,
-     "ma250": 326.94,
-     "turnoverPct": 1.17,
-     "pctChg": 2.24,
-     "crowd": {
-      "score": 21,
-      "lv": "正常"
-     },
-     "amount": 286582042.0,
-     "i": 655
-    },
-    {
-     "code": "601360",
-     "name": "三六零",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 1.78,
-     "count": 3,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -39.61,
-     "dif": -0.1355,
-     "dea": -0.1381,
-     "close_hfq": 19.15,
-     "ma120": 20.84,
-     "ma250": 23.05,
-     "turnoverPct": 2.57,
-     "pctChg": -0.98,
-     "crowd": {
-      "score": 17,
-      "lv": "冷清"
-     },
-     "amount": 1645298641.0,
-     "i": 655
-    },
-    {
-     "code": "301207",
-     "name": "华兰疫苗",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 0,
      "volState": "平量",
-     "volRatio5": 0.83,
-     "count": 3,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -28.05,
-     "dif": 0.0645,
-     "dea": 0.0498,
-     "close_hfq": 30.58,
-     "ma120": 30.4,
-     "ma250": 31.7,
-     "turnoverPct": 1.2,
-     "pctChg": -0.78,
-     "crowd": {
-      "score": 4,
-      "lv": "冷清"
-     },
-     "amount": 129304764.0,
-     "i": 655
-    },
-    {
-     "code": "000868",
-     "name": "安凯客车",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 5,
-     "volState": "放量",
-     "volRatio5": 9.13,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -46.37,
-     "dif": 0.3255,
-     "dea": 0.1396,
-     "close_hfq": 20.23,
-     "ma120": 19.52,
-     "ma250": 22.94,
-     "turnoverPct": 10.88,
-     "pctChg": 2.33,
-     "crowd": {
-      "score": 74,
-      "lv": "过热"
-     },
-     "amount": 421644594.0,
-     "i": 655
-    },
-    {
-     "code": "002212",
-     "name": "天融信",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 5.81,
+     "volRatio5": 1.33,
      "count": 2,
      "times": "多次",
      "divs": [
-      "顶背离"
+      "底背离"
      ],
-     "drawdown": -40.18,
-     "dif": 0.7117,
-     "dea": 0.3965,
-     "close_hfq": 25.56,
-     "ma120": 21.99,
-     "ma250": 26.38,
-     "turnoverPct": 29.59,
-     "pctChg": 5.01,
+     "drawdown": -66.91,
+     "dif": -8.5176,
+     "dea": -9.0592,
+     "close_hfq": 233.94,
+     "ma120": 319.18,
+     "ma250": 429.75,
+     "turnoverPct": 2.46,
+     "pctChg": 1.04,
      "crowd": {
-      "score": 94,
-      "lv": "过热"
+      "score": 12,
+      "lv": "冷清"
      },
-     "amount": 2778129936.0,
-     "i": 655
-    },
-    {
-     "code": "003001",
-     "name": "中岩大地",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 4.09,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -56.2,
-     "dif": -0.6234,
-     "dea": -0.7466,
-     "close_hfq": 31.78,
-     "ma120": 32.38,
-     "ma250": 36.76,
-     "turnoverPct": 11.3,
-     "pctChg": 5.93,
-     "crowd": {
-      "score": 81,
-      "lv": "过热"
-     },
-     "amount": 214508468.0,
-     "i": 655
-    },
-    {
-     "code": "002846",
-     "name": "英联股份",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 3.69,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -48.73,
-     "dif": 0.2759,
-     "dea": 0.2615,
-     "close_hfq": 30.72,
-     "ma120": 32.22,
-     "ma250": 39.04,
-     "turnoverPct": 4.79,
-     "pctChg": 9.95,
-     "crowd": {
-      "score": 61,
-      "lv": "偏热"
-     },
-     "amount": 148830929.0,
-     "i": 655
-    },
-    {
-     "code": "603686",
-     "name": "福龙马",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 3.42,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -59.72,
-     "dif": 0.4652,
-     "dea": 0.3274,
-     "close_hfq": 46.66,
-     "ma120": 50.16,
-     "ma250": 67.06,
-     "turnoverPct": 15.95,
-     "pctChg": 5.66,
-     "crowd": {
-      "score": 88,
-      "lv": "过热"
-     },
-     "amount": 918080548.0,
-     "i": 655
-    },
-    {
-     "code": "002268",
-     "name": "电科网安",
-     "pos": "底部",
-     "act": "右侧确认 · 加仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 3.04,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -38.93,
-     "dif": 0.3604,
-     "dea": -0.1115,
-     "close_hfq": 124.91,
-     "ma120": 127.13,
-     "ma250": 144.4,
-     "turnoverPct": 4.05,
-     "pctChg": -1.02,
-     "crowd": {
-      "score": 34,
-      "lv": "正常"
-     },
-     "amount": 509952685.0,
-     "i": 655
+     "amount": 374362371.0,
+     "i": 655,
+     "industry": "家电零部件Ⅱ",
+     "isLeader": true
     }
    ],
    "主升启动": [
     {
-     "code": "605507",
-     "name": "国邦医药",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 7,
-     "volState": "放量",
-     "volRatio5": 7.06,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -12.73,
-     "dif": 0.3126,
-     "dea": 0.0087,
-     "close_hfq": 28.18,
-     "ma120": 25.55,
-     "ma250": 26.38,
-     "turnoverPct": 3.51,
-     "pctChg": 9.99,
-     "crowd": {
-      "score": 59,
-      "lv": "偏热"
-     },
-     "amount": 473697090.0,
-     "i": 655
-    },
-    {
-     "code": "688004",
-     "name": "博汇科技",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 6.02,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "顶背离"
-     ],
-     "drawdown": -7.03,
-     "dif": 0.4048,
-     "dea": 0.059,
-     "close_hfq": 39.03,
-     "ma120": 30.51,
-     "ma250": 33.4,
-     "turnoverPct": 0.16,
-     "pctChg": 19.98,
-     "crowd": {
-      "score": 48,
-      "lv": "偏热"
-     },
-     "amount": 342112642.0,
-     "i": 655
-    },
-    {
-     "code": "002522",
-     "name": "浙江众成",
+     "code": "600186",
+     "name": "莲花控股",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
      "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 5.27,
+     "volState": "平量",
+     "volRatio5": 1.45,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -30.09,
-     "dif": 0.4874,
-     "dea": 0.1485,
-     "close_hfq": 50.81,
-     "ma120": 51.99,
-     "ma250": 49.74,
-     "turnoverPct": 12.77,
-     "pctChg": 10.03,
+     "drawdown": -18.84,
+     "dif": 2.2587,
+     "dea": 2.1114,
+     "close_hfq": 63.22,
+     "ma120": 52.55,
+     "ma250": 40.69,
+     "turnoverPct": 18.03,
+     "pctChg": -3.95,
      "crowd": {
-      "score": 92,
-      "lv": "过热"
+      "score": 57,
+      "lv": "偏热"
      },
-     "amount": 651917671.0,
-     "i": 655
+     "amount": 4150724973.0,
+     "i": 655,
+     "industry": "调味发酵品Ⅱ",
+     "isLeader": true
     },
     {
-     "code": "002560",
-     "name": "通达股份",
+     "code": "600176",
+     "name": "中国巨石",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 27,
+     "volState": "平量",
+     "volRatio5": 1.44,
+     "count": 0,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -36.47,
+     "dif": 8.9584,
+     "dea": -3.114,
+     "close_hfq": 920.56,
+     "ma120": 815.15,
+     "ma250": 578.46,
+     "turnoverPct": 7.84,
+     "pctChg": 3.97,
+     "crowd": {
+      "score": 38,
+      "lv": "正常"
+     },
+     "amount": 14675019664.0,
+     "i": 655,
+     "industry": "玻璃玻纤",
+     "isLeader": true
+    },
+    {
+     "code": "300806",
+     "name": "斯迪克",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 4,
+     "volState": "平量",
+     "volRatio5": 1.38,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -31.88,
+     "dif": 5.1008,
+     "dea": 0.4696,
+     "close_hfq": 291.93,
+     "ma120": 266.09,
+     "ma250": 193.66,
+     "turnoverPct": 10.38,
+     "pctChg": 9.35,
+     "crowd": {
+      "score": 58,
+      "lv": "偏热"
+     },
+     "amount": 2627425269.0,
+     "i": 655,
+     "industry": "塑料",
+     "isLeader": true
+    },
+    {
+     "code": "603650",
+     "name": "彤程新材",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 4,
+     "volState": "平量",
+     "volRatio5": 1.28,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -29.88,
+     "dif": 0.1584,
+     "dea": -0.8765,
+     "close_hfq": 75.7,
+     "ma120": 68.59,
+     "ma250": 59.78,
+     "turnoverPct": 4.91,
+     "pctChg": 2.84,
+     "crowd": {
+      "score": 26,
+      "lv": "正常"
+     },
+     "amount": 2038410500.0,
+     "i": 655,
+     "industry": "橡胶",
+     "isLeader": true
+    },
+    {
+     "code": "600183",
+     "name": "生益科技",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 28,
+     "volState": "平量",
+     "volRatio5": 1.27,
+     "count": 0,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -19.74,
+     "dif": 53.8401,
+     "dea": 46.0564,
+     "close_hfq": 2078.44,
+     "ma120": 1662.35,
+     "ma250": 1241.98,
+     "turnoverPct": 3.37,
+     "pctChg": 2.91,
+     "crowd": {
+      "score": 20,
+      "lv": "正常"
+     },
+     "amount": 12410853991.0,
+     "i": 655,
+     "industry": "元件",
+     "isLeader": true
+    },
+    {
+     "code": "001965",
+     "name": "招商公路",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
      "signalAgo": 14,
-     "volState": "放量",
-     "volRatio5": 5.23,
+     "volState": "平量",
+     "volRatio5": 1.26,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -40.16,
-     "dif": 1.1915,
-     "dea": 0.1308,
-     "close_hfq": 46.72,
-     "ma120": 48.1,
-     "ma250": 43.85,
-     "turnoverPct": 36.04,
-     "pctChg": 1.99,
-     "crowd": {
-      "score": 82,
-      "lv": "过热"
-     },
-     "amount": 1737855959.0,
-     "i": 655
-    },
-    {
-     "code": "002584",
-     "name": "西陇科学",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 4.53,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -21.87,
-     "dif": 0.0529,
-     "dea": 0.0431,
-     "close_hfq": 23.44,
-     "ma120": 21.99,
-     "ma250": 23.07,
-     "turnoverPct": 13.43,
-     "pctChg": 10.0,
-     "crowd": {
-      "score": 94,
-      "lv": "过热"
-     },
-     "amount": 545163647.0,
-     "i": 655
-    },
-    {
-     "code": "603439",
-     "name": "三力制药",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 4.28,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -16.43,
-     "dif": 0.3089,
-     "dea": 0.1479,
-     "close_hfq": 15.16,
-     "ma120": 13.29,
+     "drawdown": -23.0,
+     "dif": 0.1185,
+     "dea": 0.086,
+     "close_hfq": 13.79,
+     "ma120": 12.99,
      "ma250": 13.13,
-     "turnoverPct": 16.5,
-     "pctChg": 2.57,
+     "turnoverPct": 0.29,
+     "pctChg": 1.4,
      "crowd": {
-      "score": 88,
-      "lv": "过热"
+      "score": 4,
+      "lv": "冷清"
      },
-     "amount": 965516349.0,
-     "i": 655
+     "amount": 197496076.0,
+     "i": 655,
+     "industry": "铁路公路",
+     "isLeader": true
     },
     {
-     "code": "600163",
-     "name": "中闽能源",
+     "code": "601208",
+     "name": "东材科技",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 12,
-     "volState": "放量",
-     "volRatio5": 3.98,
-     "count": 1,
+     "signalAgo": 28,
+     "volState": "平量",
+     "volRatio5": 1.24,
+     "count": 0,
      "times": "单次",
      "divs": [],
-     "drawdown": -23.64,
-     "dif": 0.4012,
-     "dea": 0.132,
-     "close_hfq": 15.57,
-     "ma120": 14.34,
-     "ma250": 14.24,
-     "turnoverPct": 10.24,
-     "pctChg": 9.96,
+     "drawdown": -38.09,
+     "dif": 1.629,
+     "dea": 1.1756,
+     "close_hfq": 153.58,
+     "ma120": 148.31,
+     "ma250": 109.5,
+     "turnoverPct": 6.13,
+     "pctChg": 2.23,
      "crowd": {
-      "score": 83,
-      "lv": "过热"
+      "score": 30,
+      "lv": "正常"
      },
-     "amount": 1179112060.0,
-     "i": 655
+     "amount": 3086898531.0,
+     "i": 655,
+     "industry": "塑料",
+     "isLeader": true
     },
     {
-     "code": "000859",
-     "name": "国风新材",
+     "code": "002157",
+     "name": "正邦科技",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 0,
-     "volState": "放量",
-     "volRatio5": 3.66,
+     "signalAgo": 13,
+     "volState": "平量",
+     "volRatio5": 1.2,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -28.52,
-     "dif": 0.1614,
-     "dea": 0.0064,
-     "close_hfq": 36.69,
-     "ma120": 36.08,
-     "ma250": 35.23,
-     "turnoverPct": 13.38,
-     "pctChg": 6.38,
+     "drawdown": -15.56,
+     "dif": 0.9549,
+     "dea": 0.9028,
+     "close_hfq": 51.24,
+     "ma120": 50.23,
+     "ma250": 50.89,
+     "turnoverPct": 2.77,
+     "pctChg": 1.28,
      "crowd": {
-      "score": 85,
-      "lv": "过热"
+      "score": 12,
+      "lv": "冷清"
      },
-     "amount": 1151343346.0,
-     "i": 645
+     "amount": 685592088.0,
+     "i": 654,
+     "industry": "养殖业",
+     "isLeader": true
     },
     {
-     "code": "000993",
-     "name": "闽东电力",
+     "code": "601985",
+     "name": "中国核电",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 11,
-     "volState": "放量",
-     "volRatio5": 3.34,
+     "signalAgo": 14,
+     "volState": "平量",
+     "volRatio5": 0.95,
      "count": 1,
      "times": "单次",
-     "divs": [],
-     "drawdown": 0.0,
-     "dif": 2.2131,
-     "dea": 0.9236,
-     "close_hfq": 31.76,
-     "ma120": 21.99,
-     "ma250": 22.46,
-     "turnoverPct": 29.24,
-     "pctChg": 10.01,
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -17.45,
+     "dif": 0.0645,
+     "dea": 0.0507,
+     "close_hfq": 11.31,
+     "ma120": 11.1,
+     "ma250": 10.98,
+     "turnoverPct": 0.33,
+     "pctChg": -0.44,
      "crowd": {
-      "score": 94,
-      "lv": "过热"
+      "score": 1,
+      "lv": "冷清"
      },
-     "amount": 2210807016.0,
-     "i": 655
+     "amount": 555015282.0,
+     "i": 655,
+     "industry": "电力",
+     "isLeader": true
     },
     {
-     "code": "002585",
-     "name": "双星新材",
+     "code": "600710",
+     "name": "苏美达",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "放量",
-     "volRatio5": 3.29,
+     "signalAgo": 13,
+     "volState": "平量",
+     "volRatio5": 0.93,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -18.85,
-     "dif": 0.7144,
-     "dea": -0.158,
-     "close_hfq": 47.37,
-     "ma120": 37.54,
-     "ma250": 31.29,
-     "turnoverPct": 22.25,
-     "pctChg": 10.03,
+     "drawdown": -21.18,
+     "dif": 2.0656,
+     "dea": 1.1275,
+     "close_hfq": 97.34,
+     "ma120": 94.87,
+     "ma250": 93.45,
+     "turnoverPct": 1.29,
+     "pctChg": -0.96,
      "crowd": {
-      "score": 93,
-      "lv": "过热"
+      "score": 5,
+      "lv": "冷清"
      },
-     "amount": 2331857903.0,
-     "i": 655
+     "amount": 192556531.0,
+     "i": 655,
+     "industry": "贸易Ⅱ",
+     "isLeader": true
     }
    ]
   },
   "stats": {
-   "scanned": 4326,
-   "skipped": 605,
-   "universe": 4931
+   "scanned": 365,
+   "skipped": 4566,
+   "universe": 4931,
+   "leaders": 369,
+   "leadersOnly": true
   },
   "dataDate": "2026-09-15",
   "filters": {
@@ -1899,7 +1682,8 @@
     "ST",
     "退",
     "退市"
-   ]
+   ],
+   "leaderTop": 3
   }
  },
  "dimTracking": {
@@ -1916,13 +1700,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "000915",
-           "name": "华特达因",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
@@ -1930,57 +1707,64 @@
            "ret": null
           },
           {
-           "code": "688039",
-           "name": "当虹科技",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "688208",
-           "name": "道通科技",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300697",
-           "name": "电工合金",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "002881",
-           "name": "美格智能",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301633",
-           "name": "港迪技术",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "605300",
-           "name": "佳禾食品",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300357",
-           "name": "我武生物",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "002557",
            "name": "洽洽食品",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600612",
+           "name": "老凤祥",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600315",
+           "name": "上海家化",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000560",
+           "name": "我爱我家",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600629",
+           "name": "华建集团",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "605090",
+           "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
            "ret": null
@@ -1991,41 +1775,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "301155",
-           "name": "海力风电",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "601567",
-           "name": "三星电气",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "688349",
-           "name": "三一重能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "600930",
-           "name": "华电新能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "603160",
-           "name": "汇顶科技",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
@@ -2033,31 +1782,66 @@
            "ret": null
           },
           {
-           "code": "002472",
-           "name": "双环传动",
+           "code": "600977",
+           "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000531",
-           "name": "穗恒运A",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601006",
+           "name": "大秦铁路",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301398",
-           "name": "星源卓镁",
-           "act": "左侧试仓（底背离共振）",
+           "code": "300498",
+           "name": "温氏股份",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301291",
-           "name": "明阳电气",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
            "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600104",
+           "name": "上汽集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "600967",
+           "name": "内蒙一机",
+           "act": "左侧试仓",
+           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2066,73 +1850,10 @@
          "n": 0,
          "rows": [
           {
-           "code": "000981",
-           "name": "山子高科",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002223",
-           "name": "鱼跃医疗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "601360",
-           "name": "三六零",
-           "act": "右侧确认 · 加仓",
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301207",
-           "name": "华兰疫苗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "000868",
-           "name": "安凯客车",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002212",
-           "name": "天融信",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "003001",
-           "name": "中岩大地",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002846",
-           "name": "英联股份",
-           "act": "右侧确认 · 加仓",
-           "crowd": "偏热",
-           "ret": null
-          },
-          {
-           "code": "603686",
-           "name": "福龙马",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002268",
-           "name": "电科网安",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2141,73 +1862,73 @@
          "n": 0,
          "rows": [
           {
-           "code": "605507",
-           "name": "国邦医药",
+           "code": "600186",
+           "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "688004",
-           "name": "博汇科技",
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "002522",
-           "name": "浙江众成",
+           "code": "603650",
+           "name": "彤程新材",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002560",
-           "name": "通达股份",
+           "code": "600183",
+           "name": "生益科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002584",
-           "name": "西陇科学",
+           "code": "001965",
+           "name": "招商公路",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "603439",
-           "name": "三力制药",
+           "code": "601208",
+           "name": "东材科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "600163",
-           "name": "中闽能源",
+           "code": "002157",
+           "name": "正邦科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000859",
-           "name": "国风新材",
+           "code": "601985",
+           "name": "中国核电",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000993",
-           "name": "闽东电力",
+           "code": "600710",
+           "name": "苏美达",
            "act": "主升启动",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002585",
-           "name": "双星新材",
-           "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           }
          ]
@@ -2221,13 +1942,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "000915",
-           "name": "华特达因",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
@@ -2235,57 +1949,64 @@
            "ret": null
           },
           {
-           "code": "688039",
-           "name": "当虹科技",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "688208",
-           "name": "道通科技",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300697",
-           "name": "电工合金",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "002881",
-           "name": "美格智能",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301633",
-           "name": "港迪技术",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "605300",
-           "name": "佳禾食品",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300357",
-           "name": "我武生物",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "002557",
            "name": "洽洽食品",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600612",
+           "name": "老凤祥",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600315",
+           "name": "上海家化",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000560",
+           "name": "我爱我家",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600629",
+           "name": "华建集团",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "605090",
+           "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
            "ret": null
@@ -2296,41 +2017,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "301155",
-           "name": "海力风电",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "601567",
-           "name": "三星电气",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "688349",
-           "name": "三一重能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "600930",
-           "name": "华电新能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "603160",
-           "name": "汇顶科技",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
@@ -2338,31 +2024,66 @@
            "ret": null
           },
           {
-           "code": "002472",
-           "name": "双环传动",
+           "code": "600977",
+           "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000531",
-           "name": "穗恒运A",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601006",
+           "name": "大秦铁路",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301398",
-           "name": "星源卓镁",
-           "act": "左侧试仓（底背离共振）",
+           "code": "300498",
+           "name": "温氏股份",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301291",
-           "name": "明阳电气",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
            "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600104",
+           "name": "上汽集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "600967",
+           "name": "内蒙一机",
+           "act": "左侧试仓",
+           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2371,73 +2092,10 @@
          "n": 0,
          "rows": [
           {
-           "code": "000981",
-           "name": "山子高科",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002223",
-           "name": "鱼跃医疗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "601360",
-           "name": "三六零",
-           "act": "右侧确认 · 加仓",
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301207",
-           "name": "华兰疫苗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "000868",
-           "name": "安凯客车",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002212",
-           "name": "天融信",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "003001",
-           "name": "中岩大地",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002846",
-           "name": "英联股份",
-           "act": "右侧确认 · 加仓",
-           "crowd": "偏热",
-           "ret": null
-          },
-          {
-           "code": "603686",
-           "name": "福龙马",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002268",
-           "name": "电科网安",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2446,73 +2104,73 @@
          "n": 0,
          "rows": [
           {
-           "code": "605507",
-           "name": "国邦医药",
+           "code": "600186",
+           "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "688004",
-           "name": "博汇科技",
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "002522",
-           "name": "浙江众成",
+           "code": "603650",
+           "name": "彤程新材",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002560",
-           "name": "通达股份",
+           "code": "600183",
+           "name": "生益科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002584",
-           "name": "西陇科学",
+           "code": "001965",
+           "name": "招商公路",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "603439",
-           "name": "三力制药",
+           "code": "601208",
+           "name": "东材科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "600163",
-           "name": "中闽能源",
+           "code": "002157",
+           "name": "正邦科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000859",
-           "name": "国风新材",
+           "code": "601985",
+           "name": "中国核电",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000993",
-           "name": "闽东电力",
+           "code": "600710",
+           "name": "苏美达",
            "act": "主升启动",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002585",
-           "name": "双星新材",
-           "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           }
          ]
@@ -2526,13 +2184,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "000915",
-           "name": "华特达因",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
@@ -2540,57 +2191,64 @@
            "ret": null
           },
           {
-           "code": "688039",
-           "name": "当虹科技",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "688208",
-           "name": "道通科技",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300697",
-           "name": "电工合金",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "002881",
-           "name": "美格智能",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301633",
-           "name": "港迪技术",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "605300",
-           "name": "佳禾食品",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300357",
-           "name": "我武生物",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "002557",
            "name": "洽洽食品",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600612",
+           "name": "老凤祥",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600315",
+           "name": "上海家化",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000560",
+           "name": "我爱我家",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600629",
+           "name": "华建集团",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "605090",
+           "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
            "ret": null
@@ -2601,41 +2259,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "301155",
-           "name": "海力风电",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "601567",
-           "name": "三星电气",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "688349",
-           "name": "三一重能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "600930",
-           "name": "华电新能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "603160",
-           "name": "汇顶科技",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
@@ -2643,31 +2266,66 @@
            "ret": null
           },
           {
-           "code": "002472",
-           "name": "双环传动",
+           "code": "600977",
+           "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000531",
-           "name": "穗恒运A",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601006",
+           "name": "大秦铁路",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301398",
-           "name": "星源卓镁",
-           "act": "左侧试仓（底背离共振）",
+           "code": "300498",
+           "name": "温氏股份",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301291",
-           "name": "明阳电气",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
            "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600104",
+           "name": "上汽集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "600967",
+           "name": "内蒙一机",
+           "act": "左侧试仓",
+           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2676,73 +2334,10 @@
          "n": 0,
          "rows": [
           {
-           "code": "000981",
-           "name": "山子高科",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002223",
-           "name": "鱼跃医疗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "601360",
-           "name": "三六零",
-           "act": "右侧确认 · 加仓",
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301207",
-           "name": "华兰疫苗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "000868",
-           "name": "安凯客车",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002212",
-           "name": "天融信",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "003001",
-           "name": "中岩大地",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002846",
-           "name": "英联股份",
-           "act": "右侧确认 · 加仓",
-           "crowd": "偏热",
-           "ret": null
-          },
-          {
-           "code": "603686",
-           "name": "福龙马",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002268",
-           "name": "电科网安",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2751,73 +2346,73 @@
          "n": 0,
          "rows": [
           {
-           "code": "605507",
-           "name": "国邦医药",
+           "code": "600186",
+           "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "688004",
-           "name": "博汇科技",
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "002522",
-           "name": "浙江众成",
+           "code": "603650",
+           "name": "彤程新材",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002560",
-           "name": "通达股份",
+           "code": "600183",
+           "name": "生益科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002584",
-           "name": "西陇科学",
+           "code": "001965",
+           "name": "招商公路",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "603439",
-           "name": "三力制药",
+           "code": "601208",
+           "name": "东材科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "600163",
-           "name": "中闽能源",
+           "code": "002157",
+           "name": "正邦科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000859",
-           "name": "国风新材",
+           "code": "601985",
+           "name": "中国核电",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000993",
-           "name": "闽东电力",
+           "code": "600710",
+           "name": "苏美达",
            "act": "主升启动",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002585",
-           "name": "双星新材",
-           "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           }
          ]
@@ -2831,13 +2426,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "000915",
-           "name": "华特达因",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
@@ -2845,57 +2433,64 @@
            "ret": null
           },
           {
-           "code": "688039",
-           "name": "当虹科技",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "688208",
-           "name": "道通科技",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300697",
-           "name": "电工合金",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "002881",
-           "name": "美格智能",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301633",
-           "name": "港迪技术",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "605300",
-           "name": "佳禾食品",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300357",
-           "name": "我武生物",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "002557",
            "name": "洽洽食品",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600612",
+           "name": "老凤祥",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600315",
+           "name": "上海家化",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000560",
+           "name": "我爱我家",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600629",
+           "name": "华建集团",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "605090",
+           "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
            "ret": null
@@ -2906,41 +2501,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "301155",
-           "name": "海力风电",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "601567",
-           "name": "三星电气",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "688349",
-           "name": "三一重能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "600930",
-           "name": "华电新能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "603160",
-           "name": "汇顶科技",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
@@ -2948,31 +2508,66 @@
            "ret": null
           },
           {
-           "code": "002472",
-           "name": "双环传动",
+           "code": "600977",
+           "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000531",
-           "name": "穗恒运A",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601006",
+           "name": "大秦铁路",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301398",
-           "name": "星源卓镁",
-           "act": "左侧试仓（底背离共振）",
+           "code": "300498",
+           "name": "温氏股份",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301291",
-           "name": "明阳电气",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
            "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600104",
+           "name": "上汽集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "600967",
+           "name": "内蒙一机",
+           "act": "左侧试仓",
+           "crowd": "正常",
            "ret": null
           }
          ]
@@ -2981,73 +2576,10 @@
          "n": 0,
          "rows": [
           {
-           "code": "000981",
-           "name": "山子高科",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002223",
-           "name": "鱼跃医疗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "601360",
-           "name": "三六零",
-           "act": "右侧确认 · 加仓",
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301207",
-           "name": "华兰疫苗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "000868",
-           "name": "安凯客车",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002212",
-           "name": "天融信",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "003001",
-           "name": "中岩大地",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002846",
-           "name": "英联股份",
-           "act": "右侧确认 · 加仓",
-           "crowd": "偏热",
-           "ret": null
-          },
-          {
-           "code": "603686",
-           "name": "福龙马",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002268",
-           "name": "电科网安",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
            "ret": null
           }
          ]
@@ -3056,73 +2588,73 @@
          "n": 0,
          "rows": [
           {
-           "code": "605507",
-           "name": "国邦医药",
+           "code": "600186",
+           "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "688004",
-           "name": "博汇科技",
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "002522",
-           "name": "浙江众成",
+           "code": "603650",
+           "name": "彤程新材",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002560",
-           "name": "通达股份",
+           "code": "600183",
+           "name": "生益科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002584",
-           "name": "西陇科学",
+           "code": "001965",
+           "name": "招商公路",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "603439",
-           "name": "三力制药",
+           "code": "601208",
+           "name": "东材科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "600163",
-           "name": "中闽能源",
+           "code": "002157",
+           "name": "正邦科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000859",
-           "name": "国风新材",
+           "code": "601985",
+           "name": "中国核电",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000993",
-           "name": "闽东电力",
+           "code": "600710",
+           "name": "苏美达",
            "act": "主升启动",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002585",
-           "name": "双星新材",
-           "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           }
          ]
@@ -3136,13 +2668,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "000915",
-           "name": "华特达因",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
@@ -3150,57 +2675,64 @@
            "ret": null
           },
           {
-           "code": "688039",
-           "name": "当虹科技",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "688208",
-           "name": "道通科技",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300697",
-           "name": "电工合金",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "002881",
-           "name": "美格智能",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301633",
-           "name": "港迪技术",
-           "act": "磨底波动 · 观望",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "605300",
-           "name": "佳禾食品",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "300357",
-           "name": "我武生物",
-           "act": "底部钝化 · 等放量金叉",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "002557",
            "name": "洽洽食品",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600612",
+           "name": "老凤祥",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600315",
+           "name": "上海家化",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000560",
+           "name": "我爱我家",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600629",
+           "name": "华建集团",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "605090",
+           "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
            "ret": null
@@ -3211,41 +2743,6 @@
          "n": 0,
          "rows": [
           {
-           "code": "301155",
-           "name": "海力风电",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "601567",
-           "name": "三星电气",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "688349",
-           "name": "三一重能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "600930",
-           "name": "华电新能",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "603160",
-           "name": "汇顶科技",
-           "act": "左侧试仓（底背离共振）",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
@@ -3253,31 +2750,66 @@
            "ret": null
           },
           {
-           "code": "002472",
-           "name": "双环传动",
+           "code": "600977",
+           "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000531",
-           "name": "穗恒运A",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601006",
+           "name": "大秦铁路",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301398",
-           "name": "星源卓镁",
-           "act": "左侧试仓（底背离共振）",
+           "code": "300498",
+           "name": "温氏股份",
+           "act": "左侧试仓",
            "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "301291",
-           "name": "明阳电气",
-           "act": "左侧试仓（底背离共振）",
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
            "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600104",
+           "name": "上汽集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "600967",
+           "name": "内蒙一机",
+           "act": "左侧试仓",
+           "crowd": "正常",
            "ret": null
           }
          ]
@@ -3286,73 +2818,10 @@
          "n": 0,
          "rows": [
           {
-           "code": "000981",
-           "name": "山子高科",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002223",
-           "name": "鱼跃医疗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
-           "ret": null
-          },
-          {
-           "code": "601360",
-           "name": "三六零",
-           "act": "右侧确认 · 加仓",
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "301207",
-           "name": "华兰疫苗",
-           "act": "右侧确认 · 加仓",
-           "crowd": "冷清",
-           "ret": null
-          },
-          {
-           "code": "000868",
-           "name": "安凯客车",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002212",
-           "name": "天融信",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "003001",
-           "name": "中岩大地",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002846",
-           "name": "英联股份",
-           "act": "右侧确认 · 加仓",
-           "crowd": "偏热",
-           "ret": null
-          },
-          {
-           "code": "603686",
-           "name": "福龙马",
-           "act": "右侧确认 · 加仓",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002268",
-           "name": "电科网安",
-           "act": "右侧确认 · 加仓",
-           "crowd": "正常",
            "ret": null
           }
          ]
@@ -3361,73 +2830,73 @@
          "n": 0,
          "rows": [
           {
-           "code": "605507",
-           "name": "国邦医药",
+           "code": "600186",
+           "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "688004",
-           "name": "博汇科技",
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
            "ret": null
           },
           {
-           "code": "002522",
-           "name": "浙江众成",
+           "code": "603650",
+           "name": "彤程新材",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002560",
-           "name": "通达股份",
+           "code": "600183",
+           "name": "生益科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "002584",
-           "name": "西陇科学",
+           "code": "001965",
+           "name": "招商公路",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "603439",
-           "name": "三力制药",
+           "code": "601208",
+           "name": "东材科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "正常",
            "ret": null
           },
           {
-           "code": "600163",
-           "name": "中闽能源",
+           "code": "002157",
+           "name": "正邦科技",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000859",
-           "name": "国风新材",
+           "code": "601985",
+           "name": "中国核电",
            "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           },
           {
-           "code": "000993",
-           "name": "闽东电力",
+           "code": "600710",
+           "name": "苏美达",
            "act": "主升启动",
-           "crowd": "过热",
-           "ret": null
-          },
-          {
-           "code": "002585",
-           "name": "双星新材",
-           "act": "主升启动",
-           "crowd": "过热",
+           "crowd": "冷清",
            "ret": null
           }
          ]
@@ -3713,6 +3182,276 @@
       "noBreak": 50.5,
       "excessAvg": -0.02,
       "excessWin": 38.9
+     }
+    }
+   },
+   "summaryLeaders": {
+    "磨底": {
+     "T+1": {
+      "n": 1793,
+      "avg": 0.01,
+      "median": 0.0,
+      "win": 48.5,
+      "avgWin": 1.37,
+      "avgLoss": -1.27,
+      "maxUp": 10.23,
+      "maxDown": -9.99,
+      "noBreak": 95.6,
+      "excessAvg": 0.2,
+      "excessWin": 51.4
+     },
+     "T+3": {
+      "n": 1773,
+      "avg": 0.03,
+      "median": -0.09,
+      "win": 47.8,
+      "avgWin": 2.5,
+      "avgLoss": -2.23,
+      "maxUp": 22.38,
+      "maxDown": -14.02,
+      "noBreak": 86.1,
+      "excessAvg": 0.43,
+      "excessWin": 49.7
+     },
+     "T+5": {
+      "n": 1753,
+      "avg": 0.05,
+      "median": -0.13,
+      "win": 47.1,
+      "avgWin": 3.34,
+      "avgLoss": -2.87,
+      "maxUp": 45.42,
+      "maxDown": -14.29,
+      "noBreak": 79.7,
+      "excessAvg": 0.5,
+      "excessWin": 46.9
+     },
+     "T+10": {
+      "n": 1706,
+      "avg": -0.04,
+      "median": -0.34,
+      "win": 46.7,
+      "avgWin": 4.8,
+      "avgLoss": -4.28,
+      "maxUp": 47.73,
+      "maxDown": -20.93,
+      "noBreak": 70.0,
+      "excessAvg": 0.6,
+      "excessWin": 47.2
+     },
+     "T+20": {
+      "n": 1617,
+      "avg": 0.1,
+      "median": -0.5,
+      "win": 47.2,
+      "avgWin": 6.97,
+      "avgLoss": -6.03,
+      "maxUp": 58.98,
+      "maxDown": -26.81,
+      "noBreak": 64.3,
+      "excessAvg": 1.01,
+      "excessWin": 48.8
+     }
+    },
+    "左侧试仓": {
+     "T+1": {
+      "n": 3524,
+      "avg": -0.02,
+      "median": -0.16,
+      "win": 45.1,
+      "avgWin": 1.79,
+      "avgLoss": -1.5,
+      "maxUp": 20.05,
+      "maxDown": -10.02,
+      "noBreak": 93.9,
+      "excessAvg": 0.16,
+      "excessWin": 46.8
+     },
+     "T+3": {
+      "n": 3504,
+      "avg": 0.11,
+      "median": -0.25,
+      "win": 46.1,
+      "avgWin": 3.15,
+      "avgLoss": -2.49,
+      "maxUp": 33.17,
+      "maxDown": -25.57,
+      "noBreak": 84.4,
+      "excessAvg": 0.38,
+      "excessWin": 47.7
+     },
+     "T+5": {
+      "n": 3484,
+      "avg": 0.17,
+      "median": -0.1,
+      "win": 48.5,
+      "avgWin": 3.82,
+      "avgLoss": -3.26,
+      "maxUp": 53.62,
+      "maxDown": -24.32,
+      "noBreak": 78.0,
+      "excessAvg": 0.49,
+      "excessWin": 49.7
+     },
+     "T+10": {
+      "n": 3434,
+      "avg": 0.44,
+      "median": 0.16,
+      "win": 50.7,
+      "avgWin": 5.28,
+      "avgLoss": -4.54,
+      "maxUp": 63.3,
+      "maxDown": -31.02,
+      "noBreak": 72.1,
+      "excessAvg": 0.75,
+      "excessWin": 50.1
+     },
+     "T+20": {
+      "n": 3334,
+      "avg": 0.43,
+      "median": -0.27,
+      "win": 48.6,
+      "avgWin": 7.74,
+      "avgLoss": -6.47,
+      "maxUp": 65.86,
+      "maxDown": -35.84,
+      "noBreak": 65.2,
+      "excessAvg": 0.87,
+      "excessWin": 49.0
+     }
+    },
+    "右侧确认": {
+     "T+1": {
+      "n": 1656,
+      "avg": 0.01,
+      "median": -0.14,
+      "win": 44.0,
+      "avgWin": 1.78,
+      "avgLoss": -1.39,
+      "maxUp": 10.07,
+      "maxDown": -10.01,
+      "noBreak": 93.8,
+      "excessAvg": 0.21,
+      "excessWin": 50.7
+     },
+     "T+3": {
+      "n": 1645,
+      "avg": 0.08,
+      "median": -0.21,
+      "win": 45.7,
+      "avgWin": 3.01,
+      "avgLoss": -2.39,
+      "maxUp": 39.3,
+      "maxDown": -15.61,
+      "noBreak": 84.7,
+      "excessAvg": 0.45,
+      "excessWin": 49.8
+     },
+     "T+5": {
+      "n": 1627,
+      "avg": 0.07,
+      "median": -0.21,
+      "win": 47.4,
+      "avgWin": 3.82,
+      "avgLoss": -3.32,
+      "maxUp": 45.43,
+      "maxDown": -20.27,
+      "noBreak": 77.6,
+      "excessAvg": 0.52,
+      "excessWin": 48.5
+     },
+     "T+10": {
+      "n": 1591,
+      "avg": 0.54,
+      "median": 0.0,
+      "win": 49.5,
+      "avgWin": 5.51,
+      "avgLoss": -4.34,
+      "maxUp": 49.04,
+      "maxDown": -21.57,
+      "noBreak": 74.2,
+      "excessAvg": 0.93,
+      "excessWin": 49.3
+     },
+     "T+20": {
+      "n": 1540,
+      "avg": 1.0,
+      "median": 0.3,
+      "win": 51.8,
+      "avgWin": 7.71,
+      "avgLoss": -6.2,
+      "maxUp": 75.72,
+      "maxDown": -27.88,
+      "noBreak": 66.4,
+      "excessAvg": 1.06,
+      "excessWin": 49.1
+     }
+    },
+    "主升启动": {
+     "T+1": {
+      "n": 3870,
+      "avg": -0.14,
+      "median": -0.33,
+      "win": 42.2,
+      "avgWin": 2.5,
+      "avgLoss": -2.07,
+      "maxUp": 20.07,
+      "maxDown": -19.98,
+      "noBreak": 87.0,
+      "excessAvg": 0.01,
+      "excessWin": 44.5
+     },
+     "T+3": {
+      "n": 3850,
+      "avg": -0.18,
+      "median": -0.64,
+      "win": 42.6,
+      "avgWin": 4.28,
+      "avgLoss": -3.49,
+      "maxUp": 72.78,
+      "maxDown": -27.04,
+      "noBreak": 74.1,
+      "excessAvg": 0.04,
+      "excessWin": 44.5
+     },
+     "T+5": {
+      "n": 3830,
+      "avg": -0.01,
+      "median": -0.78,
+      "win": 42.6,
+      "avgWin": 5.82,
+      "avgLoss": -4.33,
+      "maxUp": 148.78,
+      "maxDown": -31.3,
+      "noBreak": 69.0,
+      "excessAvg": 0.24,
+      "excessWin": 44.7
+     },
+     "T+10": {
+      "n": 3780,
+      "avg": 0.5,
+      "median": -0.9,
+      "win": 44.5,
+      "avgWin": 8.59,
+      "avgLoss": -5.99,
+      "maxUp": 191.71,
+      "maxDown": -38.21,
+      "noBreak": 63.7,
+      "excessAvg": 0.78,
+      "excessWin": 45.6
+     },
+     "T+20": {
+      "n": 3680,
+      "avg": 1.64,
+      "median": -0.97,
+      "win": 45.7,
+      "avgWin": 12.95,
+      "avgLoss": -7.89,
+      "maxUp": 163.13,
+      "maxDown": -51.41,
+      "noBreak": 59.3,
+      "excessAvg": 1.9,
+      "excessWin": 46.5
      }
     }
    },
@@ -5572,14 +5311,14 @@
      "偏热": 6
     },
     "左侧试仓": {
+     "冷清": 1846,
      "正常": 1147,
      "偏热": 659,
-     "冷清": 1846,
      "过热": 308
     },
     "右侧确认": {
-     "正常": 1060,
      "冷清": 2110,
+     "正常": 1060,
      "偏热": 531,
      "过热": 226
     },
@@ -5603,7 +5342,7 @@
     10,
     20
    ],
-   "generatedAt": "2026-09-15 20:10:54"
+   "generatedAt": "2026-09-15 20:57:50"
   },
   "groupTag": {
    "磨底": "等放量金叉（观察）",
@@ -5662,12 +5401,19 @@
    "turnover": 1.2,
    "name": "柳工"
   },
-  "000531": {
-   "price": 5.79,
-   "pct": 0.17,
-   "amount": 83910000.0,
-   "turnover": 1.59,
-   "name": "穗恒运A"
+  "000560": {
+   "price": 2.59,
+   "pct": -3.36,
+   "amount": 578340000.0,
+   "turnover": 9.43,
+   "name": "我爱我家"
+  },
+  "000592": {
+   "price": 7.92,
+   "pct": -2.22,
+   "amount": 2656910000.0,
+   "turnover": 17.25,
+   "name": "平潭发展"
   },
   "000708": {
    "price": 13.59,
@@ -5697,6 +5443,13 @@
    "turnover": 0.81,
    "name": "盐湖股份"
   },
+  "000798": {
+   "price": 9.95,
+   "pct": -3.12,
+   "amount": 328290000.0,
+   "turnover": 8.87,
+   "name": "中水渔业"
+  },
   "000823": {
    "price": 23.9,
    "pct": 5.61,
@@ -5711,13 +5464,6 @@
    "turnover": 13.38,
    "name": "国风新材"
   },
-  "000868": {
-   "price": 4.0,
-   "pct": 2.3,
-   "amount": 421640000.0,
-   "turnover": 10.88,
-   "name": "安凯客车"
-  },
   "000876": {
    "price": 7.3,
    "pct": -1.08,
@@ -5731,13 +5477,6 @@
    "amount": 38060000.0,
    "turnover": 0.14,
    "name": "天山股份"
-  },
-  "000915": {
-   "price": 24.31,
-   "pct": -1.7,
-   "amount": 39670000.0,
-   "turnover": 0.69,
-   "name": "华特达因"
   },
   "000921": {
    "price": 28.04,
@@ -5858,19 +5597,12 @@
    "turnover": 3.72,
    "name": "ST合力泰"
   },
-  "002223": {
-   "price": 26.07,
-   "pct": 2.24,
-   "amount": 286580000.0,
-   "turnover": 1.17,
-   "name": "鱼跃医疗"
-  },
-  "002268": {
-   "price": 14.48,
-   "pct": -1.03,
-   "amount": 509950000.0,
-   "turnover": 4.05,
-   "name": "电科网安"
+  "002230": {
+   "price": 39.0,
+   "pct": -1.52,
+   "amount": 589740000.0,
+   "turnover": 0.68,
+   "name": "科大讯飞"
   },
   "002303": {
    "price": 5.26,
@@ -5893,12 +5625,12 @@
    "turnover": 2.97,
    "name": "新亚制程"
   },
-  "002472": {
-   "price": 36.22,
-   "pct": 1.74,
-   "amount": 940650000.0,
-   "turnover": 3.45,
-   "name": "双环传动"
+  "002402": {
+   "price": 18.51,
+   "pct": 1.04,
+   "amount": 374360000.0,
+   "turnover": 2.46,
+   "name": "和而泰"
   },
   "002487": {
    "price": 39.44,
@@ -6033,13 +5765,6 @@
    "turnover": 4.79,
    "name": "英联股份"
   },
-  "002881": {
-   "price": 40.33,
-   "pct": -0.47,
-   "amount": 259740000.0,
-   "turnover": 3.49,
-   "name": "美格智能"
-  },
   "002897": {
    "price": 74.99,
    "pct": 5.04,
@@ -6089,6 +5814,13 @@
    "turnover": 24.79,
    "name": "万讯自控"
   },
+  "300146": {
+   "price": 9.24,
+   "pct": -0.54,
+   "amount": 69770000.0,
+   "turnover": 0.67,
+   "name": "汤臣倍健"
+  },
   "300154": {
    "price": 13.75,
    "pct": 0.07,
@@ -6130,13 +5862,6 @@
    "amount": 250570000.0,
    "turnover": 6.6,
    "name": "ST信源"
-  },
-  "300357": {
-   "price": 18.92,
-   "pct": -0.68,
-   "amount": 98120000.0,
-   "turnover": 1.07,
-   "name": "我武生物"
   },
   "300426": {
    "price": 6.94,
@@ -6207,13 +5932,6 @@
    "amount": 420120000.0,
    "turnover": 8.47,
    "name": "创业黑马"
-  },
-  "300697": {
-   "price": 14.49,
-   "pct": -1.23,
-   "amount": 154010000.0,
-   "turnover": 3.15,
-   "name": "电工合金"
   },
   "300741": {
    "price": 20.99,
@@ -6292,6 +6010,13 @@
    "turnover": 4.34,
    "name": "博硕科技"
   },
+  "300979": {
+   "price": 33.66,
+   "pct": -0.21,
+   "amount": 60860000.0,
+   "turnover": 0.15,
+   "name": "华利集团"
+  },
   "300991": {
    "price": 31.6,
    "pct": 2.46,
@@ -6327,6 +6052,13 @@
    "turnover": 1.42,
    "name": "中捷精工"
   },
+  "301078": {
+   "price": 6.88,
+   "pct": -1.71,
+   "amount": 100020000.0,
+   "turnover": 1.15,
+   "name": "孩子王"
+  },
   "301108": {
    "price": 41.2,
    "pct": 1.93,
@@ -6355,26 +6087,12 @@
    "turnover": 22.57,
    "name": "满坤科技"
   },
-  "301155": {
-   "price": 44.2,
-   "pct": 12.84,
-   "amount": 624920000.0,
-   "turnover": 11.85,
-   "name": "海力风电"
-  },
   "301183": {
    "price": 264.68,
    "pct": 2.84,
    "amount": 1200570000.0,
    "turnover": 7.78,
    "name": "东田微"
-  },
-  "301207": {
-   "price": 17.9,
-   "pct": -0.78,
-   "amount": 129300000.0,
-   "turnover": 1.2,
-   "name": "华兰疫苗"
   },
   "301234": {
    "price": 106.0,
@@ -6397,13 +6115,6 @@
    "turnover": 10.07,
    "name": "金禄电子"
   },
-  "301291": {
-   "price": 33.8,
-   "pct": -1.02,
-   "amount": 193310000.0,
-   "turnover": 3.4,
-   "name": "明阳电气"
-  },
   "301323": {
    "price": 75.63,
    "pct": 3.84,
@@ -6425,26 +6136,12 @@
    "turnover": 2.39,
    "name": "致欧科技"
   },
-  "301398": {
-   "price": 37.07,
-   "pct": 3.92,
-   "amount": 71480000.0,
-   "turnover": 1.79,
-   "name": "星源卓镁"
-  },
   "301456": {
    "price": 24.77,
    "pct": 4.87,
    "amount": 139690000.0,
    "turnover": 8.32,
    "name": "盘古智能"
-  },
-  "301633": {
-   "price": 51.2,
-   "pct": -3.01,
-   "amount": 36520000.0,
-   "turnover": 2.74,
-   "name": "港迪技术"
   },
   "600009": {
    "price": 23.06,
@@ -6516,6 +6213,13 @@
    "turnover": 0.45,
    "name": "海信视像"
   },
+  "600104": {
+   "price": 11.33,
+   "pct": -2.58,
+   "amount": 1058770000.0,
+   "turnover": 0.8,
+   "name": "上汽集团"
+  },
   "600111": {
    "price": 37.33,
    "pct": 0.57,
@@ -6537,6 +6241,13 @@
    "turnover": 10.24,
    "name": "中闽能源"
   },
+  "600176": {
+   "price": 47.09,
+   "pct": 3.97,
+   "amount": 14675020000.0,
+   "turnover": 7.84,
+   "name": "中国巨石"
+  },
   "600180": {
    "price": 1.7,
    "pct": -10.05,
@@ -6544,12 +6255,26 @@
    "turnover": 4.71,
    "name": "*ST瑞茂"
   },
+  "600183": {
+   "price": 150.25,
+   "pct": 2.91,
+   "amount": 12410850000.0,
+   "turnover": 3.37,
+   "name": "生益科技"
+  },
   "600184": {
    "price": 22.13,
    "pct": 7.53,
    "amount": 1567820000.0,
    "turnover": 12.71,
    "name": "光电股份"
+  },
+  "600186": {
+   "price": 12.66,
+   "pct": -3.95,
+   "amount": 4150720000.0,
+   "turnover": 18.03,
+   "name": "莲花控股"
   },
   "600188": {
    "price": 20.08,
@@ -6578,6 +6303,13 @@
    "amount": 1358270000.0,
    "turnover": 0.59,
    "name": "万华化学"
+  },
+  "600315": {
+   "price": 17.63,
+   "pct": -1.23,
+   "amount": 69290000.0,
+   "turnover": 0.58,
+   "name": "上海家化"
   },
   "600346": {
    "price": 16.67,
@@ -6621,6 +6353,27 @@
    "turnover": 4.41,
    "name": "方正科技"
   },
+  "600612": {
+   "price": 32.04,
+   "pct": -1.6,
+   "amount": 42420000.0,
+   "turnover": 0.42,
+   "name": "老凤祥"
+  },
+  "600629": {
+   "price": 15.82,
+   "pct": -2.1,
+   "amount": 248620000.0,
+   "turnover": 1.35,
+   "name": "华建集团"
+  },
+  "600710": {
+   "price": 11.38,
+   "pct": -0.96,
+   "amount": 192560000.0,
+   "turnover": 1.29,
+   "name": "苏美达"
+  },
   "600782": {
    "price": 2.71,
    "pct": -0.73,
@@ -6635,12 +6388,19 @@
    "turnover": 0.49,
    "name": "华新建材"
   },
-  "600930": {
-   "price": 3.96,
-   "pct": 0.51,
-   "amount": 727560000.0,
-   "turnover": 1.72,
-   "name": "华电新能"
+  "600967": {
+   "price": 13.42,
+   "pct": -6.22,
+   "amount": 1677510000.0,
+   "turnover": 7.22,
+   "name": "内蒙一机"
+  },
+  "600977": {
+   "price": 12.54,
+   "pct": -1.95,
+   "amount": 203050000.0,
+   "turnover": 0.86,
+   "name": "中国电影"
   },
   "600999": {
    "price": 17.22,
@@ -6648,6 +6408,13 @@
    "amount": 451960000.0,
    "turnover": 0.35,
    "name": "XD招商证"
+  },
+  "601006": {
+   "price": 4.76,
+   "pct": -1.04,
+   "amount": 604810000.0,
+   "turnover": 0.64,
+   "name": "大秦铁路"
   },
   "601018": {
    "price": 3.5,
@@ -6670,6 +6437,13 @@
    "turnover": 0.1,
    "name": "中国神华"
   },
+  "601098": {
+   "price": 10.22,
+   "pct": 0.89,
+   "amount": 121360000.0,
+   "turnover": 0.66,
+   "name": "中南传媒"
+  },
   "601111": {
    "price": 5.79,
    "pct": 0.35,
@@ -6690,6 +6464,13 @@
    "amount": 298770000.0,
    "turnover": 4.72,
    "name": "江南水务"
+  },
+  "601208": {
+   "price": 49.37,
+   "pct": 2.24,
+   "amount": 3086900000.0,
+   "turnover": 6.13,
+   "name": "东材科技"
   },
   "601211": {
    "price": 17.5,
@@ -6718,20 +6499,6 @@
    "amount": 567450000.0,
    "turnover": 1.04,
    "name": "桐昆股份"
-  },
-  "601360": {
-   "price": 8.94,
-   "pct": -1.0,
-   "amount": 1645300000.0,
-   "turnover": 2.57,
-   "name": "三六零"
-  },
-  "601567": {
-   "price": 14.34,
-   "pct": 1.2,
-   "amount": 569750000.0,
-   "turnover": 2.87,
-   "name": "三星电气"
   },
   "601579": {
    "price": 25.75,
@@ -6803,6 +6570,13 @@
    "turnover": 3.65,
    "name": "招商南油"
   },
+  "601985": {
+   "price": 9.02,
+   "pct": -0.44,
+   "amount": 555020000.0,
+   "turnover": 0.33,
+   "name": "中国核电"
+  },
   "603082": {
    "price": 48.16,
    "pct": 10.0,
@@ -6823,13 +6597,6 @@
    "amount": 486070000.0,
    "turnover": 1.04,
    "name": "春风动力"
-  },
-  "603160": {
-   "price": 52.01,
-   "pct": 3.19,
-   "amount": 242960000.0,
-   "turnover": 1.0,
-   "name": "汇顶科技"
   },
   "603186": {
    "price": 251.57,
@@ -6915,6 +6682,13 @@
    "turnover": 16.5,
    "name": "三力制药"
   },
+  "603650": {
+   "price": 68.7,
+   "pct": 2.84,
+   "amount": 2038410000.0,
+   "turnover": 4.91,
+   "name": "彤程新材"
+  },
   "603657": {
    "price": 32.59,
    "pct": 3.82,
@@ -6992,19 +6766,19 @@
    "turnover": 13.08,
    "name": "澳弘电子"
   },
+  "605090": {
+   "price": 32.62,
+   "pct": -0.18,
+   "amount": 127840000.0,
+   "turnover": 0.55,
+   "name": "九丰能源"
+  },
   "605198": {
    "price": 81.0,
    "pct": -2.23,
    "amount": 495170000.0,
    "turnover": 2.22,
    "name": "安德利"
-  },
-  "605300": {
-   "price": 9.7,
-   "pct": -1.62,
-   "amount": 53900000.0,
-   "turnover": 1.21,
-   "name": "佳禾食品"
   },
   "605507": {
    "price": 17.73,
@@ -7041,13 +6815,6 @@
    "turnover": 8.62,
    "name": "方邦股份"
   },
-  "688039": {
-   "price": 32.1,
-   "pct": -0.83,
-   "amount": 56920000.0,
-   "turnover": 1.59,
-   "name": "当虹科技"
-  },
   "688090": {
    "price": 77.55,
    "pct": 5.83,
@@ -7068,13 +6835,6 @@
    "amount": 625130000.0,
    "turnover": 3.58,
    "name": "莱特光电"
-  },
-  "688208": {
-   "price": 25.23,
-   "pct": -1.21,
-   "amount": 69280000.0,
-   "turnover": 0.41,
-   "name": "道通科技"
   },
   "688209": {
    "price": 35.58,
@@ -7110,13 +6870,6 @@
    "amount": 1185190000.0,
    "turnover": 3.66,
    "name": "铂力特"
-  },
-  "688349": {
-   "price": 13.15,
-   "pct": 1.15,
-   "amount": 168720000.0,
-   "turnover": 0.82,
-   "name": "三一重能"
   },
   "688485": {
    "price": 104.2,
