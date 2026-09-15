@@ -1852,15 +1852,31 @@ async function askStockAI(){
     var qq = await getStockQuote(secid);
     var fin = await getFinance(secid).catch(function(){ return []; });
     var ff2 = await getStockFundFlow(secid).catch(function(){ return []; });
-    var lastMain = (ff2&&ff2.length)? (+ff2[ff2.length-1].main)*10000 : null;
+    var lastMain = (ff2&&ff2.length)? (+ff2[ff2.length-1].main) : null;   // 单位为元，勿再乘 10000（原先放大 1e4 倍）
+    /* 行业景气数据（生猪产业链）一并喂给模型，避免它再要求「自行核实」 */
+    var agriCtx = '';
+    if(isAgriIndustry(qq.industry)){
+      var ag = await getAgriData().catch(function(){ return null; });
+      if(ag && ag.latest && ag.latest.hog){
+        var AL = ag.latest, AR = AL.ratio || {}, lvl = ratioLevel(AR.value);
+        agriCtx = '行业景气（已自动抓取，无需再让用户核实）：'
+          + '生猪期货连续 ' + AL.hog.price + ' 元/吨（' + fmtPctS(AL.hog.pct) + '，' + (AL.hog.price/1000).toFixed(2) + ' 元/公斤）；'
+          + '玉米连续 ' + AL.corn.price + ' 元/吨；豆粕连续 ' + (AL.soyo? AL.soyo.price : '-') + ' 元/吨；'
+          + '猪粮比 ' + AR.value + ' : 1（预警档：' + lvl.txt + (AR.daysBelow6!=null? '；近120个交易日有 '+AR.daysBelow6+' 天低于盈亏平衡线 6.0' : '') + '）；'
+          + '生猪期货 20日' + fmtPctS(AL.hog.chg20) + '、60日' + fmtPctS(AL.hog.chg60)
+          + '，区间 [低 ' + (AL.hog.low/1000).toFixed(2) + ' ~ 高 ' + (AL.hog.high/1000).toFixed(2) + '] 元/公斤；'
+          + '豆粕20日' + fmtPctS(AL.soyo? AL.soyo.chg20 : null) + '（饲料成本方向）。'
+          + '注意：能繁母猪存栏量无免费接口，这一项仍需用户人工核实（农业农村部月度发布）。';
+      }
+    }
     var ctx = ['个股：'+qq.name+'（'+qq.code+'）',
       '现价 '+qq.price+'，涨跌幅 '+fmtPct(qq.pct),
       'PE(TTM) '+(qq.peTTM!=null?qq.peTTM.toFixed(2):'-')+'，PB '+(qq.pb!=null?qq.pb.toFixed(2):'-')+(qq.dv!=null?'，股息率 '+qq.dv.toFixed(2)+'%':''),
       '总市值 '+fmtMoney(qq.totalMcap)+'，换手率 '+(qq.turnover!=null?qq.turnover.toFixed(2)+'%':'-'),
       '最新主力净流入 '+(lastMain!=null?fmtMoney(lastMain):'-'),
-      '最近财务：'+ (fin.length? fin.slice(0,4).map(function(r){ return r.date+' 营收'+fmtMoney(r.revenue)+'(同比'+(r.revYoY!=null?r.revYoY.toFixed(1)+'%':'-')+') 净利'+fmtMoney(r.profit)+'(同比'+(r.profYoY!=null?r.profYoY.toFixed(1)+'%':'-')+') ROE'+(r.roe!=null?r.roe.toFixed(1)+'%':'-'); }).join('；') : '暂无')].join('\n');
+      '最近财务：'+ (fin.length? fin.slice(0,4).map(function(r){ return r.date+' 营收'+fmtMoney(r.revenue)+'(同比'+(r.revYoY!=null?r.revYoY.toFixed(1)+'%':'-')+') 净利'+fmtMoney(r.profit)+'(同比'+(r.profYoY!=null?r.profYoY.toFixed(1)+'%':'-')+') ROE'+(r.roe!=null?r.roe.toFixed(1)+'%':'-'); }).join('；') : '暂无'), agriCtx].filter(function(x){ return x; }).join('\n');
     var full = await aiChat([
-      {role:'system',content:'你是严谨的股票研究助手。基于用户提供的客观数据回答问题：客观分析基本面、估值水平（PE/PB/股息率相对历史的感觉）、风险点。必须区分"数据事实"与"推测"。不推荐买卖，不预测涨跌。用markdown格式。'},
+      {role:'system',content:'你是严谨的股票研究助手。基于用户提供的客观数据回答问题：客观分析基本面、估值水平（PE/PB/股息率相对历史的感觉）、风险点。必须区分"数据事实"与"推测"。不推荐买卖，不预测涨跌。用markdown格式。上下文若已提供行业景气数据（期货价/猪粮比等），请直接使用，不要再让用户去核实这些数据；仅当某项确实未提供时才提示需人工核实。'},
       {role:'user',content:ctx+'\n\n用户问题：'+q}], function(delta){
       out.innerHTML = '<span class="thinking">🤔 分析中…</span><br>' + esc(delta);
     });
