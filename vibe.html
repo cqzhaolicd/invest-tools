@@ -789,6 +789,15 @@ function judgePosition(d){
 }
 function pctCls(v){ if(v==null||isNaN(v)||v===0) return ''; return v>0?'up':'down'; }
 function showErr(id, msg){ var el=$(id); if(!el) return; if(msg){ el.textContent=msg; el.classList.add('show'); } else el.classList.remove('show'); }
+/* 维度位置选股：四组切换（磨底/左侧试仓/右侧确认/主升启动） */
+function dimTab(i){
+  for(var k=0;k<4;k++){
+    var p = document.getElementById('dimTab-'+k);
+    if(p) p.style.display = (k===i)? '' : 'none';
+    var b = document.getElementById('dimTabBtn-'+k);
+    if(b) b.className = 'btn ' + (k===i? 'btn-blue' : 'btn-outline');
+  }
+}
 async function fetchJSON(url, opt){
   var r = await fetch(url, Object.assign({}, opt, {headers:Object.assign({'User-Agent':'Mozilla/5.0','Referer':'https://quote.eastmoney.com/'}, (opt&&opt.headers)||{})}));
   if(!r.ok) throw new Error('HTTP '+r.status);
@@ -2244,6 +2253,54 @@ function renderSequoia(){
     + '<div class="idx"><div class="nm">去重标的</div><div class="val">'+(d.total||0)+'</div></div>'
     + '<div class="idx"><div class="nm">增量行数</div><div class="val">'+(d.syncedRows||0)+'</div></div>'
     + '</div><div class="hint" style="margin-top:10px">📌 规则化扫描（海龟/均线放量/高窄旗形/涨停洗盘/上升跌停/RPS/定增），不含大模型判断；价格为后复权序列最新值，涨跌幅为最新交易日。客观名单，非投资建议。</div></div>';
+  /* 维度位置选股（全市场七维度扫描 → 四类各 10 只） */
+  if(d.dimension && d.dimension.groups){
+    var GO = ['磨底','左侧试仓','右侧确认','主升启动'];
+    var GM = {
+      '磨底':    {ic:'🪨', cl:'tag-gold',  ds:'底部 + 零轴下 + 死叉 + 缩量（越缩量越靠前）'},
+      '左侧试仓':{ic:'🫱', cl:'tag-green', ds:'底部 + 金叉 + 放量/平量 + 单次（底背离共振优先）'},
+      '右侧确认':{ic:'✅', cl:'tag-green', ds:'底部 + 金叉 + 放量/平量 + 多次（趋势已确认，可加仓）'},
+      '主升启动':{ic:'🚀', cl:'tag-red',   ds:'腰部 + 零轴上 + 金叉 + 放量/平量 + 单次'}
+    };
+    var dst = d.dimension.stats || {}, dfil = d.dimension.filters || {};
+    h += '<div class="card"><h3><span class="n">🧭</span>维度位置选股 '
+      + '<span style="font-weight:400;font-size:.8rem;color:var(--text3)">（全市场 '+(dst.scanned||0)+' 只套用《股票维度参考》七维度扫描 · 四类各 '
+      + Math.max.apply(null, GO.map(function(g){ return (d.dimension.groups[g]||[]).length; })) + ' 只 · 过滤：≥'+(dfil.minBars||260)+'根K线 / 成交额≥'+fmtMoney(dfil.minAmount||3e7)+' / 剔除 ST·退市）</span></h3>';
+    h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">';
+    GO.forEach(function(g,i){
+      var n = (d.dimension.groups[g]||[]).length;
+      h += '<button class="btn '+(i===0?'btn-blue':'btn-outline')+'" id="dimTabBtn-'+i+'" onclick="dimTab('+i+')">'+GM[g].ic+' '+g+' <span style="opacity:.75">'+n+'</span></button>';
+    });
+    h += '</div>';
+    GO.forEach(function(g,i){
+      var lst = d.dimension.groups[g]||[];
+      h += '<div id="dimTab-'+i+'" style="'+(i===0?'':'display:none')+'">';
+      h += '<div class="hint" style="margin-bottom:8px">判定条件：<b>'+GM[g].ds+'</b></div>';
+      if(!lst.length){ h += '<div class="hint">今日无命中</div></div>'; return; }
+      h += '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>动作</th><th>②周期</th><th>③MACD</th><th>④信号</th><th>⑤量能</th><th>⑥次数</th><th>距高点</th><th>成交额</th><th>现价</th><th>涨跌幅</th><th>行情</th></tr>';
+      lst.forEach(function(x){
+        var q = (d.quotes && d.quotes[x.code]) || {};
+        var nm = (d.names && d.names[x.code]) || x.name || x.code;
+        var xq = /^6/.test(x.code)? ('SH'+x.code) : (/^[48]/.test(x.code)? ('BJ'+x.code) : ('SZ'+x.code));
+        var cycCls = x.cycle==='底部'? 'tag-red' : (x.cycle==='顶部'? 'tag-gold' : 'tag-green');
+        h += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(nm)+'</td>'
+          + '<td><span class="tag '+GM[g].cl+'" title="'+esc([x.cycle, x.macdPos, x.signal+(x.signalAgo!=null?('('+x.signalAgo+'日前)'):''), x.volState+' 量比'+(x.volRatio5!=null?x.volRatio5:'-'), x.times].join(' · '))+'">'+esc(x.act)+'</span></td>'
+          + '<td><span class="tag '+cycCls+'">'+esc(x.cycle)+'</span></td>'
+          + '<td>'+esc(x.macdPos)+'</td>'
+          + '<td style="white-space:nowrap">'+esc(x.signal)+(x.signalAgo!=null?(' <span style="color:var(--text3)">'+x.signalAgo+'日</span>'):'')
+          + (x.divs&&x.divs.length? (' <span class="tag tag-gold">'+esc(x.divs.join('/'))+'</span>'):'')+'</td>'
+          + '<td style="white-space:nowrap">'+esc(x.volState||'-')+(x.volRatio5!=null?(' <span style="color:var(--text3)">×'+x.volRatio5+'</span>'):'')+'</td>'
+          + '<td>'+esc(x.times||'-')+(x.count?(' <span style="color:var(--text3)">'+x.count+'次</span>'):'')+'</td>'
+          + '<td class="num '+pctCls(x.drawdown)+'">'+fmtPct(x.drawdown)+'</td>'
+          + '<td class="num">'+fmtMoney(q.amount!=null? q.amount : x.amount)+'</td>'
+          + '<td class="num">'+(q.price!=null? Number(q.price).toFixed(2) : '-')+'</td>'
+          + '<td class="num '+pctCls(q.pct)+'">'+fmtPct(q.pct)+'</td>'
+          + '<td><a href="https://xueqiu.com/S/'+xq+'" target="_blank" rel="noopener">雪球</a></td></tr>';
+      });
+      h += '</table></div></div>';
+    });
+    h += '<div class="hint" style="margin-top:8px">规则与投资中心「自选股 · 位置判断」<b>完全同源</b>（《股票维度参考》15 条矩阵）；②行业周期为个股自身推断（距 500 日高点回撤 + 半年线/年线），与 Sequoia 周期板块同口径。数据为交易日盘后快照，<b>客观名单，非投资建议</b>。</div></div>';
+  }
   if(d.cycle && d.cycle.length){
     var reds = d.cycle.filter(function(b){ return b.keyRed; }).length;
     h += '<div class="card"><h3><span class="n">🔄</span>周期股策略 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（典型周期板块定位 · 等权指数半年线/年线 · 每板块 5 龙头'+(reds?(' · 🔴 底部≥6个月 '+reds+' 个'):'')+'）</span></h3>';

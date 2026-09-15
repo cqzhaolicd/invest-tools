@@ -1,8 +1,8 @@
 {
- "generatedAt": "2026-09-15 19:32:35",
+ "generatedAt": "2026-09-15 19:35:41",
  "dataDate": "2026-09-15",
  "universe": 5558,
- "total": 201,
+ "total": 225,
  "strategies": [
   {
    "name": "MaVolumeStrategy",
@@ -685,6 +685,741 @@
    ]
   }
  ],
+ "dimension": {
+  "groups": {
+   "磨底": [
+    {
+     "code": "000915",
+     "name": "华特达因",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 1,
+     "volState": "缩量",
+     "volRatio5": 0.19,
+     "count": 2,
+     "times": "多次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -26.53,
+     "amount": 39669027.0
+    },
+    {
+     "code": "603899",
+     "name": "晨光股份",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.26,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -34.22,
+     "amount": 37820223.0
+    },
+    {
+     "code": "688039",
+     "name": "当虹科技",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 0,
+     "volState": "缩量",
+     "volRatio5": 0.29,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -52.49,
+     "amount": 56920209.0
+    },
+    {
+     "code": "688208",
+     "name": "道通科技",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 0,
+     "volState": "缩量",
+     "volRatio5": 0.3,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -38.98,
+     "amount": 69284538.0
+    },
+    {
+     "code": "300697",
+     "name": "电工合金",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.32,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -31.82,
+     "amount": 154012248.0
+    },
+    {
+     "code": "002881",
+     "name": "美格智能",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.34,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -43.12,
+     "amount": 259743818.0
+    },
+    {
+     "code": "301633",
+     "name": "港迪技术",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 3,
+     "volState": "缩量",
+     "volRatio5": 0.35,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -61.8,
+     "amount": 36515294.0
+    },
+    {
+     "code": "605300",
+     "name": "佳禾食品",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.35,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -46.72,
+     "amount": 53896721.0
+    },
+    {
+     "code": "300357",
+     "name": "我武生物",
+     "pos": "底部",
+     "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 17,
+     "volState": "缩量",
+     "volRatio5": 0.35,
+     "count": 2,
+     "times": "多次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -45.88,
+     "amount": 98120662.0
+    },
+    {
+     "code": "002557",
+     "name": "洽洽食品",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.35,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -39.97,
+     "amount": 54598477.0
+    }
+   ],
+   "左侧试仓": [
+    {
+     "code": "301155",
+     "name": "海力风电",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 2.41,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -55.66,
+     "amount": 624924999.0
+    },
+    {
+     "code": "601567",
+     "name": "三星电气",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 2.36,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -56.66,
+     "amount": 569747712.0
+    },
+    {
+     "code": "688349",
+     "name": "三一重能",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 2.13,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -48.17,
+     "amount": 168723872.0
+    },
+    {
+     "code": "600930",
+     "name": "华电新能",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 16,
+     "volState": "放量",
+     "volRatio5": 1.74,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -48.25,
+     "amount": 727561020.0
+    },
+    {
+     "code": "603160",
+     "name": "汇顶科技",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 11,
+     "volState": "放量",
+     "volRatio5": 1.62,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -44.93,
+     "amount": 242956999.0
+    },
+    {
+     "code": "000425",
+     "name": "徐工机械",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 10,
+     "volState": "平量",
+     "volRatio5": 1.45,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -36.81,
+     "amount": 913933451.0
+    },
+    {
+     "code": "002472",
+     "name": "双环传动",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 7,
+     "volState": "平量",
+     "volRatio5": 1.36,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -29.22,
+     "amount": 940647243.0
+    },
+    {
+     "code": "000531",
+     "name": "穗恒运A",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 13,
+     "volState": "平量",
+     "volRatio5": 1.29,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -30.67,
+     "amount": 83907352.0
+    },
+    {
+     "code": "301398",
+     "name": "星源卓镁",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 12,
+     "volState": "平量",
+     "volRatio5": 1.22,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -44.01,
+     "amount": 71484618.0
+    },
+    {
+     "code": "301291",
+     "name": "明阳电气",
+     "pos": "底部",
+     "act": "左侧试仓（底背离共振）",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "平量",
+     "volRatio5": 1.1,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "底背离"
+     ],
+     "drawdown": -51.48,
+     "amount": 193310676.0
+    }
+   ],
+   "右侧确认": [
+    {
+     "code": "000981",
+     "name": "山子高科",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 7.2,
+     "count": 3,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -46.75,
+     "amount": 4627797351.0
+    },
+    {
+     "code": "002223",
+     "name": "鱼跃医疗",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 2.17,
+     "count": 3,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -40.39,
+     "amount": 286582042.0
+    },
+    {
+     "code": "601360",
+     "name": "三六零",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 1.78,
+     "count": 3,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -39.61,
+     "amount": 1645298641.0
+    },
+    {
+     "code": "301207",
+     "name": "华兰疫苗",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "平量",
+     "volRatio5": 0.83,
+     "count": 3,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -28.05,
+     "amount": 129304764.0
+    },
+    {
+     "code": "000868",
+     "name": "安凯客车",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 5,
+     "volState": "放量",
+     "volRatio5": 9.13,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -46.37,
+     "amount": 421644594.0
+    },
+    {
+     "code": "002212",
+     "name": "天融信",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 5.81,
+     "count": 2,
+     "times": "多次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -40.18,
+     "amount": 2778129936.0
+    },
+    {
+     "code": "003001",
+     "name": "中岩大地",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 4.09,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -56.2,
+     "amount": 214508468.0
+    },
+    {
+     "code": "002846",
+     "name": "英联股份",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 3.69,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -48.73,
+     "amount": 148830929.0
+    },
+    {
+     "code": "603686",
+     "name": "福龙马",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 3.42,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -59.72,
+     "amount": 918080548.0
+    },
+    {
+     "code": "002268",
+     "name": "电科网安",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 3.04,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -38.93,
+     "amount": 509952685.0
+    }
+   ],
+   "主升启动": [
+    {
+     "code": "605507",
+     "name": "国邦医药",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 7,
+     "volState": "放量",
+     "volRatio5": 7.06,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -12.73,
+     "amount": 473697090.0
+    },
+    {
+     "code": "688004",
+     "name": "博汇科技",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 6.02,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -7.03,
+     "amount": 342112642.0
+    },
+    {
+     "code": "002522",
+     "name": "浙江众成",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 5.27,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -30.09,
+     "amount": 651917671.0
+    },
+    {
+     "code": "002560",
+     "name": "通达股份",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 14,
+     "volState": "放量",
+     "volRatio5": 5.23,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -40.16,
+     "amount": 1737855959.0
+    },
+    {
+     "code": "002584",
+     "name": "西陇科学",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 4.53,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -21.87,
+     "amount": 545163647.0
+    },
+    {
+     "code": "603439",
+     "name": "三力制药",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 4.28,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -16.43,
+     "amount": 965516349.0
+    },
+    {
+     "code": "600163",
+     "name": "中闽能源",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 12,
+     "volState": "放量",
+     "volRatio5": 3.98,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -23.64,
+     "amount": 1179112060.0
+    },
+    {
+     "code": "000859",
+     "name": "国风新材",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 3.66,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -28.52,
+     "amount": 1151343346.0
+    },
+    {
+     "code": "000993",
+     "name": "闽东电力",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 11,
+     "volState": "放量",
+     "volRatio5": 3.34,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": 0.0,
+     "amount": 2210807016.0
+    },
+    {
+     "code": "002585",
+     "name": "双星新材",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 1,
+     "volState": "放量",
+     "volRatio5": 3.29,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -18.85,
+     "amount": 2331857903.0
+    }
+   ]
+  },
+  "stats": {
+   "scanned": 4326,
+   "skipped": 818
+  },
+  "filters": {
+   "minBars": 260,
+   "minAmount": 30000000,
+   "exclude": [
+    "ST",
+    "退",
+    "退市"
+   ]
+  }
+ },
  "quotes": {
   "000002": {
    "price": 3.02,
@@ -735,6 +1470,13 @@
    "turnover": 1.2,
    "name": "柳工"
   },
+  "000531": {
+   "price": 5.79,
+   "pct": 0.17,
+   "amount": 83910000.0,
+   "turnover": 1.59,
+   "name": "穗恒运A"
+  },
   "000708": {
    "price": 13.59,
    "pct": 0.44,
@@ -777,6 +1519,13 @@
    "turnover": 13.38,
    "name": "国风新材"
   },
+  "000868": {
+   "price": 4.0,
+   "pct": 2.3,
+   "amount": 421640000.0,
+   "turnover": 10.88,
+   "name": "安凯客车"
+  },
   "000876": {
    "price": 7.3,
    "pct": -1.08,
@@ -790,6 +1539,13 @@
    "amount": 38060000.0,
    "turnover": 0.14,
    "name": "天山股份"
+  },
+  "000915": {
+   "price": 24.31,
+   "pct": -1.7,
+   "amount": 39670000.0,
+   "turnover": 0.69,
+   "name": "华特达因"
   },
   "000921": {
    "price": 28.04,
@@ -910,6 +1666,20 @@
    "turnover": 3.72,
    "name": "ST合力泰"
   },
+  "002223": {
+   "price": 26.07,
+   "pct": 2.24,
+   "amount": 286580000.0,
+   "turnover": 1.17,
+   "name": "鱼跃医疗"
+  },
+  "002268": {
+   "price": 14.48,
+   "pct": -1.03,
+   "amount": 509950000.0,
+   "turnover": 4.05,
+   "name": "电科网安"
+  },
   "002303": {
    "price": 5.26,
    "pct": 1.74,
@@ -930,6 +1700,13 @@
    "amount": 93400000.0,
    "turnover": 2.97,
    "name": "新亚制程"
+  },
+  "002472": {
+   "price": 36.22,
+   "pct": 1.74,
+   "amount": 940650000.0,
+   "turnover": 3.45,
+   "name": "双环传动"
   },
   "002487": {
    "price": 39.44,
@@ -958,6 +1735,13 @@
    "amount": 1277480000.0,
    "turnover": 9.75,
    "name": "天顺风能"
+  },
+  "002557": {
+   "price": 18.18,
+   "pct": -0.66,
+   "amount": 54600000.0,
+   "turnover": 0.6,
+   "name": "洽洽食品"
   },
   "002560": {
    "price": 7.72,
@@ -1057,6 +1841,13 @@
    "turnover": 4.79,
    "name": "英联股份"
   },
+  "002881": {
+   "price": 40.33,
+   "pct": -0.47,
+   "amount": 259740000.0,
+   "turnover": 3.49,
+   "name": "美格智能"
+  },
   "002897": {
    "price": 74.99,
    "pct": 5.04,
@@ -1148,6 +1939,13 @@
    "turnover": 6.6,
    "name": "ST信源"
   },
+  "300357": {
+   "price": 18.92,
+   "pct": -0.68,
+   "amount": 98120000.0,
+   "turnover": 1.07,
+   "name": "我武生物"
+  },
   "300426": {
    "price": 6.94,
    "pct": -3.61,
@@ -1217,6 +2015,13 @@
    "amount": 420120000.0,
    "turnover": 8.47,
    "name": "创业黑马"
+  },
+  "300697": {
+   "price": 14.49,
+   "pct": -1.23,
+   "amount": 154010000.0,
+   "turnover": 3.15,
+   "name": "电工合金"
   },
   "300741": {
    "price": 20.99,
@@ -1358,12 +2163,26 @@
    "turnover": 22.57,
    "name": "满坤科技"
   },
+  "301155": {
+   "price": 44.2,
+   "pct": 12.84,
+   "amount": 624920000.0,
+   "turnover": 11.85,
+   "name": "海力风电"
+  },
   "301183": {
    "price": 264.68,
    "pct": 2.84,
    "amount": 1200570000.0,
    "turnover": 7.78,
    "name": "东田微"
+  },
+  "301207": {
+   "price": 17.9,
+   "pct": -0.78,
+   "amount": 129300000.0,
+   "turnover": 1.2,
+   "name": "华兰疫苗"
   },
   "301234": {
    "price": 106.0,
@@ -1386,6 +2205,13 @@
    "turnover": 10.07,
    "name": "金禄电子"
   },
+  "301291": {
+   "price": 33.8,
+   "pct": -1.02,
+   "amount": 193310000.0,
+   "turnover": 3.4,
+   "name": "明阳电气"
+  },
   "301323": {
    "price": 75.63,
    "pct": 3.84,
@@ -1407,12 +2233,26 @@
    "turnover": 2.39,
    "name": "致欧科技"
   },
+  "301398": {
+   "price": 37.07,
+   "pct": 3.92,
+   "amount": 71480000.0,
+   "turnover": 1.79,
+   "name": "星源卓镁"
+  },
   "301456": {
    "price": 24.77,
    "pct": 4.87,
    "amount": 139690000.0,
    "turnover": 8.32,
    "name": "盘古智能"
+  },
+  "301633": {
+   "price": 51.2,
+   "pct": -3.01,
+   "amount": 36520000.0,
+   "turnover": 2.74,
+   "name": "港迪技术"
   },
   "600009": {
    "price": 23.06,
@@ -1603,6 +2443,13 @@
    "turnover": 0.49,
    "name": "华新建材"
   },
+  "600930": {
+   "price": 3.96,
+   "pct": 0.51,
+   "amount": 727560000.0,
+   "turnover": 1.72,
+   "name": "华电新能"
+  },
   "600999": {
    "price": 17.22,
    "pct": 0.12,
@@ -1679,6 +2526,20 @@
    "amount": 567450000.0,
    "turnover": 1.04,
    "name": "桐昆股份"
+  },
+  "601360": {
+   "price": 8.94,
+   "pct": -1.0,
+   "amount": 1645300000.0,
+   "turnover": 2.57,
+   "name": "三六零"
+  },
+  "601567": {
+   "price": 14.34,
+   "pct": 1.2,
+   "amount": 569750000.0,
+   "turnover": 2.87,
+   "name": "三星电气"
   },
   "601579": {
    "price": 25.75,
@@ -1770,6 +2631,13 @@
    "amount": 486070000.0,
    "turnover": 1.04,
    "name": "春风动力"
+  },
+  "603160": {
+   "price": 52.01,
+   "pct": 3.19,
+   "amount": 242960000.0,
+   "turnover": 1.0,
+   "name": "汇顶科技"
   },
   "603186": {
    "price": 251.57,
@@ -1890,6 +2758,13 @@
    "turnover": 1.81,
    "name": "南卫股份"
   },
+  "603899": {
+   "price": 22.16,
+   "pct": -0.14,
+   "amount": 37820000.0,
+   "turnover": 0.19,
+   "name": "晨光股份"
+  },
   "603938": {
    "price": 53.17,
    "pct": 6.43,
@@ -1932,6 +2807,13 @@
    "turnover": 2.22,
    "name": "安德利"
   },
+  "605300": {
+   "price": 9.7,
+   "pct": -1.62,
+   "amount": 53900000.0,
+   "turnover": 1.21,
+   "name": "佳禾食品"
+  },
   "605507": {
    "price": 17.73,
    "pct": 9.99,
@@ -1967,6 +2849,13 @@
    "turnover": 8.62,
    "name": "方邦股份"
   },
+  "688039": {
+   "price": 32.1,
+   "pct": -0.83,
+   "amount": 56920000.0,
+   "turnover": 1.59,
+   "name": "当虹科技"
+  },
   "688090": {
    "price": 77.55,
    "pct": 5.83,
@@ -1987,6 +2876,13 @@
    "amount": 625130000.0,
    "turnover": 3.58,
    "name": "莱特光电"
+  },
+  "688208": {
+   "price": 25.23,
+   "pct": -1.21,
+   "amount": 69280000.0,
+   "turnover": 0.41,
+   "name": "道通科技"
   },
   "688209": {
    "price": 35.58,
@@ -2022,6 +2918,13 @@
    "amount": 1185190000.0,
    "turnover": 3.66,
    "name": "铂力特"
+  },
+  "688349": {
+   "price": 13.15,
+   "pct": 1.15,
+   "amount": 168720000.0,
+   "turnover": 0.82,
+   "name": "三一重能"
   },
   "688485": {
    "price": 104.2,
