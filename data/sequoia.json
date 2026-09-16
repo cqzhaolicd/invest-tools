@@ -1,145 +1,223 @@
 {
- "generatedAt": "2026-09-15 20:57:52",
- "dataDate": "2026-09-15",
+ "generatedAt": "2026-09-16 19:34:14",
+ "dataDate": "2026-09-16",
  "universe": 5558,
- "total": 227,
+ "total": 305,
  "strategies": [
   {
    "name": "MaVolumeStrategy",
    "cn": "均线放量",
    "desc": "均线多头 + 放量突破",
    "symbols": [
-    "000859",
-    "002139",
-    "002487",
-    "002522",
-    "002585",
-    "002846",
-    "003001",
-    "300283",
-    "300537",
-    "301323",
-    "600545",
-    "601199",
-    "603439",
-    "603766",
-    "688004",
-    "688137",
-    "688244",
-    "688312",
-    "688486",
-    "688611"
+    "000055",
+    "000726",
+    "001212",
+    "001287",
+    "001378",
+    "002362",
+    "002584",
+    "002806",
+    "003026",
+    "300243",
+    "300443",
+    "300586",
+    "300868",
+    "300905",
+    "301045",
+    "301155",
+    "301300",
+    "301349",
+    "301373",
+    "600360",
+    "600667",
+    "601231",
+    "603010",
+    "603155",
+    "688199",
+    "688398",
+    "688609",
+    "688711"
    ],
-   "count": 20
+   "count": 28
   },
   {
    "name": "TurtleTradeStrategy",
    "cn": "海龟突破",
    "desc": "20日新高 + 成交额过亿 + 阳线防诱多，按涨幅排序",
    "symbols": [
-    "000056",
+    "000592",
+    "000670",
+    "000720",
+    "000731",
+    "000753",
     "000823",
     "000993",
-    "001223",
-    "001965",
-    "002217",
-    "002362",
+    "001212",
+    "001326",
+    "001368",
+    "001378",
+    "002077",
+    "002095",
+    "002137",
+    "002174",
+    "002436",
+    "002489",
+    "002491",
     "002522",
-    "002531",
-    "002560",
+    "002577",
     "002584",
     "002585",
-    "002669",
+    "002617",
+    "002623",
+    "002745",
+    "002787",
+    "002795",
+    "002806",
     "002815",
-    "002897",
-    "300049",
-    "300319",
+    "002824",
+    "002846",
+    "002913",
+    "002973",
+    "003026",
+    "003033",
+    "300151",
+    "300207",
+    "300283",
+    "300292",
+    "300410",
+    "300464",
+    "300473",
     "300497",
+    "300522",
     "300537",
-    "300569",
-    "300592",
+    "300548",
+    "300553",
+    "300623",
+    "300656",
+    "300688",
+    "300689",
+    "300726",
+    "300727",
+    "300741",
     "300752",
     "300806",
-    "300829",
-    "300850",
-    "300904",
-    "300905",
-    "300991",
+    "300820",
+    "300836",
+    "300939",
+    "300992",
+    "301021",
+    "301041",
     "301061",
+    "301067",
+    "301071",
+    "301085",
+    "301183",
+    "301210",
+    "301220",
     "301251",
-    "301366",
-    "301456",
-    "600023",
-    "600163",
-    "600184",
-    "600228",
-    "601218",
-    "603115",
-    "603186",
+    "301265",
+    "301282",
+    "301300",
+    "301373",
+    "301479",
+    "301486",
+    "301580",
+    "301589",
+    "301592",
+    "301608",
+    "301617",
+    "301626",
+    "600059",
+    "600105",
+    "600545",
+    "600793",
+    "601208",
+    "601579",
+    "603011",
+    "603082",
+    "603120",
+    "603155",
+    "603175",
+    "603230",
     "603236",
+    "603248",
+    "603267",
+    "603276",
+    "603306",
+    "603328",
     "603353",
-    "603386",
-    "603686",
-    "603693",
-    "603938",
-    "603989",
+    "603558",
+    "603607",
+    "603615",
+    "603657",
     "605058",
-    "605507",
-    "688020",
+    "605258",
+    "605366",
+    "688001",
+    "688004",
+    "688010",
+    "688025",
+    "688029",
+    "688035",
+    "688048",
     "688090",
-    "688150",
+    "688159",
+    "688170",
+    "688181",
+    "688199",
+    "688209",
     "688216",
-    "688519",
-    "688621",
+    "688432",
+    "688485",
+    "688536",
+    "688605",
+    "688609",
+    "688620",
     "688625",
+    "688699",
+    "688711",
     "688785"
    ],
-   "count": 56
+   "count": 132
   },
   {
    "name": "HighTightFlagStrategy",
    "cn": "高而窄旗形",
    "desc": "高而窄的旗形整理后突破",
    "symbols": [
+    "000533",
     "001268",
-    "002388",
     "002578",
     "002647",
     "300426",
-    "300518",
-    "300749",
-    "301072",
+    "300593",
+    "301122",
     "301127",
+    "601886",
+    "603001",
     "603880"
    ],
-   "count": 10
+   "count": 11
   },
   {
    "name": "LimitUpShakeoutStrategy",
    "cn": "涨停洗盘",
    "desc": "涨停后洗盘回踩确认",
    "symbols": [
-    "000981",
-    "002212",
-    "603657"
+    "002882",
+    "601218"
    ],
-   "count": 3
+   "count": 2
   },
   {
    "name": "UptrendLimitDownStrategy",
    "cn": "上升跌停反包",
    "desc": "上升趋势中的跌停反包",
    "symbols": [
-    "002790",
-    "300227",
-    "300290",
-    "300352",
-    "301068",
-    "600180",
-    "603344",
+    "002912",
     "605577"
    ],
-   "count": 8
+   "count": 2
   },
   {
    "name": "RpsBreakoutStrategy",
@@ -147,30 +225,34 @@
    "desc": "欧奈尔 RPS 相对强度突破",
    "symbols": [
     "000056",
-    "000301",
     "000739",
-    "000921",
     "001210",
     "001326",
+    "002141",
+    "002172",
     "002174",
     "002303",
+    "002388",
+    "002396",
+    "002631",
     "002708",
     "002768",
     "002815",
+    "002821",
     "002832",
     "002913",
     "003033",
-    "300112",
     "300154",
-    "300454",
+    "300192",
+    "300464",
     "300592",
     "300628",
     "300688",
     "300741",
+    "300802",
     "300903",
     "300939",
     "300951",
-    "301046",
     "301072",
     "301108",
     "301122",
@@ -181,31 +263,43 @@
     "301282",
     "301366",
     "301376",
-    "600060",
     "600228",
+    "600400",
     "600601",
     "601579",
+    "601609",
     "601886",
     "603082",
-    "603129",
     "603186",
     "603228",
+    "603236",
     "603259",
     "603268",
+    "603270",
     "603373",
+    "603657",
+    "603838",
     "603880",
+    "603980",
     "603991",
     "605058",
     "605198",
     "688002",
+    "688004",
+    "688137",
+    "688202",
     "688209",
+    "688293",
     "688333",
+    "688448",
     "688485",
     "688600",
-    "688612",
-    "688646"
+    "688620",
+    "688646",
+    "688690",
+    "688758"
    ],
-   "count": 58
+   "count": 74
   },
   {
    "name": "PrivatePlacementStrategy",
@@ -219,16 +313,16 @@
   {
    "name": "房地产",
    "stage": "底部",
-   "stageDays": 36,
-   "stageDaysTrade": 27,
+   "stageDays": 37,
+   "stageDaysTrade": 28,
    "since": "2026-08-10",
    "deepSince": "2025-10-16",
-   "deepDays": 334,
-   "deepDaysTrade": 226,
-   "drawdown": -52.87,
-   "close": 639.51,
-   "ma120": 713.53,
-   "ma250": 827.9,
+   "deepDays": 335,
+   "deepDaysTrade": 227,
+   "drawdown": -52.93,
+   "close": 638.74,
+   "ma120": 712.01,
+   "ma250": 826.64,
    "goldenCross": false,
    "keyRed": true,
    "hi": 1356.89,
@@ -258,16 +352,16 @@
   {
    "name": "有色金属",
    "stage": "底部",
-   "stageDays": 20,
-   "stageDaysTrade": 15,
+   "stageDays": 21,
+   "stageDaysTrade": 16,
    "since": "2026-08-26",
    "deepSince": "2026-08-26",
-   "deepDays": 20,
-   "deepDaysTrade": 15,
-   "drawdown": -34.36,
-   "close": 2302.02,
-   "ma120": 2439.01,
-   "ma250": 2510.96,
+   "deepDays": 21,
+   "deepDaysTrade": 16,
+   "drawdown": -33.47,
+   "close": 2333.23,
+   "ma120": 2437.25,
+   "ma250": 2512.3,
    "goldenCross": false,
    "keyRed": false,
    "hi": 3506.81,
@@ -297,16 +391,16 @@
   {
    "name": "钢铁",
    "stage": "底部",
-   "stageDays": 15,
-   "stageDaysTrade": 12,
+   "stageDays": 16,
+   "stageDaysTrade": 13,
    "since": "2026-08-31",
    "deepSince": "2026-08-31",
-   "deepDays": 15,
-   "deepDaysTrade": 12,
-   "drawdown": -26.37,
-   "close": 1054.85,
-   "ma120": 1100.16,
-   "ma250": 1202.05,
+   "deepDays": 16,
+   "deepDaysTrade": 13,
+   "drawdown": -26.62,
+   "close": 1051.2,
+   "ma120": 1098.67,
+   "ma250": 1201.48,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1432.59,
@@ -334,57 +428,18 @@
    ]
   },
   {
-   "name": "工程机械",
+   "name": "基础化工",
    "stage": "底部",
    "stageDays": 5,
    "stageDaysTrade": 4,
-   "since": "2026-09-10",
-   "deepSince": "2026-09-10",
-   "deepDays": 5,
-   "deepDaysTrade": 4,
-   "drawdown": -27.81,
-   "close": 1374.5,
-   "ma120": 1475.52,
-   "ma250": 1589.39,
-   "goldenCross": false,
-   "keyRed": false,
-   "hi": 1903.88,
-   "leaders": [
-    {
-     "code": "600031",
-     "name": "三一重工"
-    },
-    {
-     "code": "000425",
-     "name": "徐工机械"
-    },
-    {
-     "code": "000157",
-     "name": "中联重科"
-    },
-    {
-     "code": "000528",
-     "name": "柳工"
-    },
-    {
-     "code": "603298",
-     "name": "杭叉集团"
-    }
-   ]
-  },
-  {
-   "name": "基础化工",
-   "stage": "底部",
-   "stageDays": 4,
-   "stageDaysTrade": 3,
    "since": "2026-09-11",
    "deepSince": "2026-09-11",
-   "deepDays": 4,
-   "deepDaysTrade": 3,
-   "drawdown": -29.23,
-   "close": 1100.16,
-   "ma120": 1223.16,
-   "ma250": 1233.45,
+   "deepDays": 5,
+   "deepDaysTrade": 4,
+   "drawdown": -29.56,
+   "close": 1094.96,
+   "ma120": 1221.35,
+   "ma250": 1233.63,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1554.46,
@@ -414,16 +469,16 @@
   {
    "name": "航空机场",
    "stage": "探底",
-   "stageDays": 85,
-   "stageDaysTrade": 62,
+   "stageDays": 86,
+   "stageDaysTrade": 63,
    "since": "2026-06-22",
    "deepSince": "2026-06-22",
-   "deepDays": 85,
-   "deepDaysTrade": 62,
-   "drawdown": -37.14,
-   "close": 825.9,
-   "ma120": 911.04,
-   "ma250": 1039.8,
+   "deepDays": 86,
+   "deepDaysTrade": 63,
+   "drawdown": -37.73,
+   "close": 818.11,
+   "ma120": 909.66,
+   "ma250": 1038.98,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1313.91,
@@ -451,18 +506,57 @@
    ]
   },
   {
+   "name": "工程机械",
+   "stage": "探底",
+   "stageDays": 0,
+   "stageDaysTrade": 1,
+   "since": "2026-09-16",
+   "deepSince": "2026-09-10",
+   "deepDays": 6,
+   "deepDaysTrade": 5,
+   "drawdown": -31.07,
+   "close": 1312.41,
+   "ma120": 1473.33,
+   "ma250": 1588.56,
+   "goldenCross": false,
+   "keyRed": false,
+   "hi": 1903.88,
+   "leaders": [
+    {
+     "code": "600031",
+     "name": "三一重工"
+    },
+    {
+     "code": "000425",
+     "name": "徐工机械"
+    },
+    {
+     "code": "000157",
+     "name": "中联重科"
+    },
+    {
+     "code": "000528",
+     "name": "柳工"
+    },
+    {
+     "code": "603298",
+     "name": "杭叉集团"
+    }
+   ]
+  },
+  {
    "name": "煤炭",
    "stage": "上行",
-   "stageDays": 40,
-   "stageDaysTrade": 29,
+   "stageDays": 41,
+   "stageDaysTrade": 30,
    "since": "2026-08-06",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -11.98,
-   "close": 1223.65,
-   "ma120": 1195.81,
-   "ma250": 1114.44,
+   "drawdown": -12.17,
+   "close": 1220.96,
+   "ma120": 1196.12,
+   "ma250": 1115.6,
    "goldenCross": true,
    "keyRed": false,
    "hi": 1390.18,
@@ -492,16 +586,16 @@
   {
    "name": "石油石化",
    "stage": "上行",
-   "stageDays": 28,
-   "stageDaysTrade": 21,
+   "stageDays": 29,
+   "stageDaysTrade": 22,
    "since": "2026-08-18",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -18.49,
-   "close": 1443.85,
-   "ma120": 1419.76,
-   "ma250": 1374.54,
+   "drawdown": -18.62,
+   "close": 1441.58,
+   "ma120": 1419.97,
+   "ma250": 1375.63,
    "goldenCross": true,
    "keyRed": false,
    "hi": 1771.47,
@@ -531,16 +625,16 @@
   {
    "name": "航运港口",
    "stage": "上行",
-   "stageDays": 27,
-   "stageDaysTrade": 20,
+   "stageDays": 28,
+   "stageDaysTrade": 21,
    "since": "2026-08-19",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -4.02,
-   "close": 2032.38,
-   "ma120": 1833.28,
-   "ma250": 1628.17,
+   "drawdown": -5.53,
+   "close": 2000.29,
+   "ma120": 1833.5,
+   "ma250": 1631.41,
    "goldenCross": true,
    "keyRed": false,
    "hi": 2117.4,
@@ -570,16 +664,16 @@
   {
    "name": "券商",
    "stage": "下行",
-   "stageDays": 132,
-   "stageDaysTrade": 94,
+   "stageDays": 133,
+   "stageDaysTrade": 95,
    "since": "2026-05-06",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -20.68,
-   "close": 1373.84,
-   "ma120": 1403.95,
-   "ma250": 1465.44,
+   "drawdown": -20.44,
+   "close": 1377.96,
+   "ma120": 1404.36,
+   "ma250": 1464.72,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1732.0,
@@ -609,16 +703,16 @@
   {
    "name": "建材水泥",
    "stage": "下行",
-   "stageDays": 49,
-   "stageDaysTrade": 36,
+   "stageDays": 50,
+   "stageDaysTrade": 37,
    "since": "2026-07-28",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -22.96,
-   "close": 983.89,
-   "ma120": 1005.41,
-   "ma250": 1092.13,
+   "drawdown": -23.51,
+   "close": 976.86,
+   "ma120": 1004.18,
+   "ma250": 1091.73,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1277.04,
@@ -648,16 +742,16 @@
   {
    "name": "猪产业（养殖）",
    "stage": "下行",
-   "stageDays": 19,
-   "stageDaysTrade": 14,
+   "stageDays": 20,
+   "stageDaysTrade": 15,
    "since": "2026-08-27",
    "deepSince": null,
    "deepDays": 0,
    "deepDaysTrade": 0,
-   "drawdown": -21.74,
-   "close": 891.59,
-   "ma120": 882.13,
-   "ma250": 953.16,
+   "drawdown": -23.6,
+   "close": 870.51,
+   "ma120": 881.55,
+   "ma250": 952.49,
    "goldenCross": false,
    "keyRed": false,
    "hi": 1139.33,
@@ -689,96 +783,98 @@
   "groups": {
    "磨底": [
     {
-     "code": "603899",
-     "name": "晨光股份",
+     "code": "603366",
+     "name": "日出东方",
      "pos": "底部",
      "act": "磨底波动 · 观望",
      "cycle": "底部",
-     "macdPos": "零轴下",
+     "macdPos": "零轴上",
      "signal": "死叉",
      "signalAgo": 2,
      "volState": "缩量",
-     "volRatio5": 0.26,
+     "volRatio5": 0.34,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -34.22,
-     "dif": -0.0518,
-     "dea": 0.2518,
-     "close_hfq": 53.85,
-     "ma120": 55.34,
-     "ma250": 60.07,
-     "turnoverPct": 0.19,
-     "pctChg": -0.15,
+     "drawdown": -68.36,
+     "dif": 0.0933,
+     "dea": 0.4043,
+     "close_hfq": 17.54,
+     "ma120": 19.43,
+     "ma250": 22.42,
+     "turnoverPct": 2.45,
+     "pctChg": -0.28,
      "crowd": {
-      "score": 1,
+      "score": 9,
       "lv": "冷清"
      },
-     "amount": 37820223.0,
-     "i": 655,
-     "industry": "文娱用品",
+     "amount": 135049681.0,
+     "i": 656,
+     "industry": "厨卫电器",
      "isLeader": true
     },
     {
-     "code": "002557",
-     "name": "洽洽食品",
-     "pos": "底部",
-     "act": "磨底波动 · 观望",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "死叉",
-     "signalAgo": 2,
-     "volState": "缩量",
-     "volRatio5": 0.35,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -39.97,
-     "dif": -0.8622,
-     "dea": -0.679,
-     "close_hfq": 70.96,
-     "ma120": 78.11,
-     "ma250": 80.69,
-     "turnoverPct": 0.6,
-     "pctChg": -0.66,
-     "crowd": {
-      "score": 2,
-      "lv": "冷清"
-     },
-     "amount": 54598477.0,
-     "i": 655,
-     "industry": "休闲食品",
-     "isLeader": true
-    },
-    {
-     "code": "600612",
-     "name": "老凤祥",
+     "code": "300021",
+     "name": "大禹节水",
      "pos": "底部",
      "act": "底部钝化 · 等放量金叉",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.34,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -44.85,
+     "dif": 0.1064,
+     "dea": 0.5716,
+     "close_hfq": 43.86,
+     "ma120": 46.65,
+     "ma250": 50.88,
+     "turnoverPct": 1.6,
+     "pctChg": 0.78,
+     "crowd": {
+      "score": 6,
+      "lv": "冷清"
+     },
+     "amount": 53151701.0,
+     "i": 656,
+     "industry": "农业综合Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "601933",
+     "name": "永辉超市",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "死叉",
      "signalAgo": 2,
      "volState": "缩量",
      "volRatio5": 0.37,
-     "count": 2,
-     "times": "多次",
-     "divs": [],
-     "drawdown": -44.82,
-     "dif": -83.5608,
-     "dea": -49.6605,
-     "close_hfq": 5836.33,
-     "ma120": 6463.43,
-     "ma250": 7341.31,
-     "turnoverPct": 0.42,
-     "pctChg": -1.6,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -60.87,
+     "dif": -0.2688,
+     "dea": -0.0467,
+     "close_hfq": 27.43,
+     "ma120": 31.04,
+     "ma250": 37.07,
+     "turnoverPct": 0.89,
+     "pctChg": 0.33,
      "crowd": {
-      "score": 1,
+      "score": 3,
       "lv": "冷清"
      },
-     "amount": 42418237.0,
-     "i": 655,
-     "industry": "饰品",
+     "amount": 237766714.0,
+     "i": 656,
+     "industry": "一般零售",
      "isLeader": true
     },
     {
@@ -789,32 +885,32 @@
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "死叉",
-     "signalAgo": 2,
+     "signalAgo": 3,
      "volState": "缩量",
-     "volRatio5": 0.4,
+     "volRatio5": 0.37,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -57.38,
-     "dif": -0.0376,
-     "dea": 0.0014,
-     "close_hfq": 7.07,
-     "ma120": 8.01,
-     "ma250": 9.46,
-     "turnoverPct": 1.15,
-     "pctChg": -1.67,
+     "drawdown": -57.2,
+     "dif": -0.0558,
+     "dea": -0.0101,
+     "close_hfq": 7.1,
+     "ma120": 8.0,
+     "ma250": 9.44,
+     "turnoverPct": 1.0,
+     "pctChg": 0.42,
      "crowd": {
       "score": 4,
       "lv": "冷清"
      },
-     "amount": 100015679.0,
-     "i": 655,
+     "amount": 86810705.0,
+     "i": 656,
      "industry": "专业连锁Ⅱ",
      "isLeader": true
     },
     {
-     "code": "600315",
-     "name": "上海家化",
+     "code": "600737",
+     "name": "中粮糖业",
      "pos": "底部",
      "act": "磨底波动 · 观望",
      "cycle": "底部",
@@ -822,56 +918,56 @@
      "signal": "死叉",
      "signalAgo": 2,
      "volState": "缩量",
-     "volRatio5": 0.42,
+     "volRatio5": 0.37,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -38.25,
-     "dif": 0.426,
-     "dea": 0.9613,
-     "close_hfq": 102.58,
-     "ma120": 107.66,
-     "ma250": 122.55,
-     "turnoverPct": 0.58,
-     "pctChg": -1.23,
+     "drawdown": -27.88,
+     "dif": 7.8052,
+     "dea": 12.8545,
+     "close_hfq": 222.71,
+     "ma120": 212.18,
+     "ma250": 232.13,
+     "turnoverPct": 3.19,
+     "pctChg": -0.7,
      "crowd": {
-      "score": 2,
+      "score": 11,
       "lv": "冷清"
      },
-     "amount": 69291223.0,
-     "i": 655,
-     "industry": "化妆品",
+     "amount": 971975134.0,
+     "i": 656,
+     "industry": "农产品加工",
      "isLeader": true
     },
     {
-     "code": "300146",
-     "name": "汤臣倍健",
+     "code": "000564",
+     "name": "供销大集",
      "pos": "底部",
-     "act": "磨底波动 · 观望",
+     "act": "底部钝化 · 等放量金叉",
      "cycle": "底部",
-     "macdPos": "零轴下",
+     "macdPos": "零轴上",
      "signal": "死叉",
-     "signalAgo": 4,
+     "signalAgo": 2,
      "volState": "缩量",
-     "volRatio5": 0.42,
-     "count": 1,
-     "times": "单次",
+     "volRatio5": 0.4,
+     "count": 2,
+     "times": "多次",
      "divs": [],
-     "drawdown": -37.9,
-     "dif": -4.9269,
-     "dea": -2.7488,
-     "close_hfq": 316.75,
-     "ma120": 342.99,
-     "ma250": 371.96,
-     "turnoverPct": 0.67,
-     "pctChg": -0.54,
+     "drawdown": -63.84,
+     "dif": 0.3052,
+     "dea": 0.5356,
+     "close_hfq": 18.4,
+     "ma120": 19.55,
+     "ma250": 25.54,
+     "turnoverPct": 1.07,
+     "pctChg": 0.66,
      "crowd": {
-      "score": 2,
+      "score": 4,
       "lv": "冷清"
      },
-     "amount": 69769610.0,
+     "amount": 241731725.0,
      "i": 655,
-     "industry": "食品加工",
+     "industry": "一般零售",
      "isLeader": true
     },
     {
@@ -882,283 +978,155 @@
      "cycle": "底部",
      "macdPos": "零轴上",
      "signal": "死叉",
-     "signalAgo": 0,
+     "signalAgo": 1,
      "volState": "缩量",
-     "volRatio5": 0.43,
+     "volRatio5": 0.41,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -40.05,
-     "dif": 1.4708,
-     "dea": 1.5376,
-     "close_hfq": 22.93,
+     "drawdown": -39.4,
+     "dif": 1.2965,
+     "dea": 1.4893,
+     "close_hfq": 23.18,
      "ma120": 20.25,
-     "ma250": 22.08,
-     "turnoverPct": 8.87,
-     "pctChg": -3.09,
+     "ma250": 22.1,
+     "turnoverPct": 7.17,
+     "pctChg": 1.09,
      "crowd": {
-      "score": 31,
+      "score": 25,
       "lv": "正常"
      },
-     "amount": 328293551.0,
-     "i": 655,
+     "amount": 261938489.0,
+     "i": 656,
      "industry": "渔业",
      "isLeader": true
     },
     {
-     "code": "000560",
-     "name": "我爱我家",
-     "pos": "底部",
-     "act": "磨底波动 · 观望",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "死叉",
-     "signalAgo": 1,
-     "volState": "缩量",
-     "volRatio5": 0.45,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -36.27,
-     "dif": 0.7421,
-     "dea": 0.9925,
-     "close_hfq": 13.72,
-     "ma120": 13.66,
-     "ma250": 15.03,
-     "turnoverPct": 9.43,
-     "pctChg": -3.38,
-     "crowd": {
-      "score": 33,
-      "lv": "正常"
-     },
-     "amount": 578336076.0,
-     "i": 655,
-     "industry": "房地产服务",
-     "isLeader": true
-    },
-    {
-     "code": "600629",
-     "name": "华建集团",
+     "code": "600598",
+     "name": "北大荒",
      "pos": "底部",
      "act": "底部钝化 · 等放量金叉",
      "cycle": "底部",
      "macdPos": "零轴上",
      "signal": "死叉",
-     "signalAgo": 2,
+     "signalAgo": 3,
      "volState": "缩量",
-     "volRatio5": 0.47,
+     "volRatio5": 0.43,
      "count": 2,
      "times": "多次",
-     "divs": [
-      "顶背离"
-     ],
-     "drawdown": -53.55,
-     "dif": 4.5091,
-     "dea": 6.8711,
-     "close_hfq": 174.74,
-     "ma120": 169.25,
-     "ma250": 185.76,
-     "turnoverPct": 1.35,
-     "pctChg": -2.1,
+     "divs": [],
+     "drawdown": -29.27,
+     "dif": 0.1697,
+     "dea": 0.5848,
+     "close_hfq": 37.74,
+     "ma120": 41.35,
+     "ma250": 43.0,
+     "turnoverPct": 1.18,
+     "pctChg": 1.07,
      "crowd": {
-      "score": 5,
+      "score": 4,
       "lv": "冷清"
      },
-     "amount": 248619530.0,
-     "i": 655,
-     "industry": "工程咨询服务Ⅱ",
+     "amount": 259375315.0,
+     "i": 656,
+     "industry": "种植业",
      "isLeader": true
     },
     {
-     "code": "605090",
-     "name": "九丰能源",
+     "code": "300146",
+     "name": "汤臣倍健",
      "pos": "底部",
      "act": "磨底波动 · 观望",
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "死叉",
-     "signalAgo": 10,
+     "signalAgo": 5,
      "volState": "缩量",
-     "volRatio5": 0.47,
+     "volRatio5": 0.44,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -37.26,
-     "dif": -0.8491,
-     "dea": -0.581,
-     "close_hfq": 51.57,
-     "ma120": 59.27,
-     "ma250": 60.03,
-     "turnoverPct": 0.55,
-     "pctChg": -0.19,
+     "drawdown": -37.63,
+     "dif": -5.3724,
+     "dea": -3.2735,
+     "close_hfq": 318.12,
+     "ma120": 342.63,
+     "ma250": 371.65,
+     "turnoverPct": 0.69,
+     "pctChg": 0.43,
      "crowd": {
       "score": 2,
       "lv": "冷清"
      },
-     "amount": 127843867.0,
-     "i": 655,
-     "industry": "燃气Ⅱ",
+     "amount": 71380012.0,
+     "i": 656,
+     "industry": "食品加工",
+     "isLeader": true
+    },
+    {
+     "code": "000998",
+     "name": "隆平高科",
+     "pos": "底部",
+     "act": "磨底波动 · 观望",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "死叉",
+     "signalAgo": 2,
+     "volState": "缩量",
+     "volRatio5": 0.46,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -26.04,
+     "dif": 1.8393,
+     "dea": 3.2614,
+     "close_hfq": 106.85,
+     "ma120": 106.67,
+     "ma250": 113.18,
+     "turnoverPct": 2.23,
+     "pctChg": -0.23,
+     "crowd": {
+      "score": 8,
+      "lv": "冷清"
+     },
+     "amount": 257345912.0,
+     "i": 656,
+     "industry": "种植业",
      "isLeader": true
     }
    ],
    "左侧试仓": [
     {
-     "code": "000425",
-     "name": "徐工机械",
+     "code": "601615",
+     "name": "明阳智能",
      "pos": "底部",
      "act": "左侧试仓（底背离共振）",
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "金叉",
-     "signalAgo": 10,
-     "volState": "平量",
-     "volRatio5": 1.45,
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 1.56,
      "count": 1,
      "times": "单次",
      "divs": [
       "底背离"
      ],
-     "drawdown": -36.81,
-     "dif": -3.1618,
-     "dea": -3.4419,
-     "close_hfq": 394.74,
-     "ma120": 453.85,
-     "ma250": 499.26,
-     "turnoverPct": 1.28,
-     "pctChg": -3.58,
+     "drawdown": -62.23,
+     "dif": -0.4766,
+     "dea": -0.4824,
+     "close_hfq": 10.82,
+     "ma120": 14.74,
+     "ma250": 16.67,
+     "turnoverPct": 2.55,
+     "pctChg": -2.26,
      "crowd": {
-      "score": 9,
+      "score": 14,
       "lv": "冷清"
      },
-     "amount": 913933451.0,
-     "i": 655,
-     "industry": "工程机械",
-     "isLeader": true
-    },
-    {
-     "code": "600977",
-     "name": "中国电影",
-     "pos": "底部",
-     "act": "左侧试仓（底背离共振）",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 13,
-     "volState": "平量",
-     "volRatio5": 0.84,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "底背离"
-     ],
-     "drawdown": -41.1,
-     "dif": 0.0811,
-     "dea": 0.0419,
-     "close_hfq": 13.76,
-     "ma120": 14.67,
-     "ma250": 16.21,
-     "turnoverPct": 0.86,
-     "pctChg": -1.92,
-     "crowd": {
-      "score": 3,
-      "lv": "冷清"
-     },
-     "amount": 203045761.0,
-     "i": 655,
-     "industry": "影视院线",
-     "isLeader": true
-    },
-    {
-     "code": "601006",
-     "name": "大秦铁路",
-     "pos": "底部",
-     "act": "左侧试仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 12,
-     "volState": "平量",
-     "volRatio5": 1.34,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -27.01,
-     "dif": 0.0112,
-     "dea": 0.0091,
-     "close_hfq": 12.97,
-     "ma120": 13.4,
-     "ma250": 13.96,
-     "turnoverPct": 0.64,
-     "pctChg": -0.99,
-     "crowd": {
-      "score": 6,
-      "lv": "冷清"
-     },
-     "amount": 604806203.0,
-     "i": 655,
-     "industry": "铁路公路",
-     "isLeader": true
-    },
-    {
-     "code": "300498",
-     "name": "温氏股份",
-     "pos": "底部",
-     "act": "左侧试仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 15,
-     "volState": "平量",
-     "volRatio5": 1.21,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -26.46,
-     "dif": 0.7186,
-     "dea": 0.6778,
-     "close_hfq": 32.96,
-     "ma120": 31.47,
-     "ma250": 34.52,
-     "turnoverPct": 0.8,
-     "pctChg": 1.42,
-     "crowd": {
-      "score": 5,
-      "lv": "冷清"
-     },
-     "amount": 711699666.0,
-     "i": 655,
-     "industry": "养殖业",
-     "isLeader": true
-    },
-    {
-     "code": "601098",
-     "name": "中南传媒",
-     "pos": "底部",
-     "act": "左侧试仓",
-     "cycle": "底部",
-     "macdPos": "零轴下",
-     "signal": "金叉",
-     "signalAgo": 6,
-     "volState": "平量",
-     "volRatio5": 1.07,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -26.42,
-     "dif": -0.0335,
-     "dea": -0.0641,
-     "close_hfq": 18.35,
-     "ma120": 18.59,
-     "ma250": 19.25,
-     "turnoverPct": 0.66,
-     "pctChg": 0.88,
-     "crowd": {
-      "score": 3,
-      "lv": "冷清"
-     },
-     "amount": 121363902.0,
-     "i": 655,
-     "industry": "出版",
+     "amount": 556946948.0,
+     "i": 648,
+     "industry": "风电设备",
      "isLeader": true
     },
     {
@@ -1169,89 +1137,58 @@
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "金叉",
-     "signalAgo": 0,
+     "signalAgo": 1,
      "volState": "平量",
-     "volRatio5": 0.91,
+     "volRatio5": 1.33,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -53.5,
-     "dif": -0.2242,
-     "dea": -0.2598,
-     "close_hfq": 39.6,
-     "ma120": 41.62,
-     "ma250": 51.54,
-     "turnoverPct": 0.15,
-     "pctChg": -0.2,
+     "drawdown": -53.69,
+     "dif": -0.1868,
+     "dea": -0.2452,
+     "close_hfq": 39.44,
+     "ma120": 41.53,
+     "ma250": 51.46,
+     "turnoverPct": 0.2,
+     "pctChg": -0.4,
      "crowd": {
-      "score": 1,
+      "score": 4,
       "lv": "冷清"
      },
-     "amount": 60863343.0,
-     "i": 655,
+     "amount": 80317217.0,
+     "i": 656,
      "industry": "纺织制造",
      "isLeader": true
     },
     {
-     "code": "600104",
-     "name": "上汽集团",
-     "pos": "底部",
-     "act": "左侧试仓",
-     "cycle": "底部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 14,
-     "volState": "平量",
-     "volRatio5": 0.85,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -44.52,
-     "dif": 3.1929,
-     "dea": 1.7241,
-     "close_hfq": 128.58,
-     "ma120": 129.96,
-     "ma250": 152.83,
-     "turnoverPct": 0.8,
-     "pctChg": -2.58,
-     "crowd": {
-      "score": 3,
-      "lv": "冷清"
-     },
-     "amount": 1058767327.0,
-     "i": 655,
-     "industry": "乘用车",
-     "isLeader": true
-    },
-    {
-     "code": "002230",
-     "name": "科大讯飞",
+     "code": "601098",
+     "name": "中南传媒",
      "pos": "底部",
      "act": "左侧试仓",
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "金叉",
-     "signalAgo": 1,
+     "signalAgo": 7,
      "volState": "平量",
-     "volRatio5": 0.83,
+     "volRatio5": 0.91,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -38.63,
-     "dif": -7.4759,
-     "dea": -7.8076,
-     "close_hfq": 532.98,
-     "ma120": 599.37,
-     "ma250": 664.15,
-     "turnoverPct": 0.68,
-     "pctChg": -1.52,
+     "drawdown": -26.42,
+     "dif": -0.0219,
+     "dea": -0.0557,
+     "close_hfq": 18.35,
+     "ma120": 18.59,
+     "ma250": 19.24,
+     "turnoverPct": 0.5,
+     "pctChg": 0.0,
      "crowd": {
       "score": 2,
       "lv": "冷清"
      },
-     "amount": 589735875.0,
-     "i": 655,
-     "industry": "软件开发",
+     "amount": 92517452.0,
+     "i": 656,
+     "industry": "出版",
      "isLeader": true
     },
     {
@@ -1262,62 +1199,285 @@
      "cycle": "底部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 13,
+     "signalAgo": 14,
      "volState": "平量",
-     "volRatio5": 0.82,
+     "volRatio5": 0.89,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -52.86,
-     "dif": 2.8771,
-     "dea": 2.2234,
-     "close_hfq": 51.99,
-     "ma120": 54.63,
-     "ma250": 58.32,
-     "turnoverPct": 17.25,
-     "pctChg": -2.22,
+     "drawdown": -48.15,
+     "dif": 3.2407,
+     "dea": 2.4268,
+     "close_hfq": 57.18,
+     "ma120": 54.49,
+     "ma250": 58.46,
+     "turnoverPct": 17.87,
+     "pctChg": 9.98,
      "crowd": {
-      "score": 53,
-      "lv": "偏热"
+      "score": 71,
+      "lv": "过热"
      },
-     "amount": 2656905172.0,
-     "i": 652,
+     "amount": 2889960143.0,
+     "i": 653,
      "industry": "林业Ⅱ",
      "isLeader": true
     },
     {
-     "code": "600967",
-     "name": "内蒙一机",
+     "code": "600600",
+     "name": "青岛啤酒",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 8,
+     "volState": "平量",
+     "volRatio5": 0.89,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -33.48,
+     "dif": -0.9937,
+     "dea": -1.0473,
+     "close_hfq": 99.13,
+     "ma120": 108.7,
+     "ma250": 114.85,
+     "turnoverPct": 0.36,
+     "pctChg": -0.7,
+     "crowd": {
+      "score": 1,
+      "lv": "冷清"
+     },
+     "amount": 128308510.0,
+     "i": 656,
+     "industry": "非白酒",
+     "isLeader": true
+    },
+    {
+     "code": "600968",
+     "name": "海油发展",
      "pos": "底部",
      "act": "左侧试仓",
      "cycle": "底部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 10,
+     "signalAgo": 0,
      "volState": "平量",
-     "volRatio5": 0.8,
+     "volRatio5": 0.88,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -25.46,
+     "dif": 0.0448,
+     "dea": 0.0442,
+     "close_hfq": 4.83,
+     "ma120": 4.68,
+     "ma250": 4.71,
+     "turnoverPct": 0.37,
+     "pctChg": 0.42,
+     "crowd": {
+      "score": 1,
+      "lv": "冷清"
+     },
+     "amount": 153322566.0,
+     "i": 656,
+     "industry": "油服工程",
+     "isLeader": true
+    },
+    {
+     "code": "002230",
+     "name": "科大讯飞",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 2,
+     "volState": "平量",
+     "volRatio5": 0.87,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -53.06,
-     "dif": 4.4096,
-     "dea": 3.5329,
-     "close_hfq": 78.2,
-     "ma120": 73.09,
-     "ma250": 88.27,
-     "turnoverPct": 7.22,
-     "pctChg": -6.21,
+     "drawdown": -38.79,
+     "dif": -7.5137,
+     "dea": -7.7488,
+     "close_hfq": 531.61,
+     "ma120": 598.4,
+     "ma250": 663.6,
+     "turnoverPct": 0.71,
+     "pctChg": -0.26,
      "crowd": {
-      "score": 25,
-      "lv": "正常"
+      "score": 3,
+      "lv": "冷清"
      },
-     "amount": 1677509628.0,
-     "i": 655,
-     "industry": "地面兵装Ⅱ",
+     "amount": 605251073.0,
+     "i": 656,
+     "industry": "软件开发",
+     "isLeader": true
+    },
+    {
+     "code": "002508",
+     "name": "老板电器",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 3,
+     "volState": "平量",
+     "volRatio5": 0.85,
+     "count": 1,
+     "times": "单次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -26.31,
+     "dif": 1.4006,
+     "dea": 0.9116,
+     "close_hfq": 136.04,
+     "ma120": 137.88,
+     "ma250": 148.79,
+     "turnoverPct": 1.13,
+     "pctChg": 0.61,
+     "crowd": {
+      "score": 4,
+      "lv": "冷清"
+     },
+     "amount": 174055339.0,
+     "i": 656,
+     "industry": "厨卫电器",
+     "isLeader": true
+    },
+    {
+     "code": "600977",
+     "name": "中国电影",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 14,
+     "volState": "平量",
+     "volRatio5": 0.83,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -40.62,
+     "dif": 0.0712,
+     "dea": 0.0477,
+     "close_hfq": 13.87,
+     "ma120": 14.67,
+     "ma250": 16.2,
+     "turnoverPct": 0.78,
+     "pctChg": 0.8,
+     "crowd": {
+      "score": 3,
+      "lv": "冷清"
+     },
+     "amount": 184100662.0,
+     "i": 656,
+     "industry": "影视院线",
+     "isLeader": true
+    },
+    {
+     "code": "603613",
+     "name": "国联股份",
+     "pos": "底部",
+     "act": "左侧试仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 12,
+     "volState": "平量",
+     "volRatio5": 0.82,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -40.9,
+     "dif": 0.9121,
+     "dea": 0.8335,
+     "close_hfq": 87.94,
+     "ma120": 98.68,
+     "ma250": 113.92,
+     "turnoverPct": 1.02,
+     "pctChg": 0.57,
+     "crowd": {
+      "score": 4,
+      "lv": "冷清"
+     },
+     "amount": 143002791.0,
+     "i": 656,
+     "industry": "互联网电商",
      "isLeader": true
     }
    ],
    "右侧确认": [
+    {
+     "code": "603000",
+     "name": "人民网",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "放量",
+     "volRatio5": 1.66,
+     "count": 2,
+     "times": "多次",
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -44.23,
+     "dif": 0.6357,
+     "dea": 0.6241,
+     "close_hfq": 75.11,
+     "ma120": 76.02,
+     "ma250": 84.04,
+     "turnoverPct": 4.8,
+     "pctChg": -1.04,
+     "crowd": {
+      "score": 23,
+      "lv": "正常"
+     },
+     "amount": 886496435.0,
+     "i": 656,
+     "industry": "数字媒体",
+     "isLeader": true
+    },
+    {
+     "code": "603019",
+     "name": "中科曙光",
+     "pos": "底部",
+     "act": "右侧确认 · 加仓",
+     "cycle": "底部",
+     "macdPos": "零轴下",
+     "signal": "金叉",
+     "signalAgo": 0,
+     "volState": "平量",
+     "volRatio5": 1.32,
+     "count": 2,
+     "times": "多次",
+     "divs": [],
+     "drawdown": -33.28,
+     "dif": -6.5382,
+     "dea": -6.7996,
+     "close_hfq": 341.51,
+     "ma120": 366.69,
+     "ma250": 381.06,
+     "turnoverPct": 1.44,
+     "pctChg": 1.51,
+     "crowd": {
+      "score": 8,
+      "lv": "冷清"
+     },
+     "amount": 1735928073.0,
+     "i": 646,
+     "industry": "计算机设备",
+     "isLeader": true
+    },
     {
      "code": "002402",
      "name": "和而泰",
@@ -1326,186 +1486,95 @@
      "cycle": "底部",
      "macdPos": "零轴下",
      "signal": "金叉",
-     "signalAgo": 1,
+     "signalAgo": 2,
      "volState": "平量",
-     "volRatio5": 1.33,
+     "volRatio5": 1.06,
      "count": 2,
      "times": "多次",
      "divs": [
       "底背离"
      ],
-     "drawdown": -66.91,
-     "dif": -8.5176,
-     "dea": -9.0592,
-     "close_hfq": 233.94,
-     "ma120": 319.18,
-     "ma250": 429.75,
-     "turnoverPct": 2.46,
-     "pctChg": 1.04,
+     "drawdown": -66.63,
+     "dif": -7.8672,
+     "dea": -8.8208,
+     "close_hfq": 235.96,
+     "ma120": 318.02,
+     "ma250": 428.99,
+     "turnoverPct": 2.12,
+     "pctChg": 0.86,
      "crowd": {
-      "score": 12,
+      "score": 8,
       "lv": "冷清"
      },
-     "amount": 374362371.0,
-     "i": 655,
+     "amount": 320316429.0,
+     "i": 656,
      "industry": "家电零部件Ⅱ",
      "isLeader": true
     }
    ],
    "主升启动": [
     {
-     "code": "600186",
-     "name": "莲花控股",
+     "code": "601985",
+     "name": "中国核电",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 1,
-     "volState": "平量",
-     "volRatio5": 1.45,
+     "signalAgo": 15,
+     "volState": "放量",
+     "volRatio5": 1.59,
      "count": 1,
      "times": "单次",
-     "divs": [],
-     "drawdown": -18.84,
-     "dif": 2.2587,
-     "dea": 2.1114,
-     "close_hfq": 63.22,
-     "ma120": 52.55,
-     "ma250": 40.69,
-     "turnoverPct": 18.03,
-     "pctChg": -3.95,
+     "divs": [
+      "顶背离"
+     ],
+     "drawdown": -16.72,
+     "dif": 0.0699,
+     "dea": 0.0546,
+     "close_hfq": 11.41,
+     "ma120": 11.1,
+     "ma250": 10.98,
+     "turnoverPct": 0.57,
+     "pctChg": 0.88,
      "crowd": {
-      "score": 57,
-      "lv": "偏热"
+      "score": 8,
+      "lv": "冷清"
      },
-     "amount": 4150724973.0,
-     "i": 655,
-     "industry": "调味发酵品Ⅱ",
+     "amount": 959274593.0,
+     "i": 656,
+     "industry": "电力",
      "isLeader": true
     },
     {
-     "code": "600176",
-     "name": "中国巨石",
+     "code": "603303",
+     "name": "得邦照明",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 27,
+     "signalAgo": 0,
      "volState": "平量",
-     "volRatio5": 1.44,
-     "count": 0,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -36.47,
-     "dif": 8.9584,
-     "dea": -3.114,
-     "close_hfq": 920.56,
-     "ma120": 815.15,
-     "ma250": 578.46,
-     "turnoverPct": 7.84,
-     "pctChg": 3.97,
-     "crowd": {
-      "score": 38,
-      "lv": "正常"
-     },
-     "amount": 14675019664.0,
-     "i": 655,
-     "industry": "玻璃玻纤",
-     "isLeader": true
-    },
-    {
-     "code": "300806",
-     "name": "斯迪克",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 4,
-     "volState": "平量",
-     "volRatio5": 1.38,
+     "volRatio5": 1.37,
      "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -31.88,
-     "dif": 5.1008,
-     "dea": 0.4696,
-     "close_hfq": 291.93,
-     "ma120": 266.09,
-     "ma250": 193.66,
-     "turnoverPct": 10.38,
-     "pctChg": 9.35,
-     "crowd": {
-      "score": 58,
-      "lv": "偏热"
-     },
-     "amount": 2627425269.0,
-     "i": 655,
-     "industry": "塑料",
-     "isLeader": true
-    },
-    {
-     "code": "603650",
-     "name": "彤程新材",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 4,
-     "volState": "平量",
-     "volRatio5": 1.28,
-     "count": 1,
-     "times": "单次",
-     "divs": [],
-     "drawdown": -29.88,
-     "dif": 0.1584,
-     "dea": -0.8765,
-     "close_hfq": 75.7,
-     "ma120": 68.59,
-     "ma250": 59.78,
-     "turnoverPct": 4.91,
-     "pctChg": 2.84,
-     "crowd": {
-      "score": 26,
-      "lv": "正常"
-     },
-     "amount": 2038410500.0,
-     "i": 655,
-     "industry": "橡胶",
-     "isLeader": true
-    },
-    {
-     "code": "600183",
-     "name": "生益科技",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 28,
-     "volState": "平量",
-     "volRatio5": 1.27,
-     "count": 0,
      "times": "单次",
      "divs": [],
      "drawdown": -19.74,
-     "dif": 53.8401,
-     "dea": 46.0564,
-     "close_hfq": 2078.44,
-     "ma120": 1662.35,
-     "ma250": 1241.98,
-     "turnoverPct": 3.37,
-     "pctChg": 2.91,
+     "dif": 2.1354,
+     "dea": 2.048,
+     "close_hfq": 71.13,
+     "ma120": 59.19,
+     "ma250": 47.47,
+     "turnoverPct": 0.78,
+     "pctChg": 5.64,
      "crowd": {
-      "score": 20,
-      "lv": "正常"
+      "score": 18,
+      "lv": "冷清"
      },
-     "amount": 12410853991.0,
-     "i": 655,
-     "industry": "元件",
+     "amount": 96635919.0,
+     "i": 656,
+     "industry": "照明设备Ⅱ",
      "isLeader": true
     },
     {
@@ -1516,32 +1585,63 @@
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 14,
+     "signalAgo": 15,
      "volState": "平量",
-     "volRatio5": 1.26,
+     "volRatio5": 1.36,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -23.0,
-     "dif": 0.1185,
-     "dea": 0.086,
-     "close_hfq": 13.79,
+     "drawdown": -22.45,
+     "dif": 0.1426,
+     "dea": 0.0973,
+     "close_hfq": 13.89,
      "ma120": 12.99,
      "ma250": 13.13,
-     "turnoverPct": 0.29,
-     "pctChg": 1.4,
+     "turnoverPct": 0.3,
+     "pctChg": 0.73,
      "crowd": {
-      "score": 4,
+      "score": 5,
       "lv": "冷清"
      },
-     "amount": 197496076.0,
-     "i": 655,
+     "amount": 208444600.0,
+     "i": 656,
      "industry": "铁路公路",
      "isLeader": true
     },
     {
-     "code": "601208",
-     "name": "东材科技",
+     "code": "000538",
+     "name": "云南白药",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 11,
+     "volState": "平量",
+     "volRatio5": 1.21,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -11.53,
+     "dif": 2.4459,
+     "dea": 0.8654,
+     "close_hfq": 1648.01,
+     "ma120": 1649.93,
+     "ma250": 1718.57,
+     "turnoverPct": 0.42,
+     "pctChg": 0.2,
+     "crowd": {
+      "score": 4,
+      "lv": "冷清"
+     },
+     "amount": 381420853.0,
+     "i": 656,
+     "industry": "中药Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "600176",
+     "name": "中国巨石",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
@@ -1549,132 +1649,192 @@
      "signal": "金叉",
      "signalAgo": 28,
      "volState": "平量",
-     "volRatio5": 1.24,
+     "volRatio5": 1.12,
      "count": 0,
      "times": "单次",
      "divs": [],
-     "drawdown": -38.09,
-     "dif": 1.629,
-     "dea": 1.1756,
-     "close_hfq": 153.58,
-     "ma120": 148.31,
-     "ma250": 109.5,
-     "turnoverPct": 6.13,
-     "pctChg": 2.23,
+     "drawdown": -36.06,
+     "dif": 14.0571,
+     "dea": 0.3202,
+     "close_hfq": 926.42,
+     "ma120": 818.77,
+     "ma250": 581.05,
+     "turnoverPct": 6.87,
+     "pctChg": 0.64,
      "crowd": {
-      "score": 30,
+      "score": 25,
       "lv": "正常"
      },
-     "amount": 3086898531.0,
-     "i": 655,
+     "amount": 12776319905.0,
+     "i": 656,
+     "industry": "玻璃玻纤",
+     "isLeader": true
+    },
+    {
+     "code": "603650",
+     "name": "彤程新材",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 5,
+     "volState": "平量",
+     "volRatio5": 1.07,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -29.26,
+     "dif": 0.6363,
+     "dea": -0.5739,
+     "close_hfq": 76.37,
+     "ma120": 68.77,
+     "ma250": 59.94,
+     "turnoverPct": 4.72,
+     "pctChg": 0.89,
+     "crowd": {
+      "score": 17,
+      "lv": "冷清"
+     },
+     "amount": 1996808505.0,
+     "i": 656,
+     "industry": "橡胶",
+     "isLeader": true
+    },
+    {
+     "code": "600186",
+     "name": "莲花控股",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 2,
+     "volState": "平量",
+     "volRatio5": 1.01,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -17.43,
+     "dif": 2.3615,
+     "dea": 2.1614,
+     "close_hfq": 64.32,
+     "ma120": 52.8,
+     "ma250": 40.83,
+     "turnoverPct": 13.41,
+     "pctChg": 1.74,
+     "crowd": {
+      "score": 47,
+      "lv": "偏热"
+     },
+     "amount": 3077242154.0,
+     "i": 656,
+     "industry": "调味发酵品Ⅱ",
+     "isLeader": true
+    },
+    {
+     "code": "300806",
+     "name": "斯迪克",
+     "pos": "腰部",
+     "act": "主升启动",
+     "cycle": "腰部",
+     "macdPos": "零轴上",
+     "signal": "金叉",
+     "signalAgo": 5,
+     "volState": "平量",
+     "volRatio5": 0.96,
+     "count": 1,
+     "times": "单次",
+     "divs": [],
+     "drawdown": -29.24,
+     "dif": 8.1792,
+     "dea": 2.0115,
+     "close_hfq": 303.27,
+     "ma120": 267.25,
+     "ma250": 194.54,
+     "turnoverPct": 8.26,
+     "pctChg": 3.88,
+     "crowd": {
+      "score": 35,
+      "lv": "正常"
+     },
+     "amount": 2225841991.0,
+     "i": 656,
      "industry": "塑料",
      "isLeader": true
     },
     {
-     "code": "002157",
-     "name": "正邦科技",
+     "code": "000628",
+     "name": "高新发展",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 13,
+     "signalAgo": 0,
      "volState": "平量",
-     "volRatio5": 1.2,
+     "volRatio5": 0.87,
      "count": 1,
      "times": "单次",
      "divs": [],
-     "drawdown": -15.56,
-     "dif": 0.9549,
-     "dea": 0.9028,
-     "close_hfq": 51.24,
-     "ma120": 50.23,
-     "ma250": 50.89,
-     "turnoverPct": 2.77,
-     "pctChg": 1.28,
+     "drawdown": -22.28,
+     "dif": 10.334,
+     "dea": 10.1822,
+     "close_hfq": 180.1,
+     "ma120": 162.09,
+     "ma250": 159.97,
+     "turnoverPct": 5.67,
+     "pctChg": 6.2,
      "crowd": {
-      "score": 12,
-      "lv": "冷清"
+      "score": 32,
+      "lv": "正常"
      },
-     "amount": 685592088.0,
-     "i": 654,
-     "industry": "养殖业",
+     "amount": 601628675.0,
+     "i": 656,
+     "industry": "房屋建设Ⅱ",
      "isLeader": true
     },
     {
-     "code": "601985",
-     "name": "中国核电",
+     "code": "601869",
+     "name": "长飞光纤",
      "pos": "腰部",
      "act": "主升启动",
      "cycle": "腰部",
      "macdPos": "零轴上",
      "signal": "金叉",
-     "signalAgo": 14,
+     "signalAgo": 28,
      "volState": "平量",
-     "volRatio5": 0.95,
-     "count": 1,
-     "times": "单次",
-     "divs": [
-      "顶背离"
-     ],
-     "drawdown": -17.45,
-     "dif": 0.0645,
-     "dea": 0.0507,
-     "close_hfq": 11.31,
-     "ma120": 11.1,
-     "ma250": 10.98,
-     "turnoverPct": 0.33,
-     "pctChg": -0.44,
-     "crowd": {
-      "score": 1,
-      "lv": "冷清"
-     },
-     "amount": 555015282.0,
-     "i": 655,
-     "industry": "电力",
-     "isLeader": true
-    },
-    {
-     "code": "600710",
-     "name": "苏美达",
-     "pos": "腰部",
-     "act": "主升启动",
-     "cycle": "腰部",
-     "macdPos": "零轴上",
-     "signal": "金叉",
-     "signalAgo": 13,
-     "volState": "平量",
-     "volRatio5": 0.93,
-     "count": 1,
+     "volRatio5": 0.84,
+     "count": 0,
      "times": "单次",
      "divs": [],
-     "drawdown": -21.18,
-     "dif": 2.0656,
-     "dea": 1.1275,
-     "close_hfq": 97.34,
-     "ma120": 94.87,
-     "ma250": 93.45,
-     "turnoverPct": 1.29,
-     "pctChg": -0.96,
+     "drawdown": -20.45,
+     "dif": 26.5014,
+     "dea": 20.0678,
+     "close_hfq": 502.61,
+     "ma120": 430.79,
+     "ma250": 279.31,
+     "turnoverPct": 3.19,
+     "pctChg": -0.22,
      "crowd": {
-      "score": 5,
+      "score": 11,
       "lv": "冷清"
      },
-     "amount": 192556531.0,
-     "i": 655,
-     "industry": "贸易Ⅱ",
+     "amount": 6055233409.0,
+     "i": 656,
+     "industry": "通信设备",
      "isLeader": true
     }
    ]
   },
   "stats": {
-   "scanned": 365,
-   "skipped": 4566,
+   "scanned": 364,
+   "skipped": 4567,
    "universe": 4931,
    "leaders": 369,
    "leadersOnly": true
   },
-  "dataDate": "2026-09-15",
+  "dataDate": "2026-09-16",
   "filters": {
    "minBars": 260,
    "minAmount": 30000000,
@@ -1691,245 +1851,285 @@
    "snapshots": [
     {
      "date": "2026-09-15",
-     "status": "待次日数据",
+     "status": "已验证",
      "horizons": {
       "T+1": {
-       "nextDate": null,
+       "nextDate": "2026-09-16",
        "groups": {
         "磨底": {
-         "n": 0,
+         "n": 10,
+         "avg": 0.45,
+         "median": 0.43,
+         "win": 70.0,
+         "avgWin": 1.11,
+         "avgLoss": -1.1,
+         "maxUp": 2.84,
+         "maxDown": -1.8,
+         "noBreak": 100.0,
+         "excessAvg": null,
+         "excessWin": null,
          "rows": [
           {
            "code": "603899",
            "name": "晨光股份",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": -1.8
           },
           {
            "code": "002557",
            "name": "洽洽食品",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.87
           },
           {
            "code": "600612",
            "name": "老凤祥",
            "act": "底部钝化 · 等放量金叉",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.62
           },
           {
            "code": "301078",
            "name": "孩子王",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.42
           },
           {
            "code": "600315",
            "name": "上海家化",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.22
           },
           {
            "code": "300146",
            "name": "汤臣倍健",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.43
           },
           {
            "code": "000798",
            "name": "中水渔业",
            "act": "磨底波动 · 观望",
            "crowd": "正常",
-           "ret": null
+           "ret": 1.09
           },
           {
            "code": "000560",
            "name": "我爱我家",
            "act": "磨底波动 · 观望",
            "crowd": "正常",
-           "ret": null
+           "ret": 2.33
           },
           {
            "code": "600629",
            "name": "华建集团",
            "act": "底部钝化 · 等放量金叉",
            "crowd": "冷清",
-           "ret": null
+           "ret": 2.84
           },
           {
            "code": "605090",
            "name": "九丰能源",
            "act": "磨底波动 · 观望",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.45
           }
          ]
         },
         "左侧试仓": {
-         "n": 0,
+         "n": 10,
+         "avg": 0.43,
+         "median": -0.26,
+         "win": 30.0,
+         "avgWin": 3.72,
+         "avgLoss": -0.99,
+         "maxUp": 9.98,
+         "maxDown": -2.94,
+         "noBreak": 100.0,
+         "excessAvg": null,
+         "excessWin": null,
          "rows": [
           {
            "code": "000425",
            "name": "徐工机械",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
+           "ret": -2.94
           },
           {
            "code": "600977",
            "name": "中国电影",
            "act": "左侧试仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.8
           },
           {
            "code": "601006",
            "name": "大秦铁路",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.85
           },
           {
            "code": "300498",
            "name": "温氏股份",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": -2.18
           },
           {
            "code": "601098",
            "name": "中南传媒",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.0
           },
           {
            "code": "300979",
            "name": "华利集团",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.4
           },
           {
            "code": "600104",
            "name": "上汽集团",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.26
           },
           {
            "code": "002230",
            "name": "科大讯飞",
            "act": "左侧试仓",
            "crowd": "冷清",
-           "ret": null
+           "ret": -0.26
           },
           {
            "code": "000592",
            "name": "平潭发展",
            "act": "左侧试仓",
            "crowd": "偏热",
-           "ret": null
+           "ret": 9.98
           },
           {
            "code": "600967",
            "name": "内蒙一机",
            "act": "左侧试仓",
            "crowd": "正常",
-           "ret": null
+           "ret": 0.37
           }
          ]
         },
         "右侧确认": {
-         "n": 0,
+         "n": 1,
+         "avg": 0.86,
+         "median": 0.86,
+         "win": 100.0,
+         "avgWin": 0.86,
+         "avgLoss": null,
+         "maxUp": 0.86,
+         "maxDown": 0.86,
+         "noBreak": 100.0,
+         "excessAvg": null,
+         "excessWin": null,
          "rows": [
           {
            "code": "002402",
            "name": "和而泰",
            "act": "右侧确认 · 加仓（底背离共振）",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.86
           }
          ]
         },
         "主升启动": {
-         "n": 0,
+         "n": 10,
+         "avg": 1.64,
+         "median": 0.88,
+         "win": 80.0,
+         "avgWin": 2.7,
+         "avgLoss": -2.58,
+         "maxUp": 10.01,
+         "maxDown": -3.49,
+         "noBreak": 90.0,
+         "excessAvg": null,
+         "excessWin": null,
          "rows": [
           {
            "code": "600186",
            "name": "莲花控股",
            "act": "主升启动",
            "crowd": "偏热",
-           "ret": null
+           "ret": 1.74
           },
           {
            "code": "600176",
            "name": "中国巨石",
            "act": "主升启动",
            "crowd": "正常",
-           "ret": null
+           "ret": 0.64
           },
           {
            "code": "300806",
            "name": "斯迪克",
            "act": "主升启动",
            "crowd": "偏热",
-           "ret": null
+           "ret": 3.88
           },
           {
            "code": "603650",
            "name": "彤程新材",
            "act": "主升启动",
            "crowd": "正常",
-           "ret": null
+           "ret": 0.89
           },
           {
            "code": "600183",
            "name": "生益科技",
            "act": "主升启动",
            "crowd": "正常",
-           "ret": null
+           "ret": 2.82
           },
           {
            "code": "001965",
            "name": "招商公路",
            "act": "主升启动",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.73
           },
           {
            "code": "601208",
            "name": "东材科技",
            "act": "主升启动",
            "crowd": "正常",
-           "ret": null
+           "ret": 10.01
           },
           {
            "code": "002157",
            "name": "正邦科技",
            "act": "主升启动",
            "crowd": "冷清",
-           "ret": null
+           "ret": -3.49
           },
           {
            "code": "601985",
            "name": "中国核电",
            "act": "主升启动",
            "crowd": "冷清",
-           "ret": null
+           "ret": 0.88
           },
           {
            "code": "600710",
            "name": "苏美达",
            "act": "主升启动",
            "crowd": "冷清",
-           "ret": null
+           "ret": -1.66
           }
          ]
         }
@@ -2904,6 +3104,1292 @@
        }
       }
      }
+    },
+    {
+     "date": "2026-09-16",
+     "status": "待次日数据",
+     "horizons": {
+      "T+1": {
+       "nextDate": null,
+       "groups": {
+        "磨底": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603366",
+           "name": "日出东方",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300021",
+           "name": "大禹节水",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601933",
+           "name": "永辉超市",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600737",
+           "name": "中粮糖业",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000564",
+           "name": "供销大集",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600598",
+           "name": "北大荒",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000998",
+           "name": "隆平高科",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "左侧试仓": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601615",
+           "name": "明阳智能",
+           "act": "左侧试仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "过热",
+           "ret": null
+          },
+          {
+           "code": "600600",
+           "name": "青岛啤酒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600968",
+           "name": "海油发展",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002508",
+           "name": "老板电器",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600977",
+           "name": "中国电影",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603613",
+           "name": "国联股份",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "右侧确认": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603000",
+           "name": "人民网",
+           "act": "右侧确认 · 加仓",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603019",
+           "name": "中科曙光",
+           "act": "右侧确认 · 加仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "主升启动": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601985",
+           "name": "中国核电",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603303",
+           "name": "得邦照明",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "001965",
+           "name": "招商公路",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000538",
+           "name": "云南白药",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603650",
+           "name": "彤程新材",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600186",
+           "name": "莲花控股",
+           "act": "主升启动",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000628",
+           "name": "高新发展",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "601869",
+           "name": "长飞光纤",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        }
+       }
+      },
+      "T+3": {
+       "nextDate": null,
+       "groups": {
+        "磨底": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603366",
+           "name": "日出东方",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300021",
+           "name": "大禹节水",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601933",
+           "name": "永辉超市",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600737",
+           "name": "中粮糖业",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000564",
+           "name": "供销大集",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600598",
+           "name": "北大荒",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000998",
+           "name": "隆平高科",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "左侧试仓": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601615",
+           "name": "明阳智能",
+           "act": "左侧试仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "过热",
+           "ret": null
+          },
+          {
+           "code": "600600",
+           "name": "青岛啤酒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600968",
+           "name": "海油发展",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002508",
+           "name": "老板电器",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600977",
+           "name": "中国电影",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603613",
+           "name": "国联股份",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "右侧确认": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603000",
+           "name": "人民网",
+           "act": "右侧确认 · 加仓",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603019",
+           "name": "中科曙光",
+           "act": "右侧确认 · 加仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "主升启动": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601985",
+           "name": "中国核电",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603303",
+           "name": "得邦照明",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "001965",
+           "name": "招商公路",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000538",
+           "name": "云南白药",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603650",
+           "name": "彤程新材",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600186",
+           "name": "莲花控股",
+           "act": "主升启动",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000628",
+           "name": "高新发展",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "601869",
+           "name": "长飞光纤",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        }
+       }
+      },
+      "T+5": {
+       "nextDate": null,
+       "groups": {
+        "磨底": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603366",
+           "name": "日出东方",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300021",
+           "name": "大禹节水",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601933",
+           "name": "永辉超市",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600737",
+           "name": "中粮糖业",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000564",
+           "name": "供销大集",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600598",
+           "name": "北大荒",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000998",
+           "name": "隆平高科",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "左侧试仓": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601615",
+           "name": "明阳智能",
+           "act": "左侧试仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "过热",
+           "ret": null
+          },
+          {
+           "code": "600600",
+           "name": "青岛啤酒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600968",
+           "name": "海油发展",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002508",
+           "name": "老板电器",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600977",
+           "name": "中国电影",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603613",
+           "name": "国联股份",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "右侧确认": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603000",
+           "name": "人民网",
+           "act": "右侧确认 · 加仓",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603019",
+           "name": "中科曙光",
+           "act": "右侧确认 · 加仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "主升启动": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601985",
+           "name": "中国核电",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603303",
+           "name": "得邦照明",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "001965",
+           "name": "招商公路",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000538",
+           "name": "云南白药",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603650",
+           "name": "彤程新材",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600186",
+           "name": "莲花控股",
+           "act": "主升启动",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000628",
+           "name": "高新发展",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "601869",
+           "name": "长飞光纤",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        }
+       }
+      },
+      "T+10": {
+       "nextDate": null,
+       "groups": {
+        "磨底": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603366",
+           "name": "日出东方",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300021",
+           "name": "大禹节水",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601933",
+           "name": "永辉超市",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600737",
+           "name": "中粮糖业",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000564",
+           "name": "供销大集",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600598",
+           "name": "北大荒",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000998",
+           "name": "隆平高科",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "左侧试仓": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601615",
+           "name": "明阳智能",
+           "act": "左侧试仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "过热",
+           "ret": null
+          },
+          {
+           "code": "600600",
+           "name": "青岛啤酒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600968",
+           "name": "海油发展",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002508",
+           "name": "老板电器",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600977",
+           "name": "中国电影",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603613",
+           "name": "国联股份",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "右侧确认": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603000",
+           "name": "人民网",
+           "act": "右侧确认 · 加仓",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603019",
+           "name": "中科曙光",
+           "act": "右侧确认 · 加仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "主升启动": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601985",
+           "name": "中国核电",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603303",
+           "name": "得邦照明",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "001965",
+           "name": "招商公路",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000538",
+           "name": "云南白药",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603650",
+           "name": "彤程新材",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600186",
+           "name": "莲花控股",
+           "act": "主升启动",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000628",
+           "name": "高新发展",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "601869",
+           "name": "长飞光纤",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        }
+       }
+      },
+      "T+20": {
+       "nextDate": null,
+       "groups": {
+        "磨底": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603366",
+           "name": "日出东方",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300021",
+           "name": "大禹节水",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601933",
+           "name": "永辉超市",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "301078",
+           "name": "孩子王",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600737",
+           "name": "中粮糖业",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000564",
+           "name": "供销大集",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000798",
+           "name": "中水渔业",
+           "act": "磨底波动 · 观望",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "600598",
+           "name": "北大荒",
+           "act": "底部钝化 · 等放量金叉",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300146",
+           "name": "汤臣倍健",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000998",
+           "name": "隆平高科",
+           "act": "磨底波动 · 观望",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "左侧试仓": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601615",
+           "name": "明阳智能",
+           "act": "左侧试仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "300979",
+           "name": "华利集团",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "601098",
+           "name": "中南传媒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000592",
+           "name": "平潭发展",
+           "act": "左侧试仓",
+           "crowd": "过热",
+           "ret": null
+          },
+          {
+           "code": "600600",
+           "name": "青岛啤酒",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600968",
+           "name": "海油发展",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002230",
+           "name": "科大讯飞",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002508",
+           "name": "老板电器",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600977",
+           "name": "中国电影",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603613",
+           "name": "国联股份",
+           "act": "左侧试仓",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "右侧确认": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "603000",
+           "name": "人民网",
+           "act": "右侧确认 · 加仓",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603019",
+           "name": "中科曙光",
+           "act": "右侧确认 · 加仓",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "002402",
+           "name": "和而泰",
+           "act": "右侧确认 · 加仓（底背离共振）",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        },
+        "主升启动": {
+         "n": 0,
+         "rows": [
+          {
+           "code": "601985",
+           "name": "中国核电",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "603303",
+           "name": "得邦照明",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "001965",
+           "name": "招商公路",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "000538",
+           "name": "云南白药",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600176",
+           "name": "中国巨石",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "603650",
+           "name": "彤程新材",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          },
+          {
+           "code": "600186",
+           "name": "莲花控股",
+           "act": "主升启动",
+           "crowd": "偏热",
+           "ret": null
+          },
+          {
+           "code": "300806",
+           "name": "斯迪克",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "000628",
+           "name": "高新发展",
+           "act": "主升启动",
+           "crowd": "正常",
+           "ret": null
+          },
+          {
+           "code": "601869",
+           "name": "长飞光纤",
+           "act": "主升启动",
+           "crowd": "冷清",
+           "ret": null
+          }
+         ]
+        }
+       }
+      }
+     }
     }
    ],
    "horizons": [
@@ -2918,8 +4404,8 @@
    "summary": {
     "磨底": {
      "T+1": {
-      "n": 3773,
-      "avg": -0.02,
+      "n": 3783,
+      "avg": -0.01,
       "median": 0.0,
       "win": 48.2,
       "avgWin": 1.72,
@@ -2931,51 +4417,51 @@
       "excessWin": 46.9
      },
      "T+3": {
-      "n": 3753,
-      "avg": -0.03,
+      "n": 3763,
+      "avg": -0.04,
       "median": -0.28,
-      "win": 44.8,
+      "win": 44.7,
       "avgWin": 3.29,
       "avgLoss": -2.73,
       "maxUp": 33.12,
       "maxDown": -27.39,
-      "noBreak": 81.6,
-      "excessAvg": 0.23,
-      "excessWin": 44.4
+      "noBreak": 81.5,
+      "excessAvg": 0.22,
+      "excessWin": 44.3
      },
      "T+5": {
-      "n": 3733,
-      "avg": 0.01,
+      "n": 3743,
+      "avg": 0.0,
       "median": -0.44,
-      "win": 44.7,
+      "win": 44.6,
       "avgWin": 4.45,
-      "avgLoss": -3.56,
+      "avgLoss": -3.57,
       "maxUp": 61.03,
       "maxDown": -29.08,
-      "noBreak": 74.7,
+      "noBreak": 74.6,
       "excessAvg": 0.32,
       "excessWin": 43.8
      },
      "T+10": {
-      "n": 3683,
-      "avg": 0.21,
-      "median": -0.47,
-      "win": 45.9,
+      "n": 3693,
+      "avg": 0.19,
+      "median": -0.48,
+      "win": 45.8,
       "avgWin": 6.63,
       "avgLoss": -5.25,
       "maxUp": 79.03,
       "maxDown": -40.01,
-      "noBreak": 66.8,
-      "excessAvg": 0.59,
-      "excessWin": 43.8
+      "noBreak": 66.7,
+      "excessAvg": 0.58,
+      "excessWin": 43.7
      },
      "T+20": {
-      "n": 3583,
+      "n": 3593,
       "avg": 0.46,
-      "median": -0.43,
+      "median": -0.41,
       "win": 47.6,
-      "avgWin": 9.09,
-      "avgLoss": -7.38,
+      "avgWin": 9.08,
+      "avgLoss": -7.37,
       "maxUp": 113.54,
       "maxDown": -47.92,
       "noBreak": 61.0,
@@ -2985,51 +4471,51 @@
     },
     "左侧试仓": {
      "T+1": {
-      "n": 3960,
+      "n": 3970,
       "avg": -0.07,
       "median": -0.28,
       "win": 43.5,
-      "avgWin": 2.45,
+      "avgWin": 2.44,
       "avgLoss": -2.01,
       "maxUp": 20.03,
       "maxDown": -20.01,
       "noBreak": 87.9,
-      "excessAvg": 0.09,
-      "excessWin": 44.8
+      "excessAvg": 0.08,
+      "excessWin": 44.7
      },
      "T+3": {
-      "n": 3940,
+      "n": 3950,
       "avg": -0.2,
       "median": -0.47,
-      "win": 43.8,
+      "win": 43.7,
       "avgWin": 3.88,
       "avgLoss": -3.37,
       "maxUp": 42.0,
       "maxDown": -26.45,
       "noBreak": 77.1,
       "excessAvg": 0.04,
-      "excessWin": 43.9
+      "excessWin": 43.8
      },
      "T+5": {
-      "n": 3920,
-      "avg": -0.12,
+      "n": 3930,
+      "avg": -0.13,
       "median": -0.53,
-      "win": 44.7,
+      "win": 44.6,
       "avgWin": 4.9,
       "avgLoss": -4.19,
       "maxUp": 61.22,
       "maxDown": -25.67,
-      "noBreak": 71.8,
+      "noBreak": 71.7,
       "excessAvg": 0.16,
-      "excessWin": 45.1
+      "excessWin": 45.0
      },
      "T+10": {
-      "n": 3870,
-      "avg": -0.05,
+      "n": 3880,
+      "avg": -0.06,
       "median": -0.41,
       "win": 46.9,
       "avgWin": 6.43,
-      "avgLoss": -5.77,
+      "avgLoss": -5.78,
       "maxUp": 90.68,
       "maxDown": -33.71,
       "noBreak": 65.3,
@@ -3037,107 +4523,107 @@
       "excessWin": 45.9
      },
      "T+20": {
-      "n": 3770,
+      "n": 3780,
       "avg": 0.33,
-      "median": -0.79,
+      "median": -0.8,
       "win": 45.8,
-      "avgWin": 9.94,
-      "avgLoss": -7.79,
+      "avgWin": 9.92,
+      "avgLoss": -7.78,
       "maxUp": 149.81,
       "maxDown": -33.67,
       "noBreak": 60.2,
-      "excessAvg": 0.67,
+      "excessAvg": 0.66,
       "excessWin": 44.3
      }
     },
     "右侧确认": {
      "T+1": {
-      "n": 3927,
+      "n": 3937,
       "avg": 0.12,
       "median": -0.07,
       "win": 47.1,
       "avgWin": 2.31,
-      "avgLoss": -1.83,
+      "avgLoss": -1.84,
       "maxUp": 20.21,
       "maxDown": -17.64,
       "noBreak": 90.1,
-      "excessAvg": 0.28,
+      "excessAvg": 0.27,
       "excessWin": 48.5
      },
      "T+3": {
-      "n": 3907,
+      "n": 3917,
       "avg": 0.32,
-      "median": -0.07,
+      "median": -0.09,
       "win": 48.5,
-      "avgWin": 4.01,
+      "avgWin": 4.0,
       "avgLoss": -3.15,
       "maxUp": 72.87,
       "maxDown": -23.55,
       "noBreak": 78.7,
-      "excessAvg": 0.57,
-      "excessWin": 49.1
+      "excessAvg": 0.56,
+      "excessWin": 49.0
      },
      "T+5": {
-      "n": 3887,
-      "avg": 0.44,
+      "n": 3897,
+      "avg": 0.42,
       "median": 0.0,
-      "win": 49.3,
+      "win": 49.2,
       "avgWin": 4.99,
-      "avgLoss": -3.98,
+      "avgLoss": -4.0,
       "maxUp": 97.86,
       "maxDown": -23.87,
-      "noBreak": 73.9,
-      "excessAvg": 0.74,
-      "excessWin": 48.0
+      "noBreak": 73.7,
+      "excessAvg": 0.72,
+      "excessWin": 47.9
      },
      "T+10": {
-      "n": 3837,
+      "n": 3847,
       "avg": 0.71,
-      "median": 0.0,
+      "median": -0.04,
       "win": 49.5,
-      "avgWin": 7.25,
+      "avgWin": 7.24,
       "avgLoss": -5.7,
       "maxUp": 118.76,
       "maxDown": -28.11,
       "noBreak": 67.2,
       "excessAvg": 1.07,
-      "excessWin": 48.4
+      "excessWin": 48.5
      },
      "T+20": {
-      "n": 3736,
-      "avg": 1.18,
+      "n": 3746,
+      "avg": 1.19,
       "median": -0.32,
-      "win": 48.4,
-      "avgWin": 10.38,
+      "win": 48.5,
+      "avgWin": 10.4,
       "avgLoss": -7.47,
       "maxUp": 142.6,
       "maxDown": -35.67,
-      "noBreak": 62.3,
-      "excessAvg": 1.54,
+      "noBreak": 62.4,
+      "excessAvg": 1.56,
       "excessWin": 47.7
      }
     },
     "主升启动": {
      "T+1": {
-      "n": 3960,
-      "avg": -0.25,
+      "n": 3970,
+      "avg": -0.24,
       "median": -0.81,
-      "win": 41.3,
-      "avgWin": 4.17,
+      "win": 41.4,
+      "avgWin": 4.18,
       "avgLoss": -3.37,
       "maxUp": 20.05,
       "maxDown": -20.0,
-      "noBreak": 73.9,
-      "excessAvg": -0.1,
-      "excessWin": 41.7
+      "noBreak": 74.0,
+      "excessAvg": -0.09,
+      "excessWin": 41.8
      },
      "T+3": {
-      "n": 3937,
+      "n": 3947,
       "avg": -0.39,
       "median": -1.1,
       "win": 41.3,
       "avgWin": 6.64,
-      "avgLoss": -5.32,
+      "avgLoss": -5.33,
       "maxUp": 72.82,
       "maxDown": -28.72,
       "noBreak": 62.8,
@@ -3145,42 +4631,42 @@
       "excessWin": 41.5
      },
      "T+5": {
-      "n": 3917,
-      "avg": -0.31,
-      "median": -1.45,
+      "n": 3927,
+      "avg": -0.32,
+      "median": -1.46,
       "win": 40.0,
       "avgWin": 8.64,
-      "avgLoss": -6.28,
+      "avgLoss": -6.29,
       "maxUp": 148.75,
       "maxDown": -40.28,
-      "noBreak": 59.4,
+      "noBreak": 59.3,
       "excessAvg": -0.03,
       "excessWin": 40.4
      },
      "T+10": {
-      "n": 3867,
+      "n": 3877,
       "avg": -0.6,
       "median": -2.05,
       "win": 40.0,
-      "avgWin": 10.49,
-      "avgLoss": -8.0,
+      "avgWin": 10.5,
+      "avgLoss": -8.01,
       "maxUp": 148.28,
       "maxDown": -47.2,
       "noBreak": 55.1,
-      "excessAvg": -0.28,
+      "excessAvg": -0.27,
       "excessWin": 38.8
      },
      "T+20": {
-      "n": 3766,
-      "avg": -0.35,
-      "median": -2.82,
+      "n": 3777,
+      "avg": -0.37,
+      "median": -2.84,
       "win": 40.0,
-      "avgWin": 14.47,
-      "avgLoss": -10.23,
+      "avgWin": 14.46,
+      "avgLoss": -10.24,
       "maxUp": 223.88,
       "maxDown": -47.57,
-      "noBreak": 50.5,
-      "excessAvg": -0.02,
+      "noBreak": 50.4,
+      "excessAvg": -0.04,
       "excessWin": 38.9
      }
     }
@@ -3188,105 +4674,105 @@
    "summaryLeaders": {
     "磨底": {
      "T+1": {
-      "n": 1793,
-      "avg": 0.01,
+      "n": 1803,
+      "avg": 0.02,
       "median": 0.0,
-      "win": 48.5,
+      "win": 48.6,
       "avgWin": 1.37,
       "avgLoss": -1.27,
       "maxUp": 10.23,
       "maxDown": -9.99,
       "noBreak": 95.6,
       "excessAvg": 0.2,
-      "excessWin": 51.4
+      "excessWin": 51.2
      },
      "T+3": {
-      "n": 1773,
-      "avg": 0.03,
-      "median": -0.09,
-      "win": 47.8,
+      "n": 1783,
+      "avg": 0.02,
+      "median": -0.1,
+      "win": 47.6,
       "avgWin": 2.5,
       "avgLoss": -2.23,
       "maxUp": 22.38,
       "maxDown": -14.02,
-      "noBreak": 86.1,
-      "excessAvg": 0.43,
-      "excessWin": 49.7
+      "noBreak": 85.9,
+      "excessAvg": 0.42,
+      "excessWin": 49.6
      },
      "T+5": {
-      "n": 1753,
-      "avg": 0.05,
-      "median": -0.13,
-      "win": 47.1,
+      "n": 1763,
+      "avg": 0.04,
+      "median": -0.14,
+      "win": 46.9,
       "avgWin": 3.34,
       "avgLoss": -2.87,
       "maxUp": 45.42,
       "maxDown": -14.29,
-      "noBreak": 79.7,
-      "excessAvg": 0.5,
-      "excessWin": 46.9
+      "noBreak": 79.5,
+      "excessAvg": 0.51,
+      "excessWin": 47.0
      },
      "T+10": {
-      "n": 1706,
-      "avg": -0.04,
-      "median": -0.34,
-      "win": 46.7,
-      "avgWin": 4.8,
-      "avgLoss": -4.28,
+      "n": 1716,
+      "avg": -0.06,
+      "median": -0.35,
+      "win": 46.6,
+      "avgWin": 4.79,
+      "avgLoss": -4.29,
       "maxUp": 47.73,
       "maxDown": -20.93,
-      "noBreak": 70.0,
+      "noBreak": 69.8,
       "excessAvg": 0.6,
-      "excessWin": 47.2
+      "excessWin": 47.1
      },
      "T+20": {
-      "n": 1617,
-      "avg": 0.1,
-      "median": -0.5,
-      "win": 47.2,
-      "avgWin": 6.97,
-      "avgLoss": -6.03,
+      "n": 1624,
+      "avg": 0.09,
+      "median": -0.51,
+      "win": 47.1,
+      "avgWin": 6.96,
+      "avgLoss": -6.02,
       "maxUp": 58.98,
       "maxDown": -26.81,
-      "noBreak": 64.3,
-      "excessAvg": 1.01,
-      "excessWin": 48.8
+      "noBreak": 64.2,
+      "excessAvg": 1.0,
+      "excessWin": 48.7
      }
     },
     "左侧试仓": {
      "T+1": {
-      "n": 3524,
+      "n": 3534,
       "avg": -0.02,
       "median": -0.16,
-      "win": 45.1,
+      "win": 45.0,
       "avgWin": 1.79,
       "avgLoss": -1.5,
       "maxUp": 20.05,
       "maxDown": -10.02,
       "noBreak": 93.9,
       "excessAvg": 0.16,
-      "excessWin": 46.8
+      "excessWin": 46.7
      },
      "T+3": {
-      "n": 3504,
-      "avg": 0.11,
+      "n": 3514,
+      "avg": 0.1,
       "median": -0.25,
-      "win": 46.1,
+      "win": 46.0,
       "avgWin": 3.15,
       "avgLoss": -2.49,
       "maxUp": 33.17,
       "maxDown": -25.57,
-      "noBreak": 84.4,
-      "excessAvg": 0.38,
-      "excessWin": 47.7
+      "noBreak": 84.3,
+      "excessAvg": 0.37,
+      "excessWin": 47.6
      },
      "T+5": {
-      "n": 3484,
-      "avg": 0.17,
+      "n": 3494,
+      "avg": 0.16,
       "median": -0.1,
       "win": 48.5,
       "avgWin": 3.82,
-      "avgLoss": -3.26,
+      "avgLoss": -3.28,
       "maxUp": 53.62,
       "maxDown": -24.32,
       "noBreak": 78.0,
@@ -3294,38 +4780,38 @@
       "excessWin": 49.7
      },
      "T+10": {
-      "n": 3434,
-      "avg": 0.44,
+      "n": 3444,
+      "avg": 0.42,
       "median": 0.16,
-      "win": 50.7,
+      "win": 50.6,
       "avgWin": 5.28,
-      "avgLoss": -4.54,
+      "avgLoss": -4.55,
       "maxUp": 63.3,
       "maxDown": -31.02,
-      "noBreak": 72.1,
+      "noBreak": 72.0,
       "excessAvg": 0.75,
       "excessWin": 50.1
      },
      "T+20": {
-      "n": 3334,
-      "avg": 0.43,
-      "median": -0.27,
-      "win": 48.6,
+      "n": 3344,
+      "avg": 0.42,
+      "median": -0.29,
+      "win": 48.5,
       "avgWin": 7.74,
-      "avgLoss": -6.47,
+      "avgLoss": -6.46,
       "maxUp": 65.86,
       "maxDown": -35.84,
-      "noBreak": 65.2,
-      "excessAvg": 0.87,
-      "excessWin": 49.0
+      "noBreak": 65.1,
+      "excessAvg": 0.86,
+      "excessWin": 48.9
      }
     },
     "右侧确认": {
      "T+1": {
-      "n": 1656,
+      "n": 1657,
       "avg": 0.01,
       "median": -0.14,
-      "win": 44.0,
+      "win": 44.1,
       "avgWin": 1.78,
       "avgLoss": -1.39,
       "maxUp": 10.07,
@@ -3335,50 +4821,50 @@
       "excessWin": 50.7
      },
      "T+3": {
-      "n": 1645,
-      "avg": 0.08,
-      "median": -0.21,
-      "win": 45.7,
+      "n": 1652,
+      "avg": 0.07,
+      "median": -0.23,
+      "win": 45.5,
       "avgWin": 3.01,
       "avgLoss": -2.39,
       "maxUp": 39.3,
       "maxDown": -15.61,
       "noBreak": 84.7,
-      "excessAvg": 0.45,
-      "excessWin": 49.8
+      "excessAvg": 0.44,
+      "excessWin": 49.6
      },
      "T+5": {
-      "n": 1627,
-      "avg": 0.07,
-      "median": -0.21,
-      "win": 47.4,
+      "n": 1637,
+      "avg": 0.04,
+      "median": -0.23,
+      "win": 47.1,
       "avgWin": 3.82,
-      "avgLoss": -3.32,
+      "avgLoss": -3.34,
       "maxUp": 45.43,
       "maxDown": -20.27,
-      "noBreak": 77.6,
-      "excessAvg": 0.52,
-      "excessWin": 48.5
+      "noBreak": 77.2,
+      "excessAvg": 0.51,
+      "excessWin": 48.3
      },
      "T+10": {
-      "n": 1591,
-      "avg": 0.54,
+      "n": 1596,
+      "avg": 0.53,
       "median": 0.0,
-      "win": 49.5,
-      "avgWin": 5.51,
-      "avgLoss": -4.34,
+      "win": 49.4,
+      "avgWin": 5.5,
+      "avgLoss": -4.33,
       "maxUp": 49.04,
       "maxDown": -21.57,
-      "noBreak": 74.2,
+      "noBreak": 74.1,
       "excessAvg": 0.93,
-      "excessWin": 49.3
+      "excessWin": 49.4
      },
      "T+20": {
-      "n": 1540,
+      "n": 1543,
       "avg": 1.0,
-      "median": 0.3,
+      "median": 0.32,
       "win": 51.8,
-      "avgWin": 7.71,
+      "avgWin": 7.7,
       "avgLoss": -6.2,
       "maxUp": 75.72,
       "maxDown": -27.88,
@@ -3389,11 +4875,11 @@
     },
     "主升启动": {
      "T+1": {
-      "n": 3870,
-      "avg": -0.14,
+      "n": 3880,
+      "avg": -0.13,
       "median": -0.33,
-      "win": 42.2,
-      "avgWin": 2.5,
+      "win": 42.3,
+      "avgWin": 2.51,
       "avgLoss": -2.07,
       "maxUp": 20.07,
       "maxDown": -19.98,
@@ -3402,11 +4888,11 @@
       "excessWin": 44.5
      },
      "T+3": {
-      "n": 3850,
+      "n": 3860,
       "avg": -0.18,
       "median": -0.64,
       "win": 42.6,
-      "avgWin": 4.28,
+      "avgWin": 4.29,
       "avgLoss": -3.49,
       "maxUp": 72.78,
       "maxDown": -27.04,
@@ -3415,9 +4901,9 @@
       "excessWin": 44.5
      },
      "T+5": {
-      "n": 3830,
+      "n": 3840,
       "avg": -0.01,
-      "median": -0.78,
+      "median": -0.79,
       "win": 42.6,
       "avgWin": 5.82,
       "avgLoss": -4.33,
@@ -3425,33 +4911,33 @@
       "maxDown": -31.3,
       "noBreak": 69.0,
       "excessAvg": 0.24,
-      "excessWin": 44.7
+      "excessWin": 44.8
      },
      "T+10": {
-      "n": 3780,
-      "avg": 0.5,
-      "median": -0.9,
-      "win": 44.5,
-      "avgWin": 8.59,
-      "avgLoss": -5.99,
+      "n": 3790,
+      "avg": 0.49,
+      "median": -0.91,
+      "win": 44.4,
+      "avgWin": 8.58,
+      "avgLoss": -5.98,
       "maxUp": 191.71,
       "maxDown": -38.21,
-      "noBreak": 63.7,
+      "noBreak": 63.6,
       "excessAvg": 0.78,
-      "excessWin": 45.6
+      "excessWin": 45.7
      },
      "T+20": {
-      "n": 3680,
+      "n": 3690,
       "avg": 1.64,
-      "median": -0.97,
+      "median": -0.98,
       "win": 45.7,
-      "avgWin": 12.95,
+      "avgWin": 12.97,
       "avgLoss": -7.89,
       "maxUp": 163.13,
       "maxDown": -51.41,
       "noBreak": 59.3,
       "excessAvg": 1.9,
-      "excessWin": 46.5
+      "excessWin": 46.4
      }
     }
    },
@@ -3729,8 +5215,8 @@
     "熊市": {
      "磨底": {
       "T+1": {
-       "n": 3443,
-       "avg": -0.03,
+       "n": 3453,
+       "avg": -0.02,
        "median": 0.0,
        "win": 48.0,
        "avgWin": 1.74,
@@ -3742,61 +5228,61 @@
        "excessWin": 46.5
       },
       "T+3": {
-       "n": 3423,
-       "avg": -0.09,
-       "median": -0.32,
-       "win": 44.1,
+       "n": 3433,
+       "avg": -0.1,
+       "median": -0.33,
+       "win": 44.0,
        "avgWin": 3.34,
        "avgLoss": -2.8,
        "maxUp": 33.12,
        "maxDown": -27.39,
-       "noBreak": 81.0,
-       "excessAvg": 0.2,
-       "excessWin": 44.0
+       "noBreak": 80.8,
+       "excessAvg": 0.19,
+       "excessWin": 43.9
       },
       "T+5": {
-       "n": 3403,
-       "avg": -0.08,
+       "n": 3413,
+       "avg": -0.09,
        "median": -0.51,
-       "win": 43.9,
+       "win": 43.8,
        "avgWin": 4.55,
        "avgLoss": -3.7,
        "maxUp": 61.03,
        "maxDown": -29.08,
-       "noBreak": 73.2,
+       "noBreak": 73.1,
        "excessAvg": 0.29,
-       "excessWin": 43.8
+       "excessWin": 43.7
       },
       "T+10": {
-       "n": 3353,
-       "avg": 0.0,
-       "median": -0.62,
-       "win": 44.5,
-       "avgWin": 6.73,
-       "avgLoss": -5.39,
+       "n": 3363,
+       "avg": -0.02,
+       "median": -0.63,
+       "win": 44.4,
+       "avgWin": 6.72,
+       "avgLoss": -5.4,
        "maxUp": 79.03,
        "maxDown": -40.01,
-       "noBreak": 65.2,
+       "noBreak": 65.0,
        "excessAvg": 0.49,
        "excessWin": 43.2
       },
       "T+20": {
-       "n": 3253,
-       "avg": 0.11,
-       "median": -0.66,
-       "win": 46.6,
-       "avgWin": 8.97,
-       "avgLoss": -7.63,
+       "n": 3263,
+       "avg": 0.12,
+       "median": -0.65,
+       "win": 46.7,
+       "avgWin": 8.96,
+       "avgLoss": -7.62,
        "maxUp": 73.86,
        "maxDown": -47.92,
-       "noBreak": 59.5,
+       "noBreak": 59.6,
        "excessAvg": 0.65,
        "excessWin": 43.6
       }
      },
      "左侧试仓": {
       "T+1": {
-       "n": 3600,
+       "n": 3610,
        "avg": -0.1,
        "median": -0.29,
        "win": 43.5,
@@ -3805,42 +5291,42 @@
        "maxUp": 20.03,
        "maxDown": -20.01,
        "noBreak": 87.3,
-       "excessAvg": 0.06,
-       "excessWin": 44.8
+       "excessAvg": 0.05,
+       "excessWin": 44.7
       },
       "T+3": {
-       "n": 3580,
+       "n": 3590,
        "avg": -0.28,
        "median": -0.49,
-       "win": 43.4,
-       "avgWin": 3.85,
+       "win": 43.3,
+       "avgWin": 3.86,
        "avgLoss": -3.45,
        "maxUp": 42.0,
        "maxDown": -26.45,
-       "noBreak": 76.5,
+       "noBreak": 76.6,
        "excessAvg": -0.01,
        "excessWin": 43.8
       },
       "T+5": {
-       "n": 3560,
-       "avg": -0.21,
+       "n": 3570,
+       "avg": -0.22,
        "median": -0.56,
-       "win": 44.5,
+       "win": 44.4,
        "avgWin": 4.89,
        "avgLoss": -4.31,
        "maxUp": 61.22,
        "maxDown": -25.67,
-       "noBreak": 71.2,
+       "noBreak": 71.1,
        "excessAvg": 0.12,
        "excessWin": 45.1
       },
       "T+10": {
-       "n": 3510,
+       "n": 3520,
        "avg": -0.24,
-       "median": -0.46,
-       "win": 46.8,
-       "avgWin": 6.32,
-       "avgLoss": -6.0,
+       "median": -0.47,
+       "win": 46.7,
+       "avgWin": 6.33,
+       "avgLoss": -6.01,
        "maxUp": 90.68,
        "maxDown": -33.71,
        "noBreak": 64.3,
@@ -3848,12 +5334,12 @@
        "excessWin": 45.9
       },
       "T+20": {
-       "n": 3410,
+       "n": 3420,
        "avg": -0.02,
-       "median": -0.98,
+       "median": -0.99,
        "win": 44.8,
-       "avgWin": 9.85,
-       "avgLoss": -8.04,
+       "avgWin": 9.84,
+       "avgLoss": -8.03,
        "maxUp": 149.81,
        "maxDown": -33.67,
        "noBreak": 58.9,
@@ -3863,23 +5349,23 @@
      },
      "右侧确认": {
       "T+1": {
-       "n": 3567,
+       "n": 3577,
        "avg": 0.07,
        "median": -0.1,
-       "win": 46.5,
-       "avgWin": 2.3,
-       "avgLoss": -1.86,
+       "win": 46.4,
+       "avgWin": 2.31,
+       "avgLoss": -1.87,
        "maxUp": 20.21,
        "maxDown": -17.64,
        "noBreak": 89.6,
-       "excessAvg": 0.24,
-       "excessWin": 48.1
+       "excessAvg": 0.23,
+       "excessWin": 48.0
       },
       "T+3": {
-       "n": 3547,
-       "avg": 0.23,
-       "median": -0.1,
-       "win": 48.1,
+       "n": 3557,
+       "avg": 0.22,
+       "median": -0.11,
+       "win": 48.0,
        "avgWin": 3.96,
        "avgLoss": -3.23,
        "maxUp": 72.87,
@@ -3889,110 +5375,110 @@
        "excessWin": 48.9
       },
       "T+5": {
-       "n": 3527,
-       "avg": 0.29,
-       "median": -0.1,
-       "win": 48.7,
+       "n": 3537,
+       "avg": 0.27,
+       "median": -0.11,
+       "win": 48.6,
        "avgWin": 4.89,
-       "avgLoss": -4.07,
+       "avgLoss": -4.08,
        "maxUp": 97.86,
        "maxDown": -23.87,
-       "noBreak": 73.1,
-       "excessAvg": 0.64,
-       "excessWin": 47.6
+       "noBreak": 72.9,
+       "excessAvg": 0.63,
+       "excessWin": 47.5
       },
       "T+10": {
-       "n": 3477,
+       "n": 3487,
        "avg": 0.51,
        "median": -0.17,
        "win": 48.8,
-       "avgWin": 7.15,
-       "avgLoss": -5.82,
+       "avgWin": 7.14,
+       "avgLoss": -5.81,
        "maxUp": 118.76,
        "maxDown": -28.11,
        "noBreak": 66.4,
-       "excessAvg": 0.96,
-       "excessWin": 48.5
+       "excessAvg": 0.97,
+       "excessWin": 48.6
       },
       "T+20": {
-       "n": 3376,
-       "avg": 0.85,
-       "median": -0.51,
-       "win": 47.7,
-       "avgWin": 10.14,
-       "avgLoss": -7.64,
+       "n": 3386,
+       "avg": 0.87,
+       "median": -0.5,
+       "win": 47.8,
+       "avgWin": 10.17,
+       "avgLoss": -7.63,
        "maxUp": 142.6,
        "maxDown": -35.67,
-       "noBreak": 61.4,
-       "excessAvg": 1.34,
+       "noBreak": 61.5,
+       "excessAvg": 1.36,
        "excessWin": 47.5
       }
      },
      "主升启动": {
       "T+1": {
-       "n": 3600,
-       "avg": -0.29,
-       "median": -0.83,
+       "n": 3610,
+       "avg": -0.27,
+       "median": -0.82,
        "win": 41.4,
-       "avgWin": 4.2,
-       "avgLoss": -3.45,
+       "avgWin": 4.21,
+       "avgLoss": -3.44,
        "maxUp": 20.05,
        "maxDown": -20.0,
        "noBreak": 73.2,
-       "excessAvg": -0.13,
+       "excessAvg": -0.12,
        "excessWin": 41.9
       },
       "T+3": {
-       "n": 3577,
+       "n": 3587,
        "avg": -0.44,
        "median": -1.17,
-       "win": 41.2,
-       "avgWin": 6.71,
-       "avgLoss": -5.44,
+       "win": 41.1,
+       "avgWin": 6.72,
+       "avgLoss": -5.45,
        "maxUp": 72.82,
        "maxDown": -28.72,
-       "noBreak": 62.0,
+       "noBreak": 61.9,
        "excessAvg": -0.17,
        "excessWin": 41.6
       },
       "T+5": {
-       "n": 3557,
-       "avg": -0.39,
+       "n": 3567,
+       "avg": -0.4,
        "median": -1.55,
-       "win": 39.9,
-       "avgWin": 8.76,
+       "win": 39.8,
+       "avgWin": 8.75,
        "avgLoss": -6.46,
        "maxUp": 148.75,
        "maxDown": -40.28,
        "noBreak": 58.6,
-       "excessAvg": -0.05,
+       "excessAvg": -0.06,
        "excessWin": 40.5
       },
       "T+10": {
-       "n": 3507,
+       "n": 3517,
        "avg": -0.75,
-       "median": -2.13,
+       "median": -2.14,
        "win": 39.3,
-       "avgWin": 10.71,
+       "avgWin": 10.73,
        "avgLoss": -8.18,
        "maxUp": 148.28,
        "maxDown": -47.2,
        "noBreak": 54.3,
-       "excessAvg": -0.34,
+       "excessAvg": -0.33,
        "excessWin": 38.6
       },
       "T+20": {
-       "n": 3406,
-       "avg": -0.55,
-       "median": -3.03,
+       "n": 3417,
+       "avg": -0.57,
+       "median": -3.05,
        "win": 39.7,
-       "avgWin": 14.74,
-       "avgLoss": -10.62,
+       "avgWin": 14.73,
+       "avgLoss": -10.63,
        "maxUp": 223.88,
        "maxDown": -47.57,
-       "noBreak": 49.9,
-       "excessAvg": -0.1,
-       "excessWin": 38.7
+       "noBreak": 49.8,
+       "excessAvg": -0.12,
+       "excessWin": 38.6
       }
      }
     },
@@ -4271,10 +5757,10 @@
     "磨底": {
      "冷清": {
       "T+1": {
-       "n": 3607,
+       "n": 3617,
        "avg": -0.02,
        "median": 0.0,
-       "win": 48.0,
+       "win": 48.1,
        "avgWin": 1.68,
        "avgLoss": -1.59,
        "maxUp": 20.05,
@@ -4284,56 +5770,56 @@
        "excessWin": 47.1
       },
       "T+3": {
-       "n": 3589,
+       "n": 3597,
        "avg": -0.04,
        "median": -0.28,
        "win": 44.7,
        "avgWin": 3.23,
-       "avgLoss": -2.68,
+       "avgLoss": -2.69,
        "maxUp": 33.12,
        "maxDown": -27.39,
        "noBreak": 81.9,
        "excessAvg": 0.24,
-       "excessWin": 44.7
+       "excessWin": 44.6
       },
       "T+5": {
-       "n": 3570,
-       "avg": 0.01,
+       "n": 3580,
+       "avg": -0.0,
        "median": -0.44,
-       "win": 44.6,
+       "win": 44.5,
        "avgWin": 4.37,
-       "avgLoss": -3.5,
+       "avgLoss": -3.51,
        "maxUp": 61.03,
        "maxDown": -29.08,
-       "noBreak": 75.0,
+       "noBreak": 74.9,
        "excessAvg": 0.34,
-       "excessWin": 44.1
+       "excessWin": 44.0
       },
       "T+10": {
-       "n": 3520,
-       "avg": 0.25,
-       "median": -0.46,
-       "win": 46.0,
+       "n": 3530,
+       "avg": 0.24,
+       "median": -0.47,
+       "win": 45.9,
        "avgWin": 6.6,
        "avgLoss": -5.15,
        "maxUp": 79.03,
        "maxDown": -40.01,
-       "noBreak": 67.2,
+       "noBreak": 67.1,
        "excessAvg": 0.66,
-       "excessWin": 44.3
+       "excessWin": 44.2
       },
       "T+20": {
-       "n": 3423,
-       "avg": 0.54,
-       "median": -0.37,
+       "n": 3432,
+       "avg": 0.55,
+       "median": -0.36,
        "win": 47.9,
-       "avgWin": 9.09,
+       "avgWin": 9.07,
        "avgLoss": -7.3,
        "maxUp": 113.54,
        "maxDown": -47.92,
        "noBreak": 61.3,
        "excessAvg": 0.98,
-       "excessWin": 44.5
+       "excessWin": 44.6
       }
      },
      "正常": {
@@ -4351,17 +5837,17 @@
        "excessWin": 42.5
       },
       "T+3": {
-       "n": 158,
-       "avg": 0.19,
-       "median": -0.27,
-       "win": 46.8,
+       "n": 160,
+       "avg": 0.13,
+       "median": -0.36,
+       "win": 46.2,
        "avgWin": 4.56,
-       "avgLoss": -3.66,
+       "avgLoss": -3.68,
        "maxUp": 17.92,
        "maxDown": -14.02,
-       "noBreak": 75.3,
-       "excessAvg": 0.04,
-       "excessWin": 38.6
+       "noBreak": 74.4,
+       "excessAvg": -0.02,
+       "excessWin": 38.1
       },
       "T+5": {
        "n": 157,
@@ -4390,17 +5876,17 @@
        "excessWin": 34.4
       },
       "T+20": {
-       "n": 154,
-       "avg": -1.42,
-       "median": -1.83,
-       "win": 41.6,
+       "n": 155,
+       "avg": -1.41,
+       "median": -1.82,
+       "win": 41.3,
        "avgWin": 9.08,
-       "avgLoss": -8.88,
+       "avgLoss": -8.79,
        "maxUp": 46.65,
        "maxDown": -27.59,
-       "noBreak": 54.5,
+       "noBreak": 54.8,
        "excessAvg": -1.75,
-       "excessWin": 35.1
+       "excessWin": 34.8
       }
      },
      "偏热": {
@@ -4491,7 +5977,7 @@
     "左侧试仓": {
      "冷清": {
       "T+1": {
-       "n": 1846,
+       "n": 1854,
        "avg": -0.01,
        "median": -0.08,
        "win": 46.9,
@@ -4500,65 +5986,65 @@
        "maxUp": 19.97,
        "maxDown": -20.01,
        "noBreak": 94.7,
-       "excessAvg": 0.16,
-       "excessWin": 49.2
+       "excessAvg": 0.15,
+       "excessWin": 49.0
       },
       "T+3": {
-       "n": 1833,
+       "n": 1841,
        "avg": 0.09,
-       "median": -0.07,
-       "win": 47.5,
-       "avgWin": 2.76,
+       "median": -0.09,
+       "win": 47.4,
+       "avgWin": 2.77,
        "avgLoss": -2.32,
        "maxUp": 42.0,
        "maxDown": -20.62,
        "noBreak": 87.1,
        "excessAvg": 0.27,
-       "excessWin": 48.5
+       "excessWin": 48.4
       },
       "T+5": {
-       "n": 1817,
-       "avg": 0.25,
-       "median": 0.05,
-       "win": 50.1,
-       "avgWin": 3.58,
-       "avgLoss": -3.1,
+       "n": 1825,
+       "avg": 0.23,
+       "median": 0.0,
+       "win": 50.0,
+       "avgWin": 3.57,
+       "avgLoss": -3.11,
        "maxUp": 50.12,
        "maxDown": -19.78,
-       "noBreak": 80.4,
-       "excessAvg": 0.53,
+       "noBreak": 80.2,
+       "excessAvg": 0.52,
        "excessWin": 51.2
       },
       "T+10": {
-       "n": 1793,
-       "avg": 0.55,
+       "n": 1799,
+       "avg": 0.54,
        "median": 0.36,
-       "win": 52.5,
-       "avgWin": 5.01,
+       "win": 52.4,
+       "avgWin": 5.0,
        "avgLoss": -4.37,
        "maxUp": 48.5,
        "maxDown": -22.61,
        "noBreak": 73.5,
        "excessAvg": 0.91,
-       "excessWin": 52.8
+       "excessWin": 52.9
       },
       "T+20": {
-       "n": 1753,
-       "avg": 1.21,
+       "n": 1756,
+       "avg": 1.2,
        "median": 0.6,
        "win": 52.3,
-       "avgWin": 7.99,
+       "avgWin": 7.98,
        "avgLoss": -6.22,
        "maxUp": 131.46,
        "maxDown": -28.81,
-       "noBreak": 67.7,
-       "excessAvg": 1.43,
+       "noBreak": 67.6,
+       "excessAvg": 1.42,
        "excessWin": 50.5
       }
      },
      "正常": {
       "T+1": {
-       "n": 1147,
+       "n": 1148,
        "avg": 0.04,
        "median": -0.39,
        "win": 40.9,
@@ -4571,55 +6057,55 @@
        "excessWin": 41.4
       },
       "T+3": {
-       "n": 1140,
-       "avg": 0.01,
+       "n": 1142,
+       "avg": 0.0,
        "median": -0.55,
-       "win": 43.8,
+       "win": 43.7,
        "avgWin": 4.52,
-       "avgLoss": -3.51,
+       "avgLoss": -3.5,
        "maxUp": 35.65,
        "maxDown": -24.79,
        "noBreak": 74.3,
        "excessAvg": 0.3,
-       "excessWin": 42.1
+       "excessWin": 42.0
       },
       "T+5": {
-       "n": 1137,
-       "avg": 0.06,
+       "n": 1138,
+       "avg": 0.05,
        "median": -0.75,
        "win": 42.7,
        "avgWin": 5.8,
-       "avgLoss": -4.22,
+       "avgLoss": -4.23,
        "maxUp": 53.74,
        "maxDown": -22.45,
-       "noBreak": 70.8,
+       "noBreak": 70.7,
        "excessAvg": 0.41,
        "excessWin": 42.8
       },
       "T+10": {
-       "n": 1117,
-       "avg": -0.02,
-       "median": -0.55,
+       "n": 1120,
+       "avg": -0.01,
+       "median": -0.56,
        "win": 46.1,
-       "avgWin": 7.04,
+       "avgWin": 7.07,
        "avgLoss": -6.06,
        "maxUp": 84.99,
        "maxDown": -28.59,
-       "noBreak": 63.5,
-       "excessAvg": 0.34,
-       "excessWin": 43.2
+       "noBreak": 63.4,
+       "excessAvg": 0.36,
+       "excessWin": 43.1
       },
       "T+20": {
-       "n": 1081,
+       "n": 1084,
        "avg": -0.11,
-       "median": -1.17,
+       "median": -1.2,
        "win": 43.8,
-       "avgWin": 10.58,
-       "avgLoss": -8.46,
+       "avgWin": 10.57,
+       "avgLoss": -8.45,
        "maxUp": 149.81,
        "maxDown": -32.57,
-       "noBreak": 58.2,
-       "excessAvg": 0.62,
+       "noBreak": 58.1,
+       "excessAvg": 0.61,
        "excessWin": 42.8
       }
      },
@@ -4651,8 +6137,8 @@
        "excessWin": 39.0
       },
       "T+5": {
-       "n": 658,
-       "avg": -0.89,
+       "n": 659,
+       "avg": -0.9,
        "median": -1.39,
        "win": 39.5,
        "avgWin": 5.73,
@@ -4660,7 +6146,7 @@
        "maxUp": 61.22,
        "maxDown": -19.38,
        "noBreak": 61.2,
-       "excessAvg": -0.72,
+       "excessAvg": -0.73,
        "excessWin": 38.1
       },
       "T+10": {
@@ -4677,32 +6163,32 @@
        "excessWin": 38.0
       },
       "T+20": {
-       "n": 638,
-       "avg": -1.8,
-       "median": -3.09,
-       "win": 35.6,
-       "avgWin": 11.46,
+       "n": 640,
+       "avg": -1.77,
+       "median": -3.07,
+       "win": 35.8,
+       "avgWin": 11.41,
        "avgLoss": -9.12,
        "maxUp": 112.93,
        "maxDown": -33.67,
-       "noBreak": 49.4,
-       "excessAvg": -1.38,
-       "excessWin": 35.4
+       "noBreak": 49.5,
+       "excessAvg": -1.36,
+       "excessWin": 35.6
       }
      },
      "过热": {
       "T+1": {
-       "n": 308,
-       "avg": -0.66,
-       "median": -1.23,
-       "win": 39.9,
+       "n": 309,
+       "avg": -0.67,
+       "median": -1.24,
+       "win": 39.8,
        "avgWin": 4.62,
        "avgLoss": -4.16,
        "maxUp": 20.03,
        "maxDown": -12.04,
-       "noBreak": 64.3,
-       "excessAvg": -0.38,
-       "excessWin": 41.2
+       "noBreak": 64.1,
+       "excessAvg": -0.4,
+       "excessWin": 41.1
       },
       "T+3": {
        "n": 308,
@@ -4731,37 +6217,37 @@
        "excessWin": 31.8
       },
       "T+10": {
-       "n": 305,
-       "avg": -0.94,
-       "median": -3.5,
-       "win": 35.7,
+       "n": 306,
+       "avg": -0.99,
+       "median": -3.52,
+       "win": 35.6,
        "avgWin": 12.51,
-       "avgLoss": -8.42,
+       "avgLoss": -8.47,
        "maxUp": 90.68,
        "maxDown": -33.71,
-       "noBreak": 48.2,
-       "excessAvg": -1.11,
-       "excessWin": 32.1
+       "noBreak": 48.0,
+       "excessAvg": -1.15,
+       "excessWin": 32.0
       },
       "T+20": {
-       "n": 298,
-       "avg": 1.34,
-       "median": -3.84,
-       "win": 36.6,
+       "n": 300,
+       "avg": 1.29,
+       "median": -3.96,
+       "win": 36.3,
        "avgWin": 20.35,
-       "avgLoss": -9.63,
+       "avgLoss": -9.59,
        "maxUp": 105.16,
        "maxDown": -30.87,
-       "noBreak": 47.0,
-       "excessAvg": 0.76,
-       "excessWin": 31.9
+       "noBreak": 46.7,
+       "excessAvg": 0.72,
+       "excessWin": 31.7
       }
      }
     },
     "右侧确认": {
      "冷清": {
       "T+1": {
-       "n": 2110,
+       "n": 2112,
        "avg": 0.19,
        "median": 0.0,
        "win": 49.5,
@@ -4770,142 +6256,142 @@
        "maxUp": 20.05,
        "maxDown": -17.64,
        "noBreak": 94.7,
-       "excessAvg": 0.31,
+       "excessAvg": 0.3,
        "excessWin": 51.0
       },
       "T+3": {
-       "n": 2103,
-       "avg": 0.51,
+       "n": 2109,
+       "avg": 0.5,
        "median": 0.12,
-       "win": 51.3,
-       "avgWin": 3.42,
+       "win": 51.2,
+       "avgWin": 3.41,
        "avgLoss": -2.54,
        "maxUp": 72.87,
        "maxDown": -15.89,
        "noBreak": 84.0,
        "excessAvg": 0.68,
-       "excessWin": 52.1
+       "excessWin": 52.0
       },
       "T+5": {
-       "n": 2088,
-       "avg": 0.77,
-       "median": 0.26,
-       "win": 52.5,
+       "n": 2095,
+       "avg": 0.75,
+       "median": 0.24,
+       "win": 52.4,
        "avgWin": 4.49,
-       "avgLoss": -3.34,
+       "avgLoss": -3.36,
        "maxUp": 97.86,
        "maxDown": -23.87,
-       "noBreak": 78.6,
-       "excessAvg": 1.06,
-       "excessWin": 51.6
+       "noBreak": 78.3,
+       "excessAvg": 1.05,
+       "excessWin": 51.5
       },
       "T+10": {
-       "n": 2070,
-       "avg": 1.67,
-       "median": 0.62,
+       "n": 2075,
+       "avg": 1.66,
+       "median": 0.59,
        "win": 54.5,
-       "avgWin": 6.93,
+       "avgWin": 6.92,
        "avgLoss": -4.63,
        "maxUp": 102.8,
        "maxDown": -21.13,
        "noBreak": 73.6,
        "excessAvg": 1.99,
-       "excessWin": 54.4
+       "excessWin": 54.5
       },
       "T+20": {
-       "n": 2025,
-       "avg": 2.35,
+       "n": 2031,
+       "avg": 2.37,
        "median": 0.77,
        "win": 53.4,
-       "avgWin": 9.79,
+       "avgWin": 9.81,
        "avgLoss": -6.18,
        "maxUp": 106.76,
        "maxDown": -31.26,
        "noBreak": 68.9,
-       "excessAvg": 2.7,
+       "excessAvg": 2.71,
        "excessWin": 52.0
       }
      },
      "正常": {
       "T+1": {
-       "n": 1060,
+       "n": 1062,
        "avg": 0.06,
        "median": -0.32,
-       "win": 44.8,
+       "win": 44.7,
        "avgWin": 2.58,
        "avgLoss": -1.99,
        "maxUp": 19.91,
        "maxDown": -17.3,
        "noBreak": 87.5,
        "excessAvg": 0.29,
-       "excessWin": 46.6
+       "excessWin": 46.5
       },
       "T+3": {
-       "n": 1052,
+       "n": 1054,
        "avg": 0.23,
-       "median": -0.28,
-       "win": 47.0,
+       "median": -0.29,
+       "win": 46.9,
        "avgWin": 4.34,
-       "avgLoss": -3.4,
+       "avgLoss": -3.39,
        "maxUp": 33.17,
        "maxDown": -19.6,
        "noBreak": 75.4,
        "excessAvg": 0.61,
-       "excessWin": 49.3
+       "excessWin": 49.2
       },
       "T+5": {
-       "n": 1048,
-       "avg": 0.4,
-       "median": -0.05,
-       "win": 48.8,
+       "n": 1051,
+       "avg": 0.37,
+       "median": -0.06,
+       "win": 48.6,
        "avgWin": 5.23,
-       "avgLoss": -4.2,
+       "avgLoss": -4.23,
        "maxUp": 42.26,
        "maxDown": -22.17,
-       "noBreak": 71.1,
-       "excessAvg": 0.75,
-       "excessWin": 46.0
+       "noBreak": 70.9,
+       "excessAvg": 0.73,
+       "excessWin": 45.9
       },
       "T+10": {
-       "n": 1031,
-       "avg": 0.12,
-       "median": -0.38,
-       "win": 47.9,
+       "n": 1034,
+       "avg": 0.13,
+       "median": -0.35,
+       "win": 48.0,
        "avgWin": 6.98,
-       "avgLoss": -6.19,
+       "avgLoss": -6.18,
        "maxUp": 48.1,
        "maxDown": -27.41,
-       "noBreak": 63.9,
-       "excessAvg": 0.59,
-       "excessWin": 46.1
+       "noBreak": 64.0,
+       "excessAvg": 0.61,
+       "excessWin": 46.2
       },
       "T+20": {
-       "n": 994,
-       "avg": 0.6,
-       "median": -0.94,
-       "win": 46.6,
-       "avgWin": 10.48,
-       "avgLoss": -8.01,
+       "n": 998,
+       "avg": 0.63,
+       "median": -0.91,
+       "win": 46.7,
+       "avgWin": 10.49,
+       "avgLoss": -8.0,
        "maxUp": 142.6,
        "maxDown": -35.4,
-       "noBreak": 59.0,
-       "excessAvg": 1.07,
-       "excessWin": 45.8
+       "noBreak": 59.1,
+       "excessAvg": 1.1,
+       "excessWin": 45.9
       }
      },
      "偏热": {
       "T+1": {
-       "n": 531,
-       "avg": -0.11,
-       "median": -0.42,
-       "win": 43.7,
-       "avgWin": 3.06,
+       "n": 532,
+       "avg": -0.09,
+       "median": -0.4,
+       "win": 43.8,
+       "avgWin": 3.09,
        "avgLoss": -2.57,
        "maxUp": 20.21,
        "maxDown": -9.59,
        "noBreak": 82.9,
-       "excessAvg": 0.08,
-       "excessWin": 43.5
+       "excessAvg": 0.1,
+       "excessWin": 43.6
       },
       "T+3": {
        "n": 530,
@@ -4934,17 +6420,17 @@
        "excessWin": 40.6
       },
       "T+10": {
-       "n": 520,
-       "avg": -1.35,
+       "n": 522,
+       "avg": -1.36,
        "median": -2.32,
-       "win": 37.7,
+       "win": 37.5,
        "avgWin": 8.36,
-       "avgLoss": -7.22,
+       "avgLoss": -7.21,
        "maxUp": 97.95,
        "maxDown": -28.11,
        "noBreak": 55.0,
-       "excessAvg": -0.99,
-       "excessWin": 33.8
+       "excessAvg": -1.0,
+       "excessWin": 33.9
       },
       "T+20": {
        "n": 506,
@@ -4962,30 +6448,30 @@
      },
      "过热": {
       "T+1": {
-       "n": 226,
-       "avg": 0.27,
+       "n": 231,
+       "avg": 0.2,
        "median": -0.76,
        "win": 44.2,
-       "avgWin": 4.32,
-       "avgLoss": -2.95,
+       "avgWin": 4.36,
+       "avgLoss": -3.09,
        "maxUp": 20.01,
        "maxDown": -15.91,
-       "noBreak": 77.4,
-       "excessAvg": 0.42,
-       "excessWin": 46.5
+       "noBreak": 76.6,
+       "excessAvg": 0.33,
+       "excessWin": 46.3
       },
       "T+3": {
-       "n": 222,
-       "avg": -0.2,
+       "n": 224,
+       "avg": -0.21,
        "median": -0.87,
-       "win": 43.2,
-       "avgWin": 5.87,
-       "avgLoss": -4.82,
+       "win": 43.3,
+       "avgWin": 5.81,
+       "avgLoss": -4.81,
        "maxUp": 39.3,
        "maxDown": -23.55,
-       "noBreak": 65.8,
-       "excessAvg": 0.2,
-       "excessWin": 41.4
+       "noBreak": 66.1,
+       "excessAvg": 0.19,
+       "excessWin": 41.5
       },
       "T+5": {
        "n": 222,
@@ -5124,17 +6610,17 @@
        "excessWin": 46.3
       },
       "T+5": {
-       "n": 547,
-       "avg": 0.04,
-       "median": -0.93,
-       "win": 43.0,
+       "n": 548,
+       "avg": 0.03,
+       "median": -0.94,
+       "win": 42.9,
        "avgWin": 7.48,
        "avgLoss": -5.56,
        "maxUp": 60.85,
        "maxDown": -25.72,
-       "noBreak": 64.7,
+       "noBreak": 64.6,
        "excessAvg": 0.68,
-       "excessWin": 46.8
+       "excessWin": 46.7
       },
       "T+10": {
        "n": 544,
@@ -5165,20 +6651,20 @@
      },
      "偏热": {
       "T+1": {
-       "n": 1410,
-       "avg": -0.09,
-       "median": -0.71,
-       "win": 41.1,
-       "avgWin": 3.95,
+       "n": 1412,
+       "avg": -0.08,
+       "median": -0.7,
+       "win": 41.2,
+       "avgWin": 3.97,
        "avgLoss": -2.91,
        "maxUp": 20.01,
        "maxDown": -17.79,
        "noBreak": 77.2,
-       "excessAvg": 0.05,
+       "excessAvg": 0.06,
        "excessWin": 41.6
       },
       "T+3": {
-       "n": 1405,
+       "n": 1407,
        "avg": -0.15,
        "median": -0.7,
        "win": 44.1,
@@ -5188,69 +6674,69 @@
        "maxDown": -27.77,
        "noBreak": 67.2,
        "excessAvg": 0.02,
-       "excessWin": 43.1
+       "excessWin": 43.0
       },
       "T+5": {
-       "n": 1400,
-       "avg": -0.23,
-       "median": -1.03,
-       "win": 42.9,
+       "n": 1403,
+       "avg": -0.25,
+       "median": -1.05,
+       "win": 42.8,
        "avgWin": 7.19,
-       "avgLoss": -5.79,
+       "avgLoss": -5.8,
        "maxUp": 61.17,
        "maxDown": -37.01,
-       "noBreak": 62.4,
-       "excessAvg": 0.01,
+       "noBreak": 62.3,
+       "excessAvg": -0.0,
        "excessWin": 41.2
       },
       "T+10": {
-       "n": 1382,
-       "avg": -0.14,
-       "median": -1.36,
+       "n": 1387,
+       "avg": -0.13,
+       "median": -1.37,
        "win": 42.2,
-       "avgWin": 9.47,
-       "avgLoss": -7.15,
+       "avgWin": 9.51,
+       "avgLoss": -7.16,
        "maxUp": 101.03,
        "maxDown": -36.86,
-       "noBreak": 59.1,
-       "excessAvg": 0.22,
+       "noBreak": 59.0,
+       "excessAvg": 0.24,
        "excessWin": 40.8
       },
       "T+20": {
-       "n": 1351,
-       "avg": 0.33,
-       "median": -1.49,
+       "n": 1354,
+       "avg": 0.32,
+       "median": -1.5,
        "win": 44.2,
-       "avgWin": 13.15,
-       "avgLoss": -9.82,
+       "avgWin": 13.14,
+       "avgLoss": -9.81,
        "maxUp": 155.11,
        "maxDown": -43.8,
        "noBreak": 54.7,
-       "excessAvg": 0.83,
-       "excessWin": 42.6
+       "excessAvg": 0.82,
+       "excessWin": 42.5
       }
      },
      "过热": {
       "T+1": {
-       "n": 1929,
-       "avg": -0.46,
-       "median": -1.22,
-       "win": 39.7,
+       "n": 1937,
+       "avg": -0.44,
+       "median": -1.21,
+       "win": 39.8,
        "avgWin": 4.79,
        "avgLoss": -3.9,
        "maxUp": 20.05,
        "maxDown": -20.0,
-       "noBreak": 68.7,
-       "excessAvg": -0.28,
+       "noBreak": 68.8,
+       "excessAvg": -0.27,
        "excessWin": 40.2
       },
       "T+3": {
-       "n": 1915,
+       "n": 1923,
        "avg": -0.66,
        "median": -1.84,
-       "win": 37.7,
-       "avgWin": 7.99,
-       "avgLoss": -5.89,
+       "win": 37.8,
+       "avgWin": 8.0,
+       "avgLoss": -5.91,
        "maxUp": 72.82,
        "maxDown": -28.72,
        "noBreak": 57.3,
@@ -5258,43 +6744,43 @@
        "excessWin": 38.6
       },
       "T+5": {
-       "n": 1904,
-       "avg": -0.53,
+       "n": 1910,
+       "avg": -0.54,
        "median": -2.26,
-       "win": 36.6,
-       "avgWin": 10.39,
-       "avgLoss": -6.82,
+       "win": 36.5,
+       "avgWin": 10.38,
+       "avgLoss": -6.83,
        "maxUp": 148.75,
        "maxDown": -40.28,
        "noBreak": 55.0,
        "excessAvg": -0.31,
-       "excessWin": 37.8
+       "excessWin": 37.9
       },
       "T+10": {
-       "n": 1875,
+       "n": 1880,
        "avg": -1.0,
-       "median": -2.92,
+       "median": -2.93,
        "win": 37.1,
        "avgWin": 12.09,
-       "avgLoss": -8.73,
+       "avgLoss": -8.74,
        "maxUp": 148.28,
        "maxDown": -47.2,
-       "noBreak": 50.5,
-       "excessAvg": -0.73,
+       "noBreak": 50.4,
+       "excessAvg": -0.72,
        "excessWin": 35.7
       },
       "T+20": {
-       "n": 1818,
-       "avg": -0.59,
-       "median": -3.78,
+       "n": 1826,
+       "avg": -0.62,
+       "median": -3.79,
        "win": 36.5,
-       "avgWin": 16.99,
-       "avgLoss": -10.7,
+       "avgWin": 16.97,
+       "avgLoss": -10.72,
        "maxUp": 223.88,
        "maxDown": -45.91,
-       "noBreak": 46.5,
-       "excessAvg": -0.23,
-       "excessWin": 36.6
+       "noBreak": 46.4,
+       "excessAvg": -0.26,
+       "excessWin": 36.5
       }
      }
     }
@@ -5306,32 +6792,32 @@
    },
    "crowdDist": {
     "磨底": {
-     "冷清": 3607,
+     "冷清": 3617,
      "正常": 160,
      "偏热": 6
     },
     "左侧试仓": {
-     "冷清": 1846,
-     "正常": 1147,
+     "冷清": 1854,
+     "正常": 1148,
      "偏热": 659,
-     "过热": 308
+     "过热": 309
     },
     "右侧确认": {
-     "冷清": 2110,
-     "正常": 1060,
-     "偏热": 531,
-     "过热": 226
+     "冷清": 2112,
+     "正常": 1062,
+     "偏热": 532,
+     "过热": 231
     },
     "主升启动": {
      "正常": 555,
-     "偏热": 1410,
-     "过热": 1929,
-     "冷清": 66
+     "偏热": 1412,
+     "冷清": 66,
+     "过热": 1937
     }
    },
    "range": [
-    "2024-12-24",
-    "2026-09-15"
+    "2024-12-25",
+    "2026-09-16"
    ],
    "days": 420,
    "topn": 10,
@@ -5342,7 +6828,7 @@
     10,
     20
    ],
-   "generatedAt": "2026-09-15 20:57:50"
+   "generatedAt": "2026-09-16 19:34:12"
   },
   "groupTag": {
    "磨底": "等放量金叉（观察）",
@@ -5353,1592 +6839,2138 @@
  },
  "quotes": {
   "000002": {
-   "price": 3.02,
-   "pct": -0.98,
-   "amount": 212340000.0,
-   "turnover": 0.72,
+   "price": 3.03,
+   "pct": 0.33,
+   "amount": 195450000.0,
+   "turnover": 0.67,
    "name": "万科A"
   },
+  "000055": {
+   "price": 3.82,
+   "pct": 10.09,
+   "amount": 85140000.0,
+   "turnover": 3.42,
+   "name": "方大集团"
+  },
   "000056": {
-   "price": 2.91,
-   "pct": 5.05,
-   "amount": 139330000.0,
-   "turnover": 5.52,
+   "price": 2.82,
+   "pct": -3.09,
+   "amount": 149530000.0,
+   "turnover": 5.67,
    "name": "*ST皇庭"
   },
   "000157": {
-   "price": 6.46,
-   "pct": -0.92,
-   "amount": 158410000.0,
-   "turnover": 0.35,
+   "price": 6.22,
+   "pct": -3.72,
+   "amount": 592960000.0,
+   "turnover": 1.35,
    "name": "中联重科"
   },
   "000301": {
-   "price": 13.75,
-   "pct": 2.31,
-   "amount": 381890000.0,
-   "turnover": 0.42,
+   "price": 13.63,
+   "pct": -0.87,
+   "amount": 277800000.0,
+   "turnover": 0.31,
    "name": "东方盛虹"
   },
   "000401": {
-   "price": 3.48,
-   "pct": -1.97,
-   "amount": 37070000.0,
-   "turnover": 0.4,
+   "price": 3.47,
+   "pct": -0.29,
+   "amount": 27390000.0,
+   "turnover": 0.3,
    "name": "金隅冀东"
   },
   "000425": {
-   "price": 7.81,
-   "pct": -3.58,
-   "amount": 913930000.0,
-   "turnover": 1.28,
+   "price": 7.58,
+   "pct": -2.94,
+   "amount": 1870760000.0,
+   "turnover": 2.8,
    "name": "徐工机械"
   },
   "000528": {
-   "price": 8.19,
-   "pct": 0.49,
-   "amount": 199450000.0,
-   "turnover": 1.2,
+   "price": 7.73,
+   "pct": -5.62,
+   "amount": 624440000.0,
+   "turnover": 3.97,
    "name": "柳工"
   },
-  "000560": {
-   "price": 2.59,
-   "pct": -3.36,
-   "amount": 578340000.0,
-   "turnover": 9.43,
-   "name": "我爱我家"
+  "000533": {
+   "price": 11.18,
+   "pct": 0.81,
+   "amount": 366040000.0,
+   "turnover": 4.77,
+   "name": "顺钠股份"
+  },
+  "000538": {
+   "price": 50.84,
+   "pct": 0.2,
+   "amount": 381420000.0,
+   "turnover": 0.42,
+   "name": "云南白药"
+  },
+  "000564": {
+   "price": 1.49,
+   "pct": 0.68,
+   "amount": 241730000.0,
+   "turnover": 1.07,
+   "name": "供销大集"
   },
   "000592": {
-   "price": 7.92,
-   "pct": -2.22,
-   "amount": 2656910000.0,
-   "turnover": 17.25,
+   "price": 8.71,
+   "pct": 9.97,
+   "amount": 2889960000.0,
+   "turnover": 17.87,
    "name": "平潭发展"
   },
+  "000628": {
+   "price": 56.2,
+   "pct": 6.2,
+   "amount": 601630000.0,
+   "turnover": 5.67,
+   "name": "高新发展"
+  },
+  "000670": {
+   "price": 7.96,
+   "pct": 9.94,
+   "amount": 601680000.0,
+   "turnover": 9.29,
+   "name": "盈方微"
+  },
   "000708": {
-   "price": 13.59,
-   "pct": 0.44,
-   "amount": 150300000.0,
-   "turnover": 0.22,
+   "price": 13.25,
+   "pct": -1.05,
+   "amount": 167330000.0,
+   "turnover": 0.25,
    "name": "中信特钢"
   },
+  "000720": {
+   "price": 4.17,
+   "pct": 10.03,
+   "amount": 272590000.0,
+   "turnover": 5.28,
+   "name": "新能泰山"
+  },
+  "000726": {
+   "price": 6.16,
+   "pct": 3.36,
+   "amount": 102640000.0,
+   "turnover": 2.86,
+   "name": "鲁泰A"
+  },
+  "000731": {
+   "price": 7.99,
+   "pct": 10.06,
+   "amount": 234380000.0,
+   "turnover": 5.48,
+   "name": "四川美丰"
+  },
   "000739": {
-   "price": 22.37,
-   "pct": -1.37,
-   "amount": 175210000.0,
-   "turnover": 0.68,
+   "price": 22.59,
+   "pct": 0.98,
+   "amount": 217310000.0,
+   "turnover": 0.83,
    "name": "普洛药业"
   },
+  "000753": {
+   "price": 5.5,
+   "pct": 10.0,
+   "amount": 298220000.0,
+   "turnover": 5.66,
+   "name": "漳州发展"
+  },
   "000786": {
-   "price": 15.76,
-   "pct": -1.25,
-   "amount": 197090000.0,
-   "turnover": 0.74,
+   "price": 15.85,
+   "pct": 0.57,
+   "amount": 279640000.0,
+   "turnover": 1.06,
    "name": "北新建材"
   },
   "000792": {
-   "price": 24.71,
-   "pct": -1.71,
-   "amount": 1062060000.0,
-   "turnover": 0.81,
+   "price": 24.75,
+   "pct": 0.16,
+   "amount": 1146160000.0,
+   "turnover": 0.88,
    "name": "盐湖股份"
   },
   "000798": {
-   "price": 9.95,
-   "pct": -3.12,
-   "amount": 328290000.0,
-   "turnover": 8.87,
+   "price": 10.06,
+   "pct": 1.11,
+   "amount": 261940000.0,
+   "turnover": 7.17,
    "name": "中水渔业"
   },
   "000823": {
-   "price": 23.9,
-   "pct": 5.61,
-   "amount": 5794330000.0,
-   "turnover": 40.42,
+   "price": 25.12,
+   "pct": 5.1,
+   "amount": 4925630000.0,
+   "turnover": 34.43,
    "name": "超声电子"
   },
-  "000859": {
-   "price": 9.65,
-   "pct": 6.39,
-   "amount": 1151340000.0,
-   "turnover": 13.38,
-   "name": "国风新材"
-  },
   "000876": {
-   "price": 7.3,
-   "pct": -1.08,
-   "amount": 266360000.0,
-   "turnover": 0.8,
+   "price": 7.2,
+   "pct": -1.37,
+   "amount": 298240000.0,
+   "turnover": 0.92,
    "name": "新希望"
   },
   "000877": {
-   "price": 3.71,
-   "pct": -0.54,
-   "amount": 38060000.0,
+   "price": 3.7,
+   "pct": -0.27,
+   "amount": 37740000.0,
    "turnover": 0.14,
    "name": "天山股份"
   },
-  "000921": {
-   "price": 28.04,
-   "pct": -2.06,
-   "amount": 262180000.0,
-   "turnover": 1.01,
-   "name": "海信家电"
-  },
   "000932": {
-   "price": 3.57,
-   "pct": 0.85,
-   "amount": 312120000.0,
-   "turnover": 1.27,
+   "price": 3.61,
+   "pct": 1.12,
+   "amount": 299150000.0,
+   "turnover": 1.22,
    "name": "华菱钢铁"
   },
-  "000981": {
-   "price": 3.02,
-   "pct": 5.96,
-   "amount": 4627800000.0,
-   "turnover": 15.74,
-   "name": "山子高科"
-  },
   "000983": {
-   "price": 6.69,
-   "pct": 0.9,
-   "amount": 381630000.0,
-   "turnover": 1.01,
+   "price": 6.6,
+   "pct": -1.35,
+   "amount": 428550000.0,
+   "turnover": 1.15,
    "name": "山西焦煤"
   },
   "000993": {
-   "price": 16.8,
-   "pct": 10.02,
-   "amount": 2210810000.0,
-   "turnover": 29.24,
+   "price": 18.48,
+   "pct": 10.0,
+   "amount": 1811380000.0,
+   "turnover": 21.76,
    "name": "闽东电力"
   },
+  "000998": {
+   "price": 8.75,
+   "pct": -0.23,
+   "amount": 257350000.0,
+   "turnover": 2.23,
+   "name": "隆平高科"
+  },
   "001210": {
-   "price": 28.65,
-   "pct": -1.34,
-   "amount": 154110000.0,
-   "turnover": 4.0,
+   "price": 28.31,
+   "pct": -1.19,
+   "amount": 101220000.0,
+   "turnover": 2.68,
    "name": "金房能源"
   },
-  "001223": {
-   "price": 46.11,
-   "pct": 10.0,
-   "amount": 175280000.0,
-   "turnover": 5.62,
-   "name": "欧克科技"
+  "001212": {
+   "price": 36.19,
+   "pct": 2.03,
+   "amount": 241430000.0,
+   "turnover": 3.73,
+   "name": "中旗新材"
   },
   "001268": {
-   "price": 24.07,
-   "pct": 0.08,
-   "amount": 53390000.0,
-   "turnover": 2.34,
+   "price": 24.25,
+   "pct": 0.75,
+   "amount": 57890000.0,
+   "turnover": 2.52,
    "name": "联合精密"
   },
+  "001287": {
+   "price": 23.8,
+   "pct": 3.61,
+   "amount": 583400000.0,
+   "turnover": 3.29,
+   "name": "中电港"
+  },
   "001326": {
-   "price": 77.64,
-   "pct": -1.66,
-   "amount": 107690000.0,
-   "turnover": 5.76,
+   "price": 85.4,
+   "pct": 9.99,
+   "amount": 264760000.0,
+   "turnover": 13.36,
    "name": "联域股份"
   },
+  "001368": {
+   "price": 30.59,
+   "pct": 5.45,
+   "amount": 135910000.0,
+   "turnover": 4.17,
+   "name": "通达创智"
+  },
+  "001378": {
+   "price": 22.55,
+   "pct": 10.0,
+   "amount": 307670000.0,
+   "turnover": 16.56,
+   "name": "德冠新材"
+  },
   "001965": {
-   "price": 10.0,
-   "pct": 1.42,
-   "amount": 197500000.0,
-   "turnover": 0.29,
+   "price": 10.07,
+   "pct": 0.7,
+   "amount": 208440000.0,
+   "turnover": 0.3,
    "name": "招商公路"
   },
   "001979": {
-   "price": 6.71,
-   "pct": -0.59,
-   "amount": 211420000.0,
-   "turnover": 0.35,
+   "price": 6.73,
+   "pct": 0.3,
+   "amount": 269980000.0,
+   "turnover": 0.46,
    "name": "招商蛇口"
   },
+  "002077": {
+   "price": 14.37,
+   "pct": 5.2,
+   "amount": 1118800000.0,
+   "turnover": 13.67,
+   "name": "大港股份"
+  },
+  "002095": {
+   "price": 16.35,
+   "pct": 10.03,
+   "amount": 274570000.0,
+   "turnover": 6.96,
+   "name": "生意宝"
+  },
   "002124": {
-   "price": 2.24,
-   "pct": -3.03,
-   "amount": 263840000.0,
-   "turnover": 5.85,
+   "price": 2.23,
+   "pct": -0.45,
+   "amount": 179860000.0,
+   "turnover": 4.1,
    "name": "天邦食品"
   },
-  "002139": {
-   "price": 9.65,
-   "pct": -3.79,
-   "amount": 224070000.0,
-   "turnover": 2.16,
-   "name": "拓邦股份"
+  "002137": {
+   "price": 8.2,
+   "pct": 10.07,
+   "amount": 521300000.0,
+   "turnover": 16.26,
+   "name": "实益达"
+  },
+  "002141": {
+   "price": 6.69,
+   "pct": 0.9,
+   "amount": 1096870000.0,
+   "turnover": 16.13,
+   "name": "贤丰控股"
   },
   "002157": {
-   "price": 3.15,
-   "pct": 1.29,
-   "amount": 685590000.0,
-   "turnover": 2.77,
+   "price": 3.04,
+   "pct": -3.49,
+   "amount": 566960000.0,
+   "turnover": 2.38,
    "name": "正邦科技"
   },
+  "002172": {
+   "price": 5.11,
+   "pct": 4.5,
+   "amount": 989930000.0,
+   "turnover": 25.77,
+   "name": "澳洋健康"
+  },
   "002174": {
-   "price": 13.52,
-   "pct": 0.22,
-   "amount": 707730000.0,
-   "turnover": 5.29,
+   "price": 14.5,
+   "pct": 7.25,
+   "amount": 1107550000.0,
+   "turnover": 7.98,
    "name": "游族网络"
   },
-  "002212": {
-   "price": 7.77,
-   "pct": 5.0,
-   "amount": 2778130000.0,
-   "turnover": 29.59,
-   "name": "天融信"
-  },
-  "002217": {
-   "price": 1.54,
-   "pct": 4.76,
-   "amount": 416230000.0,
-   "turnover": 3.72,
-   "name": "ST合力泰"
-  },
   "002230": {
-   "price": 39.0,
-   "pct": -1.52,
-   "amount": 589740000.0,
-   "turnover": 0.68,
+   "price": 38.9,
+   "pct": -0.26,
+   "amount": 605250000.0,
+   "turnover": 0.71,
    "name": "科大讯飞"
   },
   "002303": {
-   "price": 5.26,
-   "pct": 1.74,
-   "amount": 215750000.0,
-   "turnover": 3.91,
+   "price": 5.79,
+   "pct": 10.08,
+   "amount": 717950000.0,
+   "turnover": 11.89,
    "name": "美盈森"
   },
   "002362": {
-   "price": 17.5,
-   "pct": 9.99,
-   "amount": 223170000.0,
-   "turnover": 6.27,
+   "price": 16.92,
+   "pct": -3.31,
+   "amount": 419390000.0,
+   "turnover": 11.78,
    "name": "汉王科技"
   },
   "002388": {
-   "price": 6.16,
-   "pct": -1.6,
-   "amount": 93400000.0,
-   "turnover": 2.97,
+   "price": 6.78,
+   "pct": 10.06,
+   "amount": 180100000.0,
+   "turnover": 5.43,
    "name": "新亚制程"
   },
+  "002396": {
+   "price": 38.83,
+   "pct": 10.0,
+   "amount": 5194750000.0,
+   "turnover": 18.34,
+   "name": "星网锐捷"
+  },
   "002402": {
-   "price": 18.51,
-   "pct": 1.04,
-   "amount": 374360000.0,
-   "turnover": 2.46,
+   "price": 18.67,
+   "pct": 0.86,
+   "amount": 320320000.0,
+   "turnover": 2.12,
    "name": "和而泰"
   },
-  "002487": {
-   "price": 39.44,
-   "pct": 10.01,
-   "amount": 3052760000.0,
-   "turnover": 12.81,
-   "name": "大金重工"
+  "002436": {
+   "price": 42.8,
+   "pct": 4.75,
+   "amount": 6191960000.0,
+   "turnover": 9.75,
+   "name": "兴森科技"
+  },
+  "002489": {
+   "price": 3.04,
+   "pct": 10.14,
+   "amount": 244850000.0,
+   "turnover": 4.36,
+   "name": "浙江永强"
+  },
+  "002491": {
+   "price": 24.45,
+   "pct": 9.99,
+   "amount": 6719070000.0,
+   "turnover": 24.5,
+   "name": "通鼎互联"
   },
   "002493": {
-   "price": 13.06,
-   "pct": -1.06,
-   "amount": 463630000.0,
-   "turnover": 0.38,
+   "price": 13.03,
+   "pct": -0.23,
+   "amount": 585360000.0,
+   "turnover": 0.48,
    "name": "荣盛石化"
   },
+  "002508": {
+   "price": 16.57,
+   "pct": 0.61,
+   "amount": 174060000.0,
+   "turnover": 1.14,
+   "name": "老板电器"
+  },
   "002522": {
-   "price": 5.81,
-   "pct": 10.04,
-   "amount": 651920000.0,
-   "turnover": 12.77,
+   "price": 5.95,
+   "pct": 2.41,
+   "amount": 881750000.0,
+   "turnover": 16.31,
    "name": "浙江众成"
   },
-  "002531": {
-   "price": 7.81,
-   "pct": 10.0,
-   "amount": 1277480000.0,
-   "turnover": 9.75,
-   "name": "天顺风能"
-  },
-  "002557": {
-   "price": 18.18,
-   "pct": -0.66,
-   "amount": 54600000.0,
-   "turnover": 0.6,
-   "name": "洽洽食品"
-  },
-  "002560": {
-   "price": 7.72,
-   "pct": 1.98,
-   "amount": 1737860000.0,
-   "turnover": 36.04,
-   "name": "通达股份"
+  "002577": {
+   "price": 19.89,
+   "pct": 10.01,
+   "amount": 162090000.0,
+   "turnover": 3.01,
+   "name": "雷柏科技"
   },
   "002578": {
-   "price": 3.93,
-   "pct": -2.96,
-   "amount": 60970000.0,
+   "price": 4.04,
+   "pct": 2.8,
+   "amount": 61180000.0,
    "turnover": 1.78,
    "name": "闽发铝业"
   },
   "002584": {
-   "price": 8.68,
-   "pct": 10.01,
-   "amount": 545160000.0,
-   "turnover": 13.43,
+   "price": 9.55,
+   "pct": 10.02,
+   "amount": 528100000.0,
+   "turnover": 11.74,
    "name": "西陇科学"
   },
   "002585": {
-   "price": 12.06,
-   "pct": 10.04,
-   "amount": 2331860000.0,
-   "turnover": 22.25,
+   "price": 12.17,
+   "pct": 0.91,
+   "amount": 3731110000.0,
+   "turnover": 34.38,
    "name": "双星新材"
   },
   "002601": {
-   "price": 14.95,
-   "pct": -1.32,
-   "amount": 212870000.0,
-   "turnover": 0.71,
+   "price": 14.77,
+   "pct": -1.2,
+   "amount": 279640000.0,
+   "turnover": 0.96,
    "name": "龙佰集团"
   },
+  "002617": {
+   "price": 7.02,
+   "pct": 10.03,
+   "amount": 767540000.0,
+   "turnover": 5.91,
+   "name": "露笑科技"
+  },
+  "002623": {
+   "price": 16.76,
+   "pct": 3.58,
+   "amount": 237140000.0,
+   "turnover": 7.48,
+   "name": "亚玛顿"
+  },
+  "002631": {
+   "price": 11.23,
+   "pct": 9.99,
+   "amount": 486220000.0,
+   "turnover": 5.66,
+   "name": "德尔未来"
+  },
   "002647": {
-   "price": 10.98,
-   "pct": 0.18,
-   "amount": 131870000.0,
-   "turnover": 1.18,
+   "price": 10.99,
+   "pct": 0.09,
+   "amount": 154800000.0,
+   "turnover": 1.39,
    "name": "仁东控股"
   },
-  "002669": {
-   "price": 14.37,
-   "pct": 4.51,
-   "amount": 959140000.0,
-   "turnover": 22.02,
-   "name": "康达新材"
-  },
   "002708": {
-   "price": 16.36,
-   "pct": -3.14,
-   "amount": 442990000.0,
-   "turnover": 5.27,
+   "price": 16.66,
+   "pct": 1.83,
+   "amount": 446840000.0,
+   "turnover": 5.29,
    "name": "光洋股份"
   },
   "002714": {
-   "price": 42.37,
-   "pct": -0.52,
-   "amount": 1728800000.0,
-   "turnover": 1.23,
+   "price": 41.08,
+   "pct": -3.04,
+   "amount": 2021310000.0,
+   "turnover": 1.49,
    "name": "牧原股份"
   },
+  "002745": {
+   "price": 12.38,
+   "pct": 4.38,
+   "amount": 912790000.0,
+   "turnover": 7.05,
+   "name": "木林森"
+  },
   "002768": {
-   "price": 61.77,
-   "pct": -1.22,
-   "amount": 279400000.0,
-   "turnover": 1.79,
+   "price": 64.4,
+   "pct": 4.26,
+   "amount": 463460000.0,
+   "turnover": 2.88,
    "name": "国恩股份"
   },
-  "002790": {
-   "price": 7.54,
-   "pct": -10.02,
-   "amount": 359640000.0,
-   "turnover": 18.07,
-   "name": "瑞尔特"
+  "002787": {
+   "price": 25.4,
+   "pct": 10.0,
+   "amount": 748930000.0,
+   "turnover": 12.22,
+   "name": "华源控股"
+  },
+  "002795": {
+   "price": 7.75,
+   "pct": 6.75,
+   "amount": 202870000.0,
+   "turnover": 6.18,
+   "name": "永和智控"
+  },
+  "002806": {
+   "price": 15.62,
+   "pct": 10.0,
+   "amount": 211950000.0,
+   "turnover": 8.34,
+   "name": "华锋股份"
   },
   "002815": {
-   "price": 21.66,
-   "pct": 2.56,
-   "amount": 2430720000.0,
-   "turnover": 14.48,
+   "price": 23.38,
+   "pct": 7.94,
+   "amount": 2541020000.0,
+   "turnover": 14.43,
    "name": "崇达技术"
   },
+  "002821": {
+   "price": 182.48,
+   "pct": 2.98,
+   "amount": 1994510000.0,
+   "turnover": 3.46,
+   "name": "凯莱英"
+  },
+  "002824": {
+   "price": 28.09,
+   "pct": 9.98,
+   "amount": 622270000.0,
+   "turnover": 10.14,
+   "name": "和胜股份"
+  },
   "002832": {
-   "price": 25.55,
-   "pct": 0.79,
-   "amount": 89230000.0,
-   "turnover": 0.9,
+   "price": 25.0,
+   "pct": -2.15,
+   "amount": 123830000.0,
+   "turnover": 1.28,
    "name": "比音勒芬"
   },
   "002846": {
-   "price": 11.59,
-   "pct": 9.96,
-   "amount": 148830000.0,
-   "turnover": 4.79,
+   "price": 12.75,
+   "pct": 10.01,
+   "amount": 305940000.0,
+   "turnover": 8.89,
    "name": "英联股份"
   },
-  "002897": {
-   "price": 74.99,
-   "pct": 5.04,
-   "amount": 2293640000.0,
-   "turnover": 16.88,
-   "name": "意华股份"
+  "002882": {
+   "price": 23.72,
+   "pct": 1.15,
+   "amount": 840040000.0,
+   "turnover": 13.83,
+   "name": "金龙羽"
+  },
+  "002912": {
+   "price": 25.61,
+   "pct": -9.98,
+   "amount": 499560000.0,
+   "turnover": 11.98,
+   "name": "中新赛克"
   },
   "002913": {
-   "price": 75.55,
-   "pct": -1.29,
-   "amount": 1016760000.0,
-   "turnover": 4.43,
+   "price": 83.11,
+   "pct": 10.01,
+   "amount": 838630000.0,
+   "turnover": 3.43,
    "name": "奥士康"
   },
-  "003001": {
-   "price": 16.79,
-   "pct": 5.93,
-   "amount": 214510000.0,
-   "turnover": 11.3,
-   "name": "中岩大地"
+  "002973": {
+   "price": 13.3,
+   "pct": 6.31,
+   "amount": 177060000.0,
+   "turnover": 4.25,
+   "name": "侨银股份"
+  },
+  "003026": {
+   "price": 33.64,
+   "pct": 10.01,
+   "amount": 509790000.0,
+   "turnover": 10.74,
+   "name": "中晶科技"
   },
   "003033": {
-   "price": 76.7,
-   "pct": -1.92,
-   "amount": 194000000.0,
-   "turnover": 3.11,
+   "price": 81.18,
+   "pct": 5.84,
+   "amount": 196620000.0,
+   "turnover": 3.03,
    "name": "征和工业"
   },
-  "300049": {
-   "price": 47.92,
-   "pct": 6.56,
-   "amount": 653610000.0,
-   "turnover": 5.91,
-   "name": "福瑞医科"
+  "300021": {
+   "price": 3.82,
+   "pct": 0.79,
+   "amount": 53150000.0,
+   "turnover": 1.6,
+   "name": "大禹节水"
   },
   "300059": {
-   "price": 18.17,
-   "pct": -0.27,
-   "amount": 1552750000.0,
-   "turnover": 0.64,
+   "price": 18.39,
+   "pct": 1.21,
+   "amount": 2475690000.0,
+   "turnover": 1.01,
    "name": "东方财富"
   },
-  "300112": {
-   "price": 10.31,
-   "pct": -1.43,
-   "amount": 704530000.0,
-   "turnover": 24.79,
-   "name": "万讯自控"
-  },
   "300146": {
-   "price": 9.24,
-   "pct": -0.54,
-   "amount": 69770000.0,
-   "turnover": 0.67,
+   "price": 9.28,
+   "pct": 0.43,
+   "amount": 71380000.0,
+   "turnover": 0.69,
    "name": "汤臣倍健"
   },
+  "300151": {
+   "price": 20.58,
+   "pct": 9.0,
+   "amount": 870340000.0,
+   "turnover": 11.81,
+   "name": "昌红科技"
+  },
   "300154": {
-   "price": 13.75,
-   "pct": 0.07,
-   "amount": 275420000.0,
-   "turnover": 6.36,
+   "price": 13.72,
+   "pct": -0.22,
+   "amount": 172300000.0,
+   "turnover": 3.99,
    "name": "瑞凌股份"
   },
-  "300227": {
-   "price": 10.53,
-   "pct": -15.22,
-   "amount": 875520000.0,
-   "turnover": 17.02,
-   "name": "光韵达"
+  "300192": {
+   "price": 18.3,
+   "pct": 6.64,
+   "amount": 352710000.0,
+   "turnover": 4.25,
+   "name": "科德教育"
+  },
+  "300207": {
+   "price": 19.81,
+   "pct": 11.67,
+   "amount": 3275710000.0,
+   "turnover": 9.87,
+   "name": "欣旺达"
+  },
+  "300243": {
+   "price": 19.85,
+   "pct": 20.01,
+   "amount": 1031960000.0,
+   "turnover": 24.85,
+   "name": "瑞丰高材"
   },
   "300283": {
-   "price": 13.77,
-   "pct": 0.0,
-   "amount": 650120000.0,
-   "turnover": 12.35,
+   "price": 14.45,
+   "pct": 4.94,
+   "amount": 838150000.0,
+   "turnover": 15.64,
    "name": "温州宏丰"
   },
-  "300290": {
-   "price": 7.37,
-   "pct": -15.38,
-   "amount": 570840000.0,
-   "turnover": 11.27,
-   "name": "ST荣科"
+  "300292": {
+   "price": 4.81,
+   "pct": 4.11,
+   "amount": 479080000.0,
+   "turnover": 9.04,
+   "name": "吴通控股"
   },
-  "300319": {
-   "price": 22.4,
-   "pct": 4.87,
-   "amount": 3338190000.0,
-   "turnover": 17.94,
-   "name": "麦捷科技"
-  },
-  "300352": {
-   "price": 2.85,
-   "pct": -10.09,
-   "amount": 250570000.0,
-   "turnover": 6.6,
-   "name": "ST信源"
+  "300410": {
+   "price": 8.88,
+   "pct": 0.57,
+   "amount": 313950000.0,
+   "turnover": 9.73,
+   "name": "正业科技"
   },
   "300426": {
-   "price": 6.94,
-   "pct": -3.61,
-   "amount": 74380000.0,
-   "turnover": 2.64,
+   "price": 7.09,
+   "pct": 2.16,
+   "amount": 72910000.0,
+   "turnover": 2.6,
    "name": "华智数媒"
   },
-  "300454": {
-   "price": 134.99,
-   "pct": 0.54,
-   "amount": 2971800000.0,
-   "turnover": 7.54,
-   "name": "深信服"
+  "300443": {
+   "price": 19.44,
+   "pct": -2.02,
+   "amount": 227850000.0,
+   "turnover": 4.87,
+   "name": "金雷股份"
+  },
+  "300464": {
+   "price": 10.02,
+   "pct": 20.0,
+   "amount": 624620000.0,
+   "turnover": 18.74,
+   "name": "星徽股份"
+  },
+  "300473": {
+   "price": 30.5,
+   "pct": 8.77,
+   "amount": 316560000.0,
+   "turnover": 6.97,
+   "name": "德尔股份"
   },
   "300497": {
-   "price": 20.92,
-   "pct": 3.26,
-   "amount": 1006570000.0,
-   "turnover": 10.52,
+   "price": 22.05,
+   "pct": 5.4,
+   "amount": 1307240000.0,
+   "turnover": 13.19,
    "name": "富祥股份"
   },
   "300498": {
-   "price": 14.99,
-   "pct": 1.42,
-   "amount": 711700000.0,
-   "turnover": 0.8,
+   "price": 14.66,
+   "pct": -2.2,
+   "amount": 564540000.0,
+   "turnover": 0.64,
    "name": "温氏股份"
   },
-  "300518": {
-   "price": 23.55,
-   "pct": -2.93,
-   "amount": 110880000.0,
-   "turnover": 2.34,
-   "name": "新迅达"
+  "300522": {
+   "price": 15.85,
+   "pct": 10.76,
+   "amount": 570790000.0,
+   "turnover": 14.41,
+   "name": "世名科技"
   },
   "300537": {
-   "price": 21.41,
-   "pct": 5.57,
-   "amount": 399150000.0,
-   "turnover": 12.42,
+   "price": 22.36,
+   "pct": 4.44,
+   "amount": 555440000.0,
+   "turnover": 16.84,
    "name": "广信材料"
   },
-  "300569": {
-   "price": 5.22,
-   "pct": 6.75,
-   "amount": 384360000.0,
-   "turnover": 7.39,
-   "name": "天能重工"
+  "300548": {
+   "price": 233.47,
+   "pct": 12.95,
+   "amount": 4649550000.0,
+   "turnover": 6.96,
+   "name": "长芯博创"
+  },
+  "300553": {
+   "price": 59.7,
+   "pct": 8.72,
+   "amount": 394380000.0,
+   "turnover": 7.89,
+   "name": "集智股份"
+  },
+  "300586": {
+   "price": 9.68,
+   "pct": 2.98,
+   "amount": 248250000.0,
+   "turnover": 4.89,
+   "name": "美联新材"
   },
   "300592": {
-   "price": 20.0,
-   "pct": 1.11,
-   "amount": 411560000.0,
-   "turnover": 5.89,
+   "price": 20.35,
+   "pct": 1.75,
+   "amount": 253870000.0,
+   "turnover": 3.66,
    "name": "华凯易佰"
   },
+  "300593": {
+   "price": 32.14,
+   "pct": 3.88,
+   "amount": 448830000.0,
+   "turnover": 3.17,
+   "name": "新雷能"
+  },
+  "300623": {
+   "price": 31.22,
+   "pct": 6.26,
+   "amount": 806240000.0,
+   "turnover": 3.43,
+   "name": "捷捷微电"
+  },
   "300628": {
-   "price": 41.12,
-   "pct": 0.96,
-   "amount": 237770000.0,
-   "turnover": 0.8,
+   "price": 41.57,
+   "pct": 1.09,
+   "amount": 287760000.0,
+   "turnover": 0.96,
    "name": "亿联网络"
   },
+  "300656": {
+   "price": 29.57,
+   "pct": 20.01,
+   "amount": 358230000.0,
+   "turnover": 9.57,
+   "name": "民德电子"
+  },
   "300688": {
-   "price": 33.35,
-   "pct": 2.3,
-   "amount": 420120000.0,
-   "turnover": 8.47,
+   "price": 34.83,
+   "pct": 4.44,
+   "amount": 521460000.0,
+   "turnover": 10.21,
    "name": "创业黑马"
   },
+  "300689": {
+   "price": 62.96,
+   "pct": 5.18,
+   "amount": 310510000.0,
+   "turnover": 4.94,
+   "name": "澄天伟业"
+  },
+  "300726": {
+   "price": 58.65,
+   "pct": 5.13,
+   "amount": 1071580000.0,
+   "turnover": 8.71,
+   "name": "宏达电子"
+  },
+  "300727": {
+   "price": 33.5,
+   "pct": 5.68,
+   "amount": 218010000.0,
+   "turnover": 4.09,
+   "name": "润禾材料"
+  },
   "300741": {
-   "price": 20.99,
-   "pct": -0.43,
-   "amount": 305300000.0,
-   "turnover": 2.35,
+   "price": 22.64,
+   "pct": 8.27,
+   "amount": 380860000.0,
+   "turnover": 2.79,
    "name": "华宝股份"
   },
-  "300749": {
-   "price": 23.9,
-   "pct": -2.21,
-   "amount": 54000000.0,
-   "turnover": 1.42,
-   "name": "顶固集创"
-  },
   "300752": {
-   "price": 12.44,
-   "pct": 7.52,
-   "amount": 236450000.0,
-   "turnover": 8.55,
+   "price": 13.09,
+   "pct": 5.23,
+   "amount": 268130000.0,
+   "turnover": 9.36,
    "name": "隆利科技"
   },
+  "300802": {
+   "price": 25.25,
+   "pct": 5.34,
+   "amount": 240260000.0,
+   "turnover": 4.78,
+   "name": "矩子科技"
+  },
   "300806": {
-   "price": 57.42,
-   "pct": 9.35,
-   "amount": 2627430000.0,
-   "turnover": 10.38,
+   "price": 59.65,
+   "pct": 3.88,
+   "amount": 2225840000.0,
+   "turnover": 8.26,
    "name": "斯迪克"
   },
-  "300829": {
-   "price": 18.25,
-   "pct": 2.47,
-   "amount": 245120000.0,
-   "turnover": 8.03,
-   "name": "金丹科技"
+  "300820": {
+   "price": 67.6,
+   "pct": 12.72,
+   "amount": 968560000.0,
+   "turnover": 13.21,
+   "name": "英杰电气"
   },
-  "300850": {
-   "price": 30.09,
-   "pct": 7.01,
-   "amount": 917620000.0,
-   "turnover": 10.08,
-   "name": "新强联"
+  "300836": {
+   "price": 52.18,
+   "pct": 4.13,
+   "amount": 119600000.0,
+   "turnover": 3.7,
+   "name": "佰奥智能"
+  },
+  "300868": {
+   "price": 94.42,
+   "pct": -0.03,
+   "amount": 659610000.0,
+   "turnover": 8.46,
+   "name": "杰美特"
   },
   "300903": {
-   "price": 109.42,
-   "pct": 1.03,
-   "amount": 3564830000.0,
-   "turnover": 9.27,
+   "price": 111.95,
+   "pct": 2.31,
+   "amount": 3189540000.0,
+   "turnover": 8.16,
    "name": "科翔股份"
   },
-  "300904": {
-   "price": 43.0,
-   "pct": 9.92,
-   "amount": 161840000.0,
-   "turnover": 10.96,
-   "name": "威力传动"
-  },
   "300905": {
-   "price": 40.55,
-   "pct": 15.53,
-   "amount": 982070000.0,
-   "turnover": 17.55,
+   "price": 39.9,
+   "pct": -1.6,
+   "amount": 764500000.0,
+   "turnover": 13.78,
    "name": "宝丽迪"
   },
   "300939": {
-   "price": 72.16,
-   "pct": -3.09,
-   "amount": 210970000.0,
-   "turnover": 2.4,
+   "price": 81.1,
+   "pct": 12.39,
+   "amount": 421660000.0,
+   "turnover": 4.47,
    "name": "秋田微"
   },
   "300951": {
-   "price": 93.01,
-   "pct": 1.15,
-   "amount": 619300000.0,
-   "turnover": 4.34,
+   "price": 93.2,
+   "pct": 0.2,
+   "amount": 354060000.0,
+   "turnover": 2.53,
    "name": "博硕科技"
   },
   "300979": {
-   "price": 33.66,
-   "pct": -0.21,
-   "amount": 60860000.0,
-   "turnover": 0.15,
+   "price": 33.53,
+   "pct": -0.39,
+   "amount": 80320000.0,
+   "turnover": 0.21,
    "name": "华利集团"
   },
-  "300991": {
-   "price": 31.6,
-   "pct": 2.46,
-   "amount": 362780000.0,
-   "turnover": 10.92,
-   "name": "创益通"
+  "300992": {
+   "price": 28.44,
+   "pct": 20.0,
+   "amount": 162410000.0,
+   "turnover": 7.92,
+   "name": "泰福泵业"
   },
-  "301046": {
-   "price": 31.69,
-   "pct": 0.99,
-   "amount": 126150000.0,
-   "turnover": 3.06,
-   "name": "能辉科技"
+  "301021": {
+   "price": 91.06,
+   "pct": 9.32,
+   "amount": 1274540000.0,
+   "turnover": 9.6,
+   "name": "英诺激光"
+  },
+  "301041": {
+   "price": 35.86,
+   "pct": 9.56,
+   "amount": 514700000.0,
+   "turnover": 18.82,
+   "name": "金百泽"
+  },
+  "301045": {
+   "price": 71.54,
+   "pct": 7.02,
+   "amount": 361080000.0,
+   "turnover": 5.69,
+   "name": "天禄科技"
   },
   "301061": {
-   "price": 40.56,
-   "pct": 12.54,
-   "amount": 365690000.0,
-   "turnover": 4.85,
+   "price": 41.52,
+   "pct": 2.37,
+   "amount": 252570000.0,
+   "turnover": 3.26,
    "name": "匠心家居"
   },
-  "301068": {
-   "price": 24.0,
-   "pct": -12.38,
-   "amount": 134110000.0,
-   "turnover": 5.46,
-   "name": "大地海洋"
+  "301067": {
+   "price": 33.05,
+   "pct": 6.58,
+   "amount": 134960000.0,
+   "turnover": 6.33,
+   "name": "显盈科技"
+  },
+  "301071": {
+   "price": 69.44,
+   "pct": 5.21,
+   "amount": 1864440000.0,
+   "turnover": 14.58,
+   "name": "力量钻石"
   },
   "301072": {
-   "price": 42.97,
-   "pct": -2.1,
-   "amount": 42020000.0,
-   "turnover": 1.42,
+   "price": 44.08,
+   "pct": 2.58,
+   "amount": 60630000.0,
+   "turnover": 2.03,
    "name": "中捷精工"
   },
   "301078": {
-   "price": 6.88,
-   "pct": -1.71,
-   "amount": 100020000.0,
-   "turnover": 1.15,
+   "price": 6.91,
+   "pct": 0.44,
+   "amount": 86810000.0,
+   "turnover": 1.0,
    "name": "孩子王"
   },
+  "301085": {
+   "price": 76.27,
+   "pct": 8.18,
+   "amount": 569200000.0,
+   "turnover": 12.78,
+   "name": "亚康股份"
+  },
   "301108": {
-   "price": 41.2,
-   "pct": 1.93,
-   "amount": 42080000.0,
-   "turnover": 1.58,
+   "price": 41.82,
+   "pct": 1.5,
+   "amount": 47890000.0,
+   "turnover": 1.77,
    "name": "洁雅股份"
   },
   "301122": {
-   "price": 46.73,
-   "pct": 1.54,
-   "amount": 172070000.0,
-   "turnover": 4.96,
+   "price": 47.24,
+   "pct": 1.09,
+   "amount": 124290000.0,
+   "turnover": 3.49,
    "name": "采纳股份"
   },
   "301127": {
-   "price": 16.67,
-   "pct": -0.95,
-   "amount": 196520000.0,
-   "turnover": 1.79,
+   "price": 16.9,
+   "pct": 1.38,
+   "amount": 272410000.0,
+   "turnover": 2.44,
    "name": "武汉天源"
   },
   "301132": {
-   "price": 61.9,
-   "pct": 6.05,
-   "amount": 1335170000.0,
-   "turnover": 22.57,
+   "price": 61.99,
+   "pct": 0.15,
+   "amount": 1117940000.0,
+   "turnover": 19.21,
    "name": "满坤科技"
   },
+  "301155": {
+   "price": 42.28,
+   "pct": -4.34,
+   "amount": 488230000.0,
+   "turnover": 9.16,
+   "name": "海力风电"
+  },
   "301183": {
-   "price": 264.68,
-   "pct": 2.84,
-   "amount": 1200570000.0,
-   "turnover": 7.78,
+   "price": 302.41,
+   "pct": 14.25,
+   "amount": 2270060000.0,
+   "turnover": 13.3,
    "name": "东田微"
   },
+  "301210": {
+   "price": 29.28,
+   "pct": 11.42,
+   "amount": 243480000.0,
+   "turnover": 14.11,
+   "name": "金杨精密"
+  },
+  "301220": {
+   "price": 31.5,
+   "pct": 3.28,
+   "amount": 113470000.0,
+   "turnover": 4.65,
+   "name": "亚香股份"
+  },
   "301234": {
-   "price": 106.0,
-   "pct": 0.96,
-   "amount": 154970000.0,
-   "turnover": 3.58,
+   "price": 108.01,
+   "pct": 1.9,
+   "amount": 127700000.0,
+   "turnover": 2.95,
    "name": "五洲医疗"
   },
   "301251": {
-   "price": 68.15,
-   "pct": 3.79,
-   "amount": 833040000.0,
-   "turnover": 7.1,
+   "price": 81.78,
+   "pct": 20.0,
+   "amount": 1197600000.0,
+   "turnover": 8.79,
    "name": "威尔高"
   },
+  "301265": {
+   "price": 22.09,
+   "pct": 7.91,
+   "amount": 310500000.0,
+   "turnover": 5.89,
+   "name": "华新科技"
+  },
   "301282": {
-   "price": 41.79,
-   "pct": 0.55,
-   "amount": 767110000.0,
-   "turnover": 10.07,
+   "price": 46.73,
+   "pct": 11.82,
+   "amount": 945870000.0,
+   "turnover": 11.8,
    "name": "金禄电子"
   },
-  "301323": {
-   "price": 75.63,
-   "pct": 3.84,
-   "amount": 198960000.0,
-   "turnover": 3.81,
-   "name": "新莱福"
+  "301300": {
+   "price": 36.36,
+   "pct": 13.73,
+   "amount": 122110000.0,
+   "turnover": 8.6,
+   "name": "远翔新材"
+  },
+  "301349": {
+   "price": 46.11,
+   "pct": 4.68,
+   "amount": 302840000.0,
+   "turnover": 7.7,
+   "name": "信德新材"
   },
   "301366": {
-   "price": 66.21,
-   "pct": 5.33,
-   "amount": 1432990000.0,
-   "turnover": 18.23,
+   "price": 69.99,
+   "pct": 5.71,
+   "amount": 1343490000.0,
+   "turnover": 16.61,
    "name": "一博科技"
   },
+  "301373": {
+   "price": 128.0,
+   "pct": 16.79,
+   "amount": 1808660000.0,
+   "turnover": 21.89,
+   "name": "凌玮科技"
+  },
   "301376": {
-   "price": 23.04,
-   "pct": 2.72,
-   "amount": 106120000.0,
-   "turnover": 2.39,
+   "price": 22.54,
+   "pct": -2.17,
+   "amount": 115640000.0,
+   "turnover": 2.67,
    "name": "致欧科技"
   },
-  "301456": {
-   "price": 24.77,
-   "pct": 4.87,
-   "amount": 139690000.0,
-   "turnover": 8.32,
-   "name": "盘古智能"
+  "301479": {
+   "price": 52.99,
+   "pct": 12.12,
+   "amount": 305710000.0,
+   "turnover": 8.27,
+   "name": "弘景光电"
+  },
+  "301486": {
+   "price": 214.34,
+   "pct": 20.0,
+   "amount": 2534800000.0,
+   "turnover": 17.11,
+   "name": "致尚科技"
+  },
+  "301580": {
+   "price": 57.9,
+   "pct": 5.31,
+   "amount": 538480000.0,
+   "turnover": 9.35,
+   "name": "爱迪特"
+  },
+  "301589": {
+   "price": 153.18,
+   "pct": 4.43,
+   "amount": 185430000.0,
+   "turnover": 3.56,
+   "name": "诺瓦星云"
+  },
+  "301592": {
+   "price": 110.89,
+   "pct": 7.66,
+   "amount": 256090000.0,
+   "turnover": 9.97,
+   "name": "六九一二"
+  },
+  "301608": {
+   "price": 48.13,
+   "pct": 6.25,
+   "amount": 263410000.0,
+   "turnover": 9.34,
+   "name": "博实结"
+  },
+  "301617": {
+   "price": 53.8,
+   "pct": 3.84,
+   "amount": 119460000.0,
+   "turnover": 3.28,
+   "name": "博苑新材"
+  },
+  "301626": {
+   "price": 314.39,
+   "pct": 5.64,
+   "amount": 1003530000.0,
+   "turnover": 6.13,
+   "name": "苏州天脉"
   },
   "600009": {
-   "price": 23.06,
-   "pct": -0.13,
-   "amount": 112380000.0,
-   "turnover": 0.2,
+   "price": 22.85,
+   "pct": -0.91,
+   "amount": 177240000.0,
+   "turnover": 0.31,
    "name": "上海机场"
   },
   "600019": {
-   "price": 5.88,
-   "pct": 0.68,
-   "amount": 537270000.0,
-   "turnover": 0.43,
-   "name": "宝钢股份"
-  },
-  "600023": {
-   "price": 5.08,
-   "pct": 0.79,
-   "amount": 292220000.0,
-   "turnover": 0.43,
-   "name": "浙能电力"
+   "price": 5.77,
+   "pct": 0.35,
+   "amount": 538080000.0,
+   "turnover": 0.44,
+   "name": "XD宝钢股"
   },
   "600026": {
-   "price": 21.05,
-   "pct": 0.72,
-   "amount": 1518020000.0,
-   "turnover": 1.87,
+   "price": 20.72,
+   "pct": -1.57,
+   "amount": 1383100000.0,
+   "turnover": 1.74,
    "name": "中远海能"
   },
   "600028": {
-   "price": 5.29,
-   "pct": -1.49,
-   "amount": 1020390000.0,
-   "turnover": 0.2,
+   "price": 5.21,
+   "pct": -1.51,
+   "amount": 1024750000.0,
+   "turnover": 0.21,
    "name": "中国石化"
   },
   "600029": {
-   "price": 4.87,
-   "pct": -0.61,
-   "amount": 151130000.0,
-   "turnover": 0.23,
+   "price": 4.84,
+   "pct": -0.62,
+   "amount": 256860000.0,
+   "turnover": 0.4,
    "name": "南方航空"
   },
   "600030": {
-   "price": 26.35,
-   "pct": -0.98,
-   "amount": 2196180000.0,
-   "turnover": 0.68,
+   "price": 26.45,
+   "pct": 0.38,
+   "amount": 2133500000.0,
+   "turnover": 0.67,
    "name": "中信证券"
   },
   "600031": {
-   "price": 19.49,
-   "pct": -2.16,
-   "amount": 704390000.0,
-   "turnover": 0.42,
+   "price": 18.18,
+   "pct": -6.72,
+   "amount": 4450920000.0,
+   "turnover": 2.93,
    "name": "三一重工"
   },
   "600048": {
-   "price": 5.02,
-   "pct": -1.18,
-   "amount": 425970000.0,
-   "turnover": 0.71,
+   "price": 5.01,
+   "pct": -0.2,
+   "amount": 452370000.0,
+   "turnover": 0.76,
    "name": "保利发展"
   },
-  "600060": {
-   "price": 28.31,
-   "pct": 0.64,
-   "amount": 165460000.0,
-   "turnover": 0.45,
-   "name": "海信视像"
+  "600059": {
+   "price": 9.77,
+   "pct": 10.02,
+   "amount": 547650000.0,
+   "turnover": 6.35,
+   "name": "古越龙山"
   },
-  "600104": {
-   "price": 11.33,
-   "pct": -2.58,
-   "amount": 1058770000.0,
-   "turnover": 0.8,
-   "name": "上汽集团"
+  "600105": {
+   "price": 45.22,
+   "pct": 10.0,
+   "amount": 6607500000.0,
+   "turnover": 10.22,
+   "name": "永鼎股份"
   },
   "600111": {
-   "price": 37.33,
-   "pct": 0.57,
-   "amount": 1021220000.0,
-   "turnover": 0.76,
+   "price": 37.49,
+   "pct": 0.43,
+   "amount": 1434060000.0,
+   "turnover": 1.07,
    "name": "北方稀土"
   },
   "600115": {
-   "price": 3.36,
-   "pct": -0.3,
-   "amount": 357650000.0,
-   "turnover": 0.62,
+   "price": 3.33,
+   "pct": -0.89,
+   "amount": 545880000.0,
+   "turnover": 0.97,
    "name": "中国东航"
   },
-  "600163": {
-   "price": 6.29,
-   "pct": 9.97,
-   "amount": 1179110000.0,
-   "turnover": 10.24,
-   "name": "中闽能源"
-  },
   "600176": {
-   "price": 47.09,
-   "pct": 3.97,
-   "amount": 14675020000.0,
-   "turnover": 7.84,
+   "price": 47.39,
+   "pct": 0.64,
+   "amount": 12776320000.0,
+   "turnover": 6.87,
    "name": "中国巨石"
   },
-  "600180": {
-   "price": 1.7,
-   "pct": -10.05,
-   "amount": 89640000.0,
-   "turnover": 4.71,
-   "name": "*ST瑞茂"
-  },
-  "600183": {
-   "price": 150.25,
-   "pct": 2.91,
-   "amount": 12410850000.0,
-   "turnover": 3.37,
-   "name": "生益科技"
-  },
-  "600184": {
-   "price": 22.13,
-   "pct": 7.53,
-   "amount": 1567820000.0,
-   "turnover": 12.71,
-   "name": "光电股份"
-  },
   "600186": {
-   "price": 12.66,
-   "pct": -3.95,
-   "amount": 4150720000.0,
-   "turnover": 18.03,
+   "price": 12.88,
+   "pct": 1.74,
+   "amount": 3077240000.0,
+   "turnover": 13.41,
    "name": "莲花控股"
   },
   "600188": {
-   "price": 20.08,
-   "pct": -1.42,
-   "amount": 868090000.0,
-   "turnover": 0.72,
+   "price": 20.11,
+   "pct": 0.15,
+   "amount": 689360000.0,
+   "turnover": 0.58,
    "name": "兖矿能源"
   },
   "600228": {
-   "price": 11.11,
-   "pct": 6.21,
-   "amount": 526560000.0,
-   "turnover": 11.6,
+   "price": 11.19,
+   "pct": 0.72,
+   "amount": 459240000.0,
+   "turnover": 10.06,
    "name": "返利科技"
   },
   "600282": {
-   "price": 4.81,
-   "pct": 0.42,
-   "amount": 115080000.0,
-   "turnover": 0.39,
-   "name": "南钢股份"
+   "price": 4.63,
+   "pct": -1.49,
+   "amount": 175900000.0,
+   "turnover": 0.62,
+   "name": "XD南钢股"
   },
   "600309": {
-   "price": 72.99,
-   "pct": -0.71,
-   "amount": 1358270000.0,
-   "turnover": 0.59,
+   "price": 70.78,
+   "pct": -3.03,
+   "amount": 3581690000.0,
+   "turnover": 1.62,
    "name": "万华化学"
   },
-  "600315": {
-   "price": 17.63,
-   "pct": -1.23,
-   "amount": 69290000.0,
-   "turnover": 0.58,
-   "name": "上海家化"
-  },
   "600346": {
-   "price": 16.67,
-   "pct": -1.07,
-   "amount": 408020000.0,
-   "turnover": 0.35,
+   "price": 16.53,
+   "pct": -0.84,
+   "amount": 468840000.0,
+   "turnover": 0.41,
    "name": "恒力石化"
+  },
+  "600360": {
+   "price": 11.08,
+   "pct": 2.5,
+   "amount": 1086810000.0,
+   "turnover": 10.43,
+   "name": "华微电子"
   },
   "600383": {
    "price": 2.15,
-   "pct": -2.27,
-   "amount": 125110000.0,
-   "turnover": 1.28,
+   "pct": 0.0,
+   "amount": 113130000.0,
+   "turnover": 1.17,
    "name": "金地集团"
   },
+  "600400": {
+   "price": 3.2,
+   "pct": 3.23,
+   "amount": 209600000.0,
+   "turnover": 2.9,
+   "name": "红豆股份"
+  },
   "600545": {
-   "price": 4.29,
-   "pct": -3.6,
-   "amount": 500160000.0,
-   "turnover": 6.39,
+   "price": 4.72,
+   "pct": 10.02,
+   "amount": 940390000.0,
+   "turnover": 11.48,
    "name": "卓郎智能"
   },
   "600547": {
-   "price": 34.14,
-   "pct": -1.19,
-   "amount": 1366110000.0,
-   "turnover": 1.1,
+   "price": 35.13,
+   "pct": 2.9,
+   "amount": 2096570000.0,
+   "turnover": 1.68,
    "name": "山东黄金"
   },
   "600585": {
-   "price": 17.28,
-   "pct": -0.75,
-   "amount": 310860000.0,
-   "turnover": 0.45,
+   "price": 16.94,
+   "pct": -1.97,
+   "amount": 469250000.0,
+   "turnover": 0.7,
    "name": "海螺水泥"
   },
+  "600598": {
+   "price": 12.46,
+   "pct": 1.05,
+   "amount": 259380000.0,
+   "turnover": 1.18,
+   "name": "北大荒"
+  },
+  "600600": {
+   "price": 50.4,
+   "pct": -0.71,
+   "amount": 128310000.0,
+   "turnover": 0.36,
+   "name": "青岛啤酒"
+  },
   "600601": {
-   "price": 14.54,
-   "pct": -1.89,
-   "amount": 2721760000.0,
-   "turnover": 4.41,
+   "price": 15.18,
+   "pct": 4.4,
+   "amount": 3029500000.0,
+   "turnover": 4.89,
    "name": "方正科技"
   },
-  "600612": {
-   "price": 32.04,
-   "pct": -1.6,
-   "amount": 42420000.0,
-   "turnover": 0.42,
-   "name": "老凤祥"
+  "600667": {
+   "price": 20.23,
+   "pct": 6.98,
+   "amount": 7050550000.0,
+   "turnover": 16.99,
+   "name": "太极实业"
   },
-  "600629": {
-   "price": 15.82,
-   "pct": -2.1,
-   "amount": 248620000.0,
-   "turnover": 1.35,
-   "name": "华建集团"
-  },
-  "600710": {
-   "price": 11.38,
-   "pct": -0.96,
-   "amount": 192560000.0,
-   "turnover": 1.29,
-   "name": "苏美达"
+  "600737": {
+   "price": 14.28,
+   "pct": -0.7,
+   "amount": 971980000.0,
+   "turnover": 3.19,
+   "name": "中粮糖业"
   },
   "600782": {
-   "price": 2.71,
-   "pct": -0.73,
-   "amount": 74880000.0,
-   "turnover": 0.87,
+   "price": 2.72,
+   "pct": 0.37,
+   "amount": 95150000.0,
+   "turnover": 1.12,
    "name": "新钢股份"
   },
+  "600793": {
+   "price": 16.36,
+   "pct": 10.02,
+   "amount": 113120000.0,
+   "turnover": 4.09,
+   "name": "宜宾纸业"
+  },
   "600801": {
-   "price": 24.61,
-   "pct": -1.68,
-   "amount": 161140000.0,
-   "turnover": 0.49,
+   "price": 24.4,
+   "pct": -0.85,
+   "amount": 365410000.0,
+   "turnover": 1.14,
    "name": "华新建材"
   },
-  "600967": {
-   "price": 13.42,
-   "pct": -6.22,
-   "amount": 1677510000.0,
-   "turnover": 7.22,
-   "name": "内蒙一机"
+  "600968": {
+   "price": 4.03,
+   "pct": 0.25,
+   "amount": 153320000.0,
+   "turnover": 0.38,
+   "name": "海油发展"
   },
   "600977": {
-   "price": 12.54,
-   "pct": -1.95,
-   "amount": 203050000.0,
-   "turnover": 0.86,
+   "price": 12.64,
+   "pct": 0.8,
+   "amount": 184100000.0,
+   "turnover": 0.78,
    "name": "中国电影"
   },
   "600999": {
-   "price": 17.22,
-   "pct": 0.12,
-   "amount": 451960000.0,
-   "turnover": 0.35,
-   "name": "XD招商证"
-  },
-  "601006": {
-   "price": 4.76,
-   "pct": -1.04,
-   "amount": 604810000.0,
-   "turnover": 0.64,
-   "name": "大秦铁路"
+   "price": 17.32,
+   "pct": 0.58,
+   "amount": 558170000.0,
+   "turnover": 0.44,
+   "name": "招商证券"
   },
   "601018": {
-   "price": 3.5,
-   "pct": -0.57,
-   "amount": 128650000.0,
-   "turnover": 0.19,
+   "price": 3.49,
+   "pct": -0.29,
+   "amount": 195930000.0,
+   "turnover": 0.29,
    "name": "宁波港"
   },
   "601021": {
-   "price": 42.36,
-   "pct": -0.45,
-   "amount": 86130000.0,
-   "turnover": 0.21,
+   "price": 41.75,
+   "pct": -1.44,
+   "amount": 153690000.0,
+   "turnover": 0.38,
    "name": "春秋航空"
   },
   "601088": {
-   "price": 46.98,
-   "pct": -0.47,
-   "amount": 742760000.0,
-   "turnover": 0.1,
+   "price": 47.1,
+   "pct": 0.26,
+   "amount": 930990000.0,
+   "turnover": 0.12,
    "name": "中国神华"
   },
   "601098": {
    "price": 10.22,
-   "pct": 0.89,
-   "amount": 121360000.0,
-   "turnover": 0.66,
+   "pct": 0.0,
+   "amount": 92520000.0,
+   "turnover": 0.5,
    "name": "中南传媒"
   },
   "601111": {
-   "price": 5.79,
-   "pct": 0.35,
-   "amount": 192890000.0,
-   "turnover": 0.29,
+   "price": 5.74,
+   "pct": -0.86,
+   "amount": 274510000.0,
+   "turnover": 0.41,
    "name": "中国国航"
   },
   "601155": {
-   "price": 11.28,
-   "pct": -2.59,
-   "amount": 147190000.0,
-   "turnover": 0.57,
+   "price": 11.21,
+   "pct": -0.62,
+   "amount": 183690000.0,
+   "turnover": 0.74,
    "name": "新城控股"
   },
-  "601199": {
-   "price": 6.7,
-   "pct": -1.33,
-   "amount": 298770000.0,
-   "turnover": 4.72,
-   "name": "江南水务"
-  },
   "601208": {
-   "price": 49.37,
-   "pct": 2.24,
-   "amount": 3086900000.0,
-   "turnover": 6.13,
+   "price": 54.31,
+   "pct": 10.01,
+   "amount": 4399330000.0,
+   "turnover": 8.34,
    "name": "东材科技"
   },
   "601211": {
    "price": 17.5,
-   "pct": 0.75,
-   "amount": 874200000.0,
-   "turnover": 0.37,
+   "pct": 0.0,
+   "amount": 715350000.0,
+   "turnover": 0.3,
    "name": "国泰海通"
   },
   "601218": {
-   "price": 5.18,
-   "pct": 9.98,
-   "amount": 391880000.0,
-   "turnover": 8.08,
+   "price": 5.22,
+   "pct": 0.77,
+   "amount": 1309040000.0,
+   "turnover": 24.44,
    "name": "吉鑫科技"
   },
   "601225": {
-   "price": 25.82,
+   "price": 25.69,
    "pct": -0.5,
-   "amount": 698820000.0,
-   "turnover": 0.28,
+   "amount": 635430000.0,
+   "turnover": 0.26,
    "name": "陕西煤业"
   },
+  "601231": {
+   "price": 26.19,
+   "pct": 4.93,
+   "amount": 1297740000.0,
+   "turnover": 2.1,
+   "name": "环旭电子"
+  },
   "601233": {
-   "price": 22.83,
-   "pct": -1.25,
-   "amount": 567450000.0,
-   "turnover": 1.04,
+   "price": 23.36,
+   "pct": 2.32,
+   "amount": 751370000.0,
+   "turnover": 1.37,
    "name": "桐昆股份"
   },
   "601579": {
-   "price": 25.75,
-   "pct": 10.0,
-   "amount": 506530000.0,
-   "turnover": 4.22,
+   "price": 28.33,
+   "pct": 10.02,
+   "amount": 679200000.0,
+   "turnover": 5.24,
    "name": "会稽山"
   },
   "601600": {
-   "price": 9.2,
-   "pct": -0.97,
-   "amount": 1196200000.0,
-   "turnover": 0.98,
+   "price": 9.31,
+   "pct": 1.2,
+   "amount": 1571080000.0,
+   "turnover": 1.3,
    "name": "中国铝业"
   },
+  "601609": {
+   "price": 13.22,
+   "pct": 3.12,
+   "amount": 459600000.0,
+   "turnover": 2.04,
+   "name": "金田股份"
+  },
+  "601615": {
+   "price": 9.6,
+   "pct": -2.24,
+   "amount": 556950000.0,
+   "turnover": 2.55,
+   "name": "明阳智能"
+  },
   "601688": {
-   "price": 18.59,
-   "pct": -1.12,
-   "amount": 766040000.0,
-   "turnover": 0.56,
+   "price": 18.48,
+   "pct": -0.59,
+   "amount": 771900000.0,
+   "turnover": 0.57,
    "name": "华泰证券"
   },
   "601699": {
-   "price": 15.67,
-   "pct": 0.77,
-   "amount": 279670000.0,
-   "turnover": 0.6,
+   "price": 15.61,
+   "pct": -0.38,
+   "amount": 281850000.0,
+   "turnover": 0.61,
    "name": "潞安环能"
   },
   "601857": {
-   "price": 11.11,
-   "pct": 0.63,
-   "amount": 968660000.0,
-   "turnover": 0.05,
-   "name": "中国石油"
+   "price": 10.81,
+   "pct": -0.37,
+   "amount": 1225610000.0,
+   "turnover": 0.07,
+   "name": "XD中国石"
+  },
+  "601869": {
+   "price": 461.0,
+   "pct": -0.22,
+   "amount": 6055230000.0,
+   "turnover": 3.19,
+   "name": "长飞光纤"
   },
   "601872": {
-   "price": 20.5,
-   "pct": 2.5,
-   "amount": 3572570000.0,
-   "turnover": 2.15,
+   "price": 19.86,
+   "pct": -3.12,
+   "amount": 2956750000.0,
+   "turnover": 1.83,
    "name": "招商轮船"
   },
   "601886": {
-   "price": 13.09,
-   "pct": -2.75,
-   "amount": 226530000.0,
-   "turnover": 1.52,
+   "price": 13.13,
+   "pct": 0.31,
+   "amount": 118630000.0,
+   "turnover": 0.8,
    "name": "江河集团"
   },
   "601899": {
-   "price": 31.68,
-   "pct": -1.77,
-   "amount": 4146680000.0,
-   "turnover": 0.63,
+   "price": 32.17,
+   "pct": 1.55,
+   "amount": 6038730000.0,
+   "turnover": 0.92,
    "name": "紫金矿业"
   },
   "601919": {
-   "price": 15.98,
-   "pct": -0.75,
-   "amount": 744430000.0,
-   "turnover": 0.37,
+   "price": 16.38,
+   "pct": 2.5,
+   "amount": 1550930000.0,
+   "turnover": 0.76,
    "name": "中远海控"
   },
+  "601933": {
+   "price": 2.99,
+   "pct": 0.34,
+   "amount": 237770000.0,
+   "turnover": 0.89,
+   "name": "永辉超市"
+  },
   "601975": {
-   "price": 4.62,
-   "pct": 0.87,
-   "amount": 792920000.0,
-   "turnover": 3.65,
+   "price": 4.44,
+   "pct": -3.9,
+   "amount": 1167520000.0,
+   "turnover": 5.56,
    "name": "招商南油"
   },
   "601985": {
-   "price": 9.02,
-   "pct": -0.44,
-   "amount": 555020000.0,
-   "turnover": 0.33,
+   "price": 9.1,
+   "pct": 0.89,
+   "amount": 959270000.0,
+   "turnover": 0.56,
    "name": "中国核电"
   },
+  "603000": {
+   "price": 17.05,
+   "pct": -1.04,
+   "amount": 886500000.0,
+   "turnover": 4.8,
+   "name": "人民网"
+  },
+  "603001": {
+   "price": 9.07,
+   "pct": 2.25,
+   "amount": 65000000.0,
+   "turnover": 1.81,
+   "name": "奥康国际"
+  },
+  "603010": {
+   "price": 12.29,
+   "pct": 4.77,
+   "amount": 213500000.0,
+   "turnover": 3.06,
+   "name": "万盛股份"
+  },
+  "603011": {
+   "price": 28.35,
+   "pct": 4.69,
+   "amount": 1802740000.0,
+   "turnover": 13.12,
+   "name": "合锻智能"
+  },
+  "603019": {
+   "price": 83.3,
+   "pct": 1.51,
+   "amount": 1735930000.0,
+   "turnover": 1.43,
+   "name": "中科曙光"
+  },
   "603082": {
-   "price": 48.16,
-   "pct": 10.0,
-   "amount": 686220000.0,
-   "turnover": 37.34,
+   "price": 52.98,
+   "pct": 10.01,
+   "amount": 714450000.0,
+   "turnover": 33.46,
    "name": "北自科技"
   },
-  "603115": {
-   "price": 92.9,
-   "pct": 5.82,
-   "amount": 1036220000.0,
-   "turnover": 4.69,
-   "name": "海星股份"
+  "603120": {
+   "price": 54.2,
+   "pct": 5.1,
+   "amount": 208330000.0,
+   "turnover": 10.29,
+   "name": "肯特催化"
   },
-  "603129": {
-   "price": 304.5,
-   "pct": 1.54,
-   "amount": 486070000.0,
-   "turnover": 1.04,
-   "name": "春风动力"
+  "603155": {
+   "price": 15.4,
+   "pct": 10.0,
+   "amount": 394760000.0,
+   "turnover": 5.74,
+   "name": "新亚强"
+  },
+  "603175": {
+   "price": 101.34,
+   "pct": 4.63,
+   "amount": 186530000.0,
+   "turnover": 4.14,
+   "name": "超颖电子"
   },
   "603186": {
-   "price": 251.57,
-   "pct": 10.0,
-   "amount": 2483690000.0,
-   "turnover": 6.35,
+   "price": 253.99,
+   "pct": 0.96,
+   "amount": 6868850000.0,
+   "turnover": 17.52,
    "name": "华正新材"
   },
   "603228": {
-   "price": 104.57,
-   "pct": -3.36,
-   "amount": 4203900000.0,
-   "turnover": 3.99,
+   "price": 106.41,
+   "pct": 1.76,
+   "amount": 3518870000.0,
+   "turnover": 3.39,
    "name": "景旺电子"
   },
+  "603230": {
+   "price": 11.14,
+   "pct": 9.97,
+   "amount": 127060000.0,
+   "turnover": 3.3,
+   "name": "内蒙新华"
+  },
   "603236": {
-   "price": 66.85,
-   "pct": 6.64,
-   "amount": 1901990000.0,
-   "turnover": 7.16,
+   "price": 69.74,
+   "pct": 4.32,
+   "amount": 1619140000.0,
+   "turnover": 5.74,
    "name": "移远通信"
   },
+  "603248": {
+   "price": 20.31,
+   "pct": 10.02,
+   "amount": 160050000.0,
+   "turnover": 11.05,
+   "name": "锡华科技"
+  },
   "603259": {
-   "price": 156.67,
-   "pct": -1.38,
-   "amount": 4102400000.0,
-   "turnover": 1.06,
+   "price": 157.71,
+   "pct": 0.66,
+   "amount": 4910190000.0,
+   "turnover": 1.26,
    "name": "药明康德"
   },
   "603260": {
-   "price": 31.82,
-   "pct": -0.62,
-   "amount": 160360000.0,
-   "turnover": 0.42,
+   "price": 32.69,
+   "pct": 2.73,
+   "amount": 295580000.0,
+   "turnover": 0.77,
    "name": "合盛硅业"
   },
+  "603267": {
+   "price": 51.59,
+   "pct": 2.59,
+   "amount": 620360000.0,
+   "turnover": 5.23,
+   "name": "鸿远电子"
+  },
   "603268": {
-   "price": 195.65,
-   "pct": 0.07,
-   "amount": 728920000.0,
-   "turnover": 1.59,
+   "price": 185.8,
+   "pct": -5.03,
+   "amount": 2028110000.0,
+   "turnover": 4.64,
    "name": "松发股份"
   },
+  "603270": {
+   "price": 35.17,
+   "pct": 2.03,
+   "amount": 411230000.0,
+   "turnover": 16.67,
+   "name": "金帝股份"
+  },
+  "603276": {
+   "price": 17.86,
+   "pct": 9.98,
+   "amount": 156340000.0,
+   "turnover": 11.8,
+   "name": "恒兴新材"
+  },
   "603298": {
-   "price": 24.38,
-   "pct": -0.69,
-   "amount": 63480000.0,
-   "turnover": 0.2,
+   "price": 23.53,
+   "pct": -3.49,
+   "amount": 266370000.0,
+   "turnover": 0.88,
    "name": "杭叉集团"
   },
-  "603344": {
-   "price": 22.79,
-   "pct": -9.99,
-   "amount": 245620000.0,
-   "turnover": 19.01,
-   "name": "星德胜"
+  "603303": {
+   "price": 26.6,
+   "pct": 5.64,
+   "amount": 96640000.0,
+   "turnover": 0.77,
+   "name": "得邦照明"
+  },
+  "603306": {
+   "price": 80.82,
+   "pct": 4.51,
+   "amount": 1041830000.0,
+   "turnover": 3.97,
+   "name": "华懋科技"
+  },
+  "603328": {
+   "price": 14.31,
+   "pct": 9.99,
+   "amount": 1126930000.0,
+   "turnover": 8.34,
+   "name": "依顿电子"
   },
   "603353": {
-   "price": 41.44,
-   "pct": 10.01,
-   "amount": 446960000.0,
-   "turnover": 6.46,
+   "price": 42.98,
+   "pct": 3.72,
+   "amount": 644360000.0,
+   "turnover": 8.81,
    "name": "和顺石油"
   },
+  "603366": {
+   "price": 6.81,
+   "pct": -0.29,
+   "amount": 135050000.0,
+   "turnover": 2.44,
+   "name": "日出东方"
+  },
   "603373": {
-   "price": 39.6,
-   "pct": 0.0,
-   "amount": 34420000.0,
-   "turnover": 1.38,
+   "price": 41.55,
+   "pct": 4.92,
+   "amount": 80610000.0,
+   "turnover": 3.11,
    "name": "安邦护卫"
   },
-  "603386": {
-   "price": 18.65,
-   "pct": 8.12,
-   "amount": 1134550000.0,
-   "turnover": 18.78,
-   "name": "骏亚科技"
+  "603558": {
+   "price": 13.05,
+   "pct": 4.32,
+   "amount": 106800000.0,
+   "turnover": 2.45,
+   "name": "健盛集团"
   },
-  "603439": {
-   "price": 14.14,
-   "pct": 2.54,
-   "amount": 965520000.0,
-   "turnover": 16.5,
-   "name": "三力制药"
+  "603607": {
+   "price": 24.41,
+   "pct": 10.0,
+   "amount": 296590000.0,
+   "turnover": 6.95,
+   "name": "京华激光"
+  },
+  "603613": {
+   "price": 19.48,
+   "pct": 0.57,
+   "amount": 143000000.0,
+   "turnover": 1.02,
+   "name": "国联股份"
+  },
+  "603615": {
+   "price": 19.63,
+   "pct": 2.61,
+   "amount": 131010000.0,
+   "turnover": 2.77,
+   "name": "茶花股份"
   },
   "603650": {
-   "price": 68.7,
-   "pct": 2.84,
-   "amount": 2038410000.0,
-   "turnover": 4.91,
+   "price": 69.31,
+   "pct": 0.89,
+   "amount": 1996810000.0,
+   "turnover": 4.72,
    "name": "彤程新材"
   },
   "603657": {
-   "price": 32.59,
-   "pct": 3.82,
-   "amount": 392910000.0,
-   "turnover": 8.92,
+   "price": 34.28,
+   "pct": 5.19,
+   "amount": 275700000.0,
+   "turnover": 6.06,
    "name": "春光科技"
   },
-  "603686": {
-   "price": 14.02,
-   "pct": 5.65,
-   "amount": 918080000.0,
-   "turnover": 15.95,
-   "name": "福龙马"
-  },
-  "603693": {
-   "price": 13.24,
-   "pct": 6.86,
-   "amount": 477620000.0,
-   "turnover": 4.2,
-   "name": "江苏新能"
-  },
-  "603766": {
-   "price": 15.12,
-   "pct": 2.09,
-   "amount": 367350000.0,
-   "turnover": 1.18,
-   "name": "隆鑫通用"
+  "603838": {
+   "price": 12.3,
+   "pct": 0.82,
+   "amount": 24830000.0,
+   "turnover": 0.63,
+   "name": "*ST四通"
   },
   "603880": {
-   "price": 9.78,
-   "pct": -0.91,
-   "amount": 51470000.0,
-   "turnover": 1.81,
+   "price": 9.96,
+   "pct": 1.84,
+   "amount": 69620000.0,
+   "turnover": 2.43,
    "name": "南卫股份"
   },
-  "603899": {
-   "price": 22.16,
-   "pct": -0.14,
-   "amount": 37820000.0,
-   "turnover": 0.19,
-   "name": "晨光股份"
-  },
-  "603938": {
-   "price": 53.17,
-   "pct": 6.43,
-   "amount": 2518540000.0,
-   "turnover": 12.72,
-   "name": "三孚股份"
-  },
-  "603989": {
-   "price": 36.31,
-   "pct": 4.88,
-   "amount": 1922980000.0,
-   "turnover": 13.55,
-   "name": "艾华集团"
+  "603980": {
+   "price": 8.22,
+   "pct": 4.58,
+   "amount": 495650000.0,
+   "turnover": 9.0,
+   "name": "吉华集团"
   },
   "603991": {
-   "price": 178.3,
-   "pct": 0.33,
-   "amount": 492670000.0,
-   "turnover": 3.07,
+   "price": 182.22,
+   "pct": 2.2,
+   "amount": 566740000.0,
+   "turnover": 3.46,
    "name": "领先股份"
   },
   "603993": {
-   "price": 17.64,
-   "pct": -1.4,
-   "amount": 1836050000.0,
-   "turnover": 0.6,
+   "price": 17.84,
+   "pct": 1.13,
+   "amount": 2268910000.0,
+   "turnover": 0.73,
    "name": "洛阳钼业"
   },
   "605058": {
-   "price": 40.3,
-   "pct": 9.99,
-   "amount": 745090000.0,
-   "turnover": 13.08,
+   "price": 44.33,
+   "pct": 10.0,
+   "amount": 462540000.0,
+   "turnover": 7.6,
    "name": "澳弘电子"
   },
-  "605090": {
-   "price": 32.62,
-   "pct": -0.18,
-   "amount": 127840000.0,
-   "turnover": 0.55,
-   "name": "九丰能源"
-  },
   "605198": {
-   "price": 81.0,
-   "pct": -2.23,
-   "amount": 495170000.0,
-   "turnover": 2.22,
+   "price": 81.35,
+   "pct": 0.43,
+   "amount": 529370000.0,
+   "turnover": 2.47,
    "name": "安德利"
   },
-  "605507": {
-   "price": 17.73,
-   "pct": 9.99,
-   "amount": 473700000.0,
-   "turnover": 3.51,
-   "name": "国邦医药"
+  "605258": {
+   "price": 39.3,
+   "pct": 9.02,
+   "amount": 482430000.0,
+   "turnover": 14.75,
+   "name": "协和电子"
+  },
+  "605366": {
+   "price": 8.66,
+   "pct": 7.05,
+   "amount": 296190000.0,
+   "turnover": 4.52,
+   "name": "宏柏新材"
   },
   "605577": {
-   "price": 15.12,
-   "pct": -10.0,
-   "amount": 740720000.0,
-   "turnover": 10.67,
+   "price": 13.64,
+   "pct": -9.79,
+   "amount": 662020000.0,
+   "turnover": 10.74,
    "name": "龙版传媒"
   },
+  "688001": {
+   "price": 68.9,
+   "pct": 7.62,
+   "amount": 958280000.0,
+   "turnover": 3.05,
+   "name": "华兴源创"
+  },
   "688002": {
-   "price": 178.5,
-   "pct": 0.34,
-   "amount": 1273860000.0,
-   "turnover": 1.54,
+   "price": 186.09,
+   "pct": 4.25,
+   "amount": 1722470000.0,
+   "turnover": 2.02,
    "name": "睿创微纳"
   },
   "688004": {
-   "price": 27.38,
-   "pct": 19.98,
-   "amount": 342110000.0,
-   "turnover": 15.7,
+   "price": 32.86,
+   "pct": 20.01,
+   "amount": 698690000.0,
+   "turnover": 28.29,
    "name": "博汇科技"
   },
-  "688020": {
-   "price": 159.0,
-   "pct": 8.46,
-   "amount": 1139950000.0,
-   "turnover": 8.62,
-   "name": "方邦股份"
+  "688010": {
+   "price": 29.09,
+   "pct": 14.35,
+   "amount": 273730000.0,
+   "turnover": 6.05,
+   "name": "福光股份"
+  },
+  "688025": {
+   "price": 444.35,
+   "pct": 12.81,
+   "amount": 2230060000.0,
+   "turnover": 5.41,
+   "name": "杰普特"
+  },
+  "688029": {
+   "price": 81.67,
+   "pct": 3.3,
+   "amount": 297930000.0,
+   "turnover": 1.95,
+   "name": "南微医学"
+  },
+  "688035": {
+   "price": 77.66,
+   "pct": 10.14,
+   "amount": 639620000.0,
+   "turnover": 6.02,
+   "name": "德邦科技"
+  },
+  "688048": {
+   "price": 332.19,
+   "pct": 9.66,
+   "amount": 4119610000.0,
+   "turnover": 7.2,
+   "name": "长光华芯"
   },
   "688090": {
-   "price": 77.55,
-   "pct": 5.83,
-   "amount": 775800000.0,
-   "turnover": 6.35,
+   "price": 79.2,
+   "pct": 2.13,
+   "amount": 699730000.0,
+   "turnover": 5.61,
    "name": "瑞松科技"
   },
   "688137": {
-   "price": 77.1,
-   "pct": 0.39,
-   "amount": 818350000.0,
-   "turnover": 14.62,
+   "price": 84.0,
+   "pct": 8.95,
+   "amount": 743260000.0,
+   "turnover": 13.09,
    "name": "近岸蛋白"
   },
-  "688150": {
-   "price": 43.37,
-   "pct": 4.91,
-   "amount": 625130000.0,
-   "turnover": 3.58,
-   "name": "莱特光电"
+  "688159": {
+   "price": 36.31,
+   "pct": 7.55,
+   "amount": 253770000.0,
+   "turnover": 7.73,
+   "name": "有方科技"
+  },
+  "688170": {
+   "price": 73.4,
+   "pct": 6.59,
+   "amount": 535270000.0,
+   "turnover": 7.25,
+   "name": "德龙激光"
+  },
+  "688181": {
+   "price": 44.97,
+   "pct": 9.28,
+   "amount": 605170000.0,
+   "turnover": 10.27,
+   "name": "八亿时空"
+  },
+  "688199": {
+   "price": 25.0,
+   "pct": 5.98,
+   "amount": 162390000.0,
+   "turnover": 4.09,
+   "name": "久日新材"
+  },
+  "688202": {
+   "price": 103.39,
+   "pct": 4.96,
+   "amount": 730340000.0,
+   "turnover": 5.3,
+   "name": "美迪西"
   },
   "688209": {
-   "price": 35.58,
-   "pct": 3.73,
-   "amount": 841600000.0,
-   "turnover": 5.57,
+   "price": 37.68,
+   "pct": 5.9,
+   "amount": 1384140000.0,
+   "turnover": 8.76,
    "name": "英集芯"
   },
   "688216": {
-   "price": 37.11,
-   "pct": 15.93,
-   "amount": 725780000.0,
-   "turnover": 18.63,
+   "price": 39.39,
+   "pct": 6.14,
+   "amount": 656150000.0,
+   "turnover": 16.29,
    "name": "气派科技"
   },
-  "688244": {
-   "price": 16.97,
-   "pct": 3.22,
-   "amount": 380950000.0,
-   "turnover": 14.26,
-   "name": "永信至诚"
-  },
-  "688312": {
-   "price": 50.15,
-   "pct": 6.66,
-   "amount": 521820000.0,
-   "turnover": 6.97,
-   "name": "燕麦科技"
+  "688293": {
+   "price": 67.05,
+   "pct": 4.39,
+   "amount": 416810000.0,
+   "turnover": 5.37,
+   "name": "奥浦迈"
   },
   "688333": {
-   "price": 117.1,
-   "pct": -0.51,
-   "amount": 1185190000.0,
-   "turnover": 3.66,
-   "name": "铂力特"
+   "price": 117.78,
+   "pct": 0.61,
+   "amount": 986070000.0,
+   "turnover": 3.06,
+   "name": "XD铂力特"
+  },
+  "688398": {
+   "price": 21.32,
+   "pct": 7.24,
+   "amount": 60810000.0,
+   "turnover": 1.72,
+   "name": "赛特新材"
+  },
+  "688432": {
+   "price": 54.06,
+   "pct": 20.0,
+   "amount": 3913870000.0,
+   "turnover": 6.15,
+   "name": "有研硅"
+  },
+  "688448": {
+   "price": 68.06,
+   "pct": 5.67,
+   "amount": 174240000.0,
+   "turnover": 2.69,
+   "name": "磁谷科技"
   },
   "688485": {
-   "price": 104.2,
-   "pct": 5.91,
-   "amount": 666350000.0,
-   "turnover": 4.41,
+   "price": 105.44,
+   "pct": 1.19,
+   "amount": 946410000.0,
+   "turnover": 5.85,
    "name": "九州一轨"
   },
-  "688486": {
-   "price": 45.13,
-   "pct": 6.51,
-   "amount": 337400000.0,
-   "turnover": 4.1,
-   "name": "龙迅股份"
-  },
-  "688519": {
-   "price": 344.3,
-   "pct": 4.55,
-   "amount": 2567230000.0,
-   "turnover": 3.14,
-   "name": "南亚新材"
+  "688536": {
+   "price": 326.41,
+   "pct": 3.93,
+   "amount": 1070940000.0,
+   "turnover": 2.43,
+   "name": "思瑞浦"
   },
   "688600": {
-   "price": 33.16,
-   "pct": 2.85,
-   "amount": 236370000.0,
-   "turnover": 5.25,
+   "price": 34.56,
+   "pct": 4.22,
+   "amount": 236740000.0,
+   "turnover": 5.19,
    "name": "皖仪科技"
   },
-  "688611": {
-   "price": 66.5,
-   "pct": 0.05,
-   "amount": 141520000.0,
-   "turnover": 1.4,
-   "name": "杭州柯林"
+  "688605": {
+   "price": 87.11,
+   "pct": 5.96,
+   "amount": 490840000.0,
+   "turnover": 5.3,
+   "name": "先锋精科"
   },
-  "688612": {
-   "price": 36.89,
-   "pct": -2.28,
-   "amount": 269210000.0,
-   "turnover": 2.85,
-   "name": "威迈斯"
+  "688609": {
+   "price": 9.86,
+   "pct": 8.0,
+   "amount": 434540000.0,
+   "turnover": 9.0,
+   "name": "九联科技"
   },
-  "688621": {
-   "price": 73.0,
-   "pct": 3.37,
-   "amount": 263990000.0,
-   "turnover": 3.25,
-   "name": "阳光诺和"
+  "688620": {
+   "price": 17.15,
+   "pct": 15.1,
+   "amount": 563930000.0,
+   "turnover": 8.69,
+   "name": "安凯微"
   },
   "688625": {
-   "price": 67.26,
-   "pct": 8.48,
-   "amount": 735030000.0,
-   "turnover": 4.28,
+   "price": 70.41,
+   "pct": 4.68,
+   "amount": 864680000.0,
+   "turnover": 4.8,
    "name": "呈和科技"
   },
   "688646": {
-   "price": 75.65,
-   "pct": -0.93,
-   "amount": 89110000.0,
-   "turnover": 1.93,
+   "price": 75.31,
+   "pct": -0.45,
+   "amount": 88960000.0,
+   "turnover": 1.94,
    "name": "逸飞激光"
   },
+  "688690": {
+   "price": 43.71,
+   "pct": 4.37,
+   "amount": 450230000.0,
+   "turnover": 2.57,
+   "name": "纳微科技"
+  },
+  "688699": {
+   "price": 66.05,
+   "pct": 13.18,
+   "amount": 371020000.0,
+   "turnover": 5.34,
+   "name": "明微电子"
+  },
+  "688711": {
+   "price": 27.7,
+   "pct": 8.41,
+   "amount": 505380000.0,
+   "turnover": 8.54,
+   "name": "宏微科技"
+  },
+  "688758": {
+   "price": 29.77,
+   "pct": 5.19,
+   "amount": 283530000.0,
+   "turnover": 3.25,
+   "name": "赛分科技"
+  },
   "688785": {
-   "price": 311.1,
-   "pct": 4.79,
-   "amount": 194020000.0,
-   "turnover": 4.64,
+   "price": 323.6,
+   "pct": 4.02,
+   "amount": 240050000.0,
+   "turnover": 5.56,
    "name": "恒运昌"
   }
  },
