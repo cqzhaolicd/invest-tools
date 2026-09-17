@@ -357,6 +357,20 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
 
 <div class="footer">📡 AI 投研看板 · 数据来自东方财富公开接口 &nbsp;|&nbsp; 只呈现事实 · 不推荐个股 · 不预测涨跌 &nbsp;|&nbsp; 数据仅供个人参考，不构成投资建议</div>
 
+<!-- ============ 个股详情浮层（点击股票名称弹出，不跳转） ============ -->
+<div class="modal-bg" id="stkModal">
+  <div class="modal" style="max-width:1120px;width:96%;padding:20px 24px 26px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:.8rem;color:var(--text3)">🔎 个股详情浮层（按 <b>Esc</b> 或点空白处关闭）</div>
+      <div>
+        <a href="javascript:void(0)" onclick="openStockPage()" style="font-size:.78rem;color:var(--text3);margin-right:12px">在新页面打开 ↗</a>
+        <span class="close" style="float:none;font-size:1.3rem" onclick="closeStk()">✕</span>
+      </div>
+    </div>
+    <div id="stkModalBody" style="max-height:calc(100vh - 190px);overflow-y:auto"></div>
+  </div>
+</div>
+
 <!-- ============ AI 设置 Modal ============ -->
 <div class="modal-bg" id="aiModal">
   <div class="modal">
@@ -437,18 +451,47 @@ function stockLink(code, name, extraStyle){
   return '<a class="stk" href="'+eastmoneyUrl(code)+'" target="_blank" rel="noopener"'
     + (extraStyle? ' style="'+extraStyle+'"' : '') + ' title="点击查看个股详情（K线/资金流/财务）">'+esc(name)+'</a>';
 }
-/* 站内跳转：打开本站「个股详情」（行情 / 财报 / 资金面 / 行业景气 / 问AI） */
-function goStock(code){
-  code = String(code||'').trim();
-  if(!code){ return false; }
+/* 当前页弹出个股详情浮层（不跳转、不离开本页） */
+var curStkCode = '';
+function closeStk(){
+  var m = document.getElementById('stkModal');
+  if(m){ m.classList.remove('on'); m.scrollTop = 0; }
+}
+function openStockPage(){
+  var c = curStkCode; if(!c){ return false; }
+  closeStk();
+  var el = document.getElementById('symInput'); if(el){ el.value = c; }
   try{ switchPage('stock'); }catch(e){}
-  var el = document.getElementById('symInput');
-  if(el){ el.value = code; }
   try{ loadStock(); }catch(e){}
-  try{ history.replaceState(null, '', '#stock/'+code); }catch(e){}
-  try{ window.scrollTo(0,0); }catch(e){}
+  try{ history.replaceState(null, '', '#stock/'+c); }catch(e){}
   return false;
 }
+async function openStockModal(code){
+  code = String(code||'').trim();
+  if(!code){ return false; }
+  curStkCode = code;
+  var m = document.getElementById('stkModal'), body = document.getElementById('stkModalBody');
+  if(!m || !body){ return false; }
+  m.classList.add('on'); m.scrollTop = 0;
+  body.innerHTML = '<div class="hint">⏳ 正在加载 '+esc(code)+' 的行情 / 财报 / 资金面…</div>';
+  try{
+    var secid = toSecid(code);
+    var q = await getStockQuote(secid);
+    var fin = await getFinance(secid).catch(function(){ return []; });
+    var ff = await getStockFundFlow(secid).catch(function(){ return []; });
+    var agri = null;
+    if(isAgriIndustry(q.industry)){ agri = await getAgriData().catch(function(){ return null; }); }
+    body.innerHTML = renderStockCards(q, fin, ff, agri, 'M');
+    m.scrollTop = 0;
+  }catch(e){
+    body.innerHTML = '<div class="hint">❌ '+esc(e.message)+'（请输入 6 位代码，如 600519）</div>';
+  }
+  return false;
+}
+function goStock(code){ openStockModal(code); return false; }
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){ closeStk(); }
+});
 function stockGo(code, name, extraStyle){
   if(!code){ return esc(name); }
   return '<a class="stk" href="javascript:void(0)" onclick="return goStock(\''+esc(code)+'\')"'
@@ -1254,6 +1297,7 @@ function openAI(){
 }
 function closeAI(){ $('aiModal').classList.remove('on'); }
 $('aiModal').addEventListener('click', function(e){ if(e.target===this) closeAI(); });
+$('stkModal').addEventListener('click', function(e){ if(e.target===this) closeStk(); });
 function saveAI(){
   var cfg = { base:$('aiBase').value.trim().replace(/\/+$/,''), key:$('aiKey').value.trim(), model:$('aiModel').value.trim()||'deepseek-chat', reasonModel:$('aiReasonModel').value.trim()||'deepseek-reasoner' };
   if(!cfg.key){ $('aiTestResult').textContent='⚠️ 请填写 Key'; return; }
@@ -1815,7 +1859,8 @@ async function loadStock(){
   }
   $('stockLoading').style.display = 'none';
 }
-function renderStock(q, fin, ff, agri){
+function renderStockCards(q, fin, ff, agri, sfx){
+  sfx = sfx || '';
   var html = '';
   var lastMain = (ff&&ff.length)? +ff[ff.length-1].main : null;
   /* 行情卡 */
@@ -1853,20 +1898,24 @@ function renderStock(q, fin, ff, agri){
   }
   /* 问 AI */
   html += '<div class="card"><h3><span class="n">🤖</span>问 AI <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（把上面这些数据交给你的模型分析）</span></h3>'
-    + '<div class="input-row"><input type="text" id="aiQ" placeholder="例如：这家公司基本面如何？当前估值贵不贵？有哪些风险？" style="flex:1;min-width:220px"><button class="btn btn-gold" onclick="askStockAI()">提问</button></div>'
-    + '<div class="ai-output" id="stockAiOut"></div></div>';
-  $('stockArea').innerHTML = html;
+    + '<div class="input-row"><input type="text" id="aiQ'+sfx+'" placeholder="例如：这家公司基本面如何？当前估值贵不贵？有哪些风险？" style="flex:1;min-width:220px"><button class="btn btn-gold" onclick="askStockAI(\''+sfx+'\')">提问</button></div>'
+    + '<div class="ai-output" id="stockAiOut'+sfx+'"></div></div>';
+  return html;
 }
-async function askStockAI(){
+function renderStock(q, fin, ff, agri){
+  $('stockArea').innerHTML = renderStockCards(q, fin, ff, agri, '');
+}
+async function askStockAI(sfx){
+  sfx = sfx || '';
   if(!aiReady()){ openAI(); return; }
-  var q = $('aiQ').value.trim();
+  var q = $('aiQ'+sfx).value.trim();
   if(!q){ return; }
-  var out = $('stockAiOut');
+  var out = $('stockAiOut'+sfx);
   out.classList.add('show');
   out.innerHTML = '<span class="thinking">🤔 分析中…</span><br>';
   try{
     /* 从已渲染数据提取当前个股上下文 */
-    var sym = $('symInput').value.trim();
+    var sym = (sfx? curStkCode : $('symInput').value.trim());
     var secid = toSecid(sym);
     var qq = await getStockQuote(secid);
     var fin = await getFinance(secid).catch(function(){ return []; });
@@ -2744,9 +2793,7 @@ renderReports();
   if(p && document.getElementById('page-'+p)){
     switchPage(p, true);
     if(p==='stock' && parts[1]){
-      var el = document.getElementById('symInput');
-      if(el){ el.value = parts[1]; }
-      setTimeout(function(){ try{ loadStock(); }catch(e){} }, 60);
+      setTimeout(function(){ try{ openStockModal(parts[1]); }catch(e){} }, 60);
     }
   }
 })();
