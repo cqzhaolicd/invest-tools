@@ -437,6 +437,25 @@ function stockLink(code, name, extraStyle){
   return '<a class="stk" href="'+eastmoneyUrl(code)+'" target="_blank" rel="noopener"'
     + (extraStyle? ' style="'+extraStyle+'"' : '') + ' title="点击查看个股详情（K线/资金流/财务）">'+esc(name)+'</a>';
 }
+/* 站内跳转：打开本站「个股详情」（行情 / 财报 / 资金面 / 行业景气 / 问AI） */
+function goStock(code){
+  code = String(code||'').trim();
+  if(!code){ return false; }
+  try{ switchPage('stock'); }catch(e){}
+  var el = document.getElementById('symInput');
+  if(el){ el.value = code; }
+  try{ loadStock(); }catch(e){}
+  try{ history.replaceState(null, '', '#stock/'+code); }catch(e){}
+  try{ window.scrollTo(0,0); }catch(e){}
+  return false;
+}
+function stockGo(code, name, extraStyle){
+  if(!code){ return esc(name); }
+  return '<a class="stk" href="javascript:void(0)" onclick="return goStock(\''+esc(code)+'\')"'
+    + (extraStyle? ' style="'+extraStyle+'"' : '')
+    + ' title="点击查看个股详情（行情 / 财报 / 资金面 / 行业景气 / 问AI）">'+esc(name)+'</a>';
+}
+
 /* 腾讯日K（web.ifzq.gtimg.cn，CORS:* 可用）—— 东财 push2his 不可达时的主数据源
    fq=true 前复权（算区间涨跌幅）/ fq=false 不复权（历史快照的实际成交价） */
 function tencentSymbol(code){
@@ -1488,7 +1507,7 @@ function renderReview(){
       } else {
         jHtml = '<span style="color:var(--text3)">'+(j? esc(j.pos) : '—')+'</span>';
       }
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="jd">'+jHtml+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockGo(x.code, x.name)+'</td><td>'+esc(x.industry||'-')+'</td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="jd">'+jHtml+'</td><td class="num">'+(x.peTTM!=null?x.peTTM.toFixed(1):'-')+'</td><td class="num">'+fmtMoney(x.totalMcap)+'</td></tr>';
     });
     html += '</table></div><div class="hint" style="margin-top:8px">判断口径：① 市场=上证均线结构 ｜ ② 行业周期=Sequoia 板块周期（未覆盖行业按个股回撤+半年线/年线推断）｜ ③④ MACD(12,26,9) 零轴与金叉/死叉/背离 ｜ ⑤ 量能=今日量÷前5日均量（≥1.5放/≤0.7缩）｜ ⑥ 次数=近20日同信号次数 ｜ ⑦ 拥挤度=持仓页同一算法（非交易时段用全天总换手率/量比；盘中按 240÷已开市分钟 折算为全天当量，开盘30分钟内不折算）。<b>悬停标签可看七维度明细</b>。规则化判断，非投资建议。</div></div>';
   }
@@ -1501,7 +1520,7 @@ function renderReview(){
       var ses = marketSession();
       var ci = crowdInfo(x, (ses.state==='盘中')? intradayEquiv(x, ses) : x.fullDay);
       var crowdHtml = ci.cls? '<span class="tag '+ci.cls+'">'+ci.lv+' '+ci.score+'</span>':'<span style="color:var(--text3)">'+ci.lv+' '+ci.score+'</span>';
-      html += '<tr data-code="'+esc(x.code)+'"><td class="td-b" style="white-space:nowrap">'+stockLink(x.code, x.name)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(x.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',1)">▼</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="口径:'+ci.caliber+'（非交易时段=全天总换手率/量比；盘中=换手率按已开市时间折算为全天当量） · 换手率'+(ci.turnover!=null?ci.turnover.toFixed(2)+'%':'-')+' · 量比'+(ci.volRatio!=null?ci.volRatio.toFixed(2):'-')+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
+      html += '<tr data-code="'+esc(x.code)+'"><td class="td-b" style="white-space:nowrap">'+stockGo(x.code, x.name)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(x.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(x.code)+'\',1)">▼</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+pctCls(x.w5)+'">'+(x.w5!=null?fmtPct(x.w5):'-')+'</td><td class="num '+pctCls(x.w20)+'">'+(x.w20!=null?fmtPct(x.w20):'-')+'</td><td class="num">'+fmtVol(x.vol)+'</td><td class="num" title="口径:'+ci.caliber+'（非交易时段=全天总换手率/量比；盘中=换手率按已开市时间折算为全天当量） · 换手率'+(ci.turnover!=null?ci.turnover.toFixed(2)+'%':'-')+' · 量比'+(ci.volRatio!=null?ci.volRatio.toFixed(2):'-')+'">'+crowdHtml+'</td><td class="num '+pctCls(x.mainIn)+'">'+fmtFlow(x.mainIn)+'</td><td class="num '+pctCls(x.dayPnl)+'">'+(x.dayPnl!=null?((x.dayPnl>=0?'+':'')+fmtMoney(x.dayPnl)):'-')+'</td><td class="num '+pctCls(x.pnl)+'">'+(x.pnl>=0?'+':'')+fmtMoney(x.pnl)+'</td><td class="num '+pctCls(x.pnlPct)+'">'+(x.pnlPct>=0?'+':'')+x.pnlPct.toFixed(2)+'%</td><td class="num">'+x.shares+'</td><td class="num">'+x.costP.toFixed(2)+'</td><td class="num">'+fmtMoney(x.price*x.shares)+'</td></tr>';
     });
     html += '<tr class="total"><td colspan="8" style="text-align:right">合计</td><td class="num '+pctCls(hasDay?tDay:null)+'">'+(hasDay?((tDay>=0?'+':'')+fmtMoney(tDay)):'-')+'</td><td class="num '+pctCls(tVal-tCost)+'">'+((tVal-tCost)>=0?'+':'')+fmtMoney(tVal-tCost)+'</td><td class="num '+pctCls(tVal-tCost)+'">'+(((tVal-tCost)/tCost*100)>=0?'+':'')+((tVal-tCost)/tCost*100).toFixed(2)+'%</td><td class="num">'+tShares+'</td><td class="num">'+fmtMoney(tCost)+'</td><td class="num">'+fmtMoney(tVal)+'</td></tr>';
     html += '</table></div></div>';
@@ -1529,7 +1548,7 @@ function renderReview(){
   if(s.lianbanStocks && s.lianbanStocks.length){
     html += '<div style="margin-top:14px"><div class="hint" style="margin-bottom:6px">连板股榜（客观榜单，非推荐）</div><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>连板</th><th>现价</th><th>涨跌幅</th><th>成交额</th><th>行业</th></tr>';
     s.lianbanStocks.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+'</td><td><span class="tag tag-gold">'+x.boards+'连板</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td>'+esc(x.industry)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockGo(x.code, x.name)+'</td><td><span class="tag tag-gold">'+x.boards+'连板</span></td><td class="num">'+x.price.toFixed(2)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td>'+esc(x.industry)+'</td></tr>';
     });
     html += '</table></div></div>';
   }
@@ -1558,7 +1577,7 @@ function renderReview(){
   if(d.turnover && d.turnover.length){
     html += '<div class="card"><h3><span class="n">💸</span>全市场成交额 Top20</h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价</th><th>涨跌幅</th><th>成交额</th><th>总市值</th><th>行业</th></tr>';
     d.turnover.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(2):'-')+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td class="num">'+fmtMoney(x.mcap)+'</td><td>'+esc(x.industry)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockGo(x.code, x.name)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(2):'-')+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td class="num">'+fmtMoney(x.mcap)+'</td><td>'+esc(x.industry)+'</td></tr>';
     });
     html += '</table></div></div>';
   }
@@ -1933,7 +1952,7 @@ function renderWatch(){
     var html = '';
     quotes.forEach(function(q, i){
       if(!q){ html += '<div class="stock-row"><span class="code">'+esc(watch[i])+'</span><span class="name">读取失败</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>'; return; }
-      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+stockLink(q.code, q.name)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">量 '+fmtVol(q.vol)+' · 主力 '+(q.mainIn!=null?('<b class="'+(q.mainIn>=0?'up':'down')+'">'+fmtFlow(q.mainIn)+'</b>'):'-')+' · PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
+      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+stockGo(q.code, q.name)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">量 '+fmtVol(q.vol)+' · 主力 '+(q.mainIn!=null?('<b class="'+(q.mainIn>=0?'up':'down')+'">'+fmtFlow(q.mainIn)+'</b>'):'-')+' · PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
     });
     listEl.innerHTML = html;
   });
@@ -2084,7 +2103,7 @@ function renderHold(){
       var dayPnl = (isToday && q && q.price!=null && q.preClose!=null && q.preClose>0)? (q.price-q.preClose)*h.shares : null;
       totalCost+=cost; totalVal+=val;
       if(dayPnl!=null){ totalDay+=dayPnl; hasDay=true; }
-      html += '<tr data-code="'+esc(h.code)+'"><td class="td-b" style="white-space:nowrap">'+stockLink(h.code, nm)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(h.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',1)">▼</span></td>'
+      html += '<tr data-code="'+esc(h.code)+'"><td class="td-b" style="white-space:nowrap">'+stockGo(h.code, nm)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(h.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',1)">▼</span></td>'
         + '<td class="num">'+h.shares+' <span class="rm" title="修改持股数（支持 +500 / -300）" style="cursor:pointer" onclick="editHoldShares(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+Number(h.price).toFixed(2)+' <span class="rm" title="修改成本价" style="cursor:pointer" onclick="editHoldCost(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+(px!=null? Number(px).toFixed(2) : '-')+'</td>'
@@ -2461,7 +2480,7 @@ function renderSequoia(){
         var nm = (d.names && d.names[x.code]) || x.name || x.code;
         var xq = /^6/.test(x.code)? ('SH'+x.code) : (/^[48]/.test(x.code)? ('BJ'+x.code) : ('SZ'+x.code));
         var cycCls = x.cycle==='底部'? 'tag-red' : (x.cycle==='顶部'? 'tag-gold' : 'tag-green');
-        h += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(nm)+'</td>'
+        h += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockGo(x.code, nm)+'</td>'
           + '<td style="font-size:.78rem">'+(x.isLeader? '🐲 ':'')+esc(x.industry||'-')+'</td>'
           + '<td><span class="tag '+GM[g].cl+'" title="'+esc([x.cycle, x.macdPos, x.signal+(x.signalAgo!=null?('('+x.signalAgo+'日前)'):''), x.volState+' 量比'+(x.volRatio5!=null?x.volRatio5:'-'), x.times].join(' · '))+'">'+esc(x.act)+'</span></td>'
           + '<td><span class="tag '+cycCls+'">'+esc(x.cycle)+'</span></td>'
@@ -2686,7 +2705,7 @@ function renderSequoia(){
       var q = (d.quotes&&d.quotes[code])||{};
       var nm = (d.names&&d.names[code])||code;
       var xq = /^6/.test(code)? ('SH'+code) : (/^[48]/.test(code)? ('BJ'+code) : ('SZ'+code));
-      h += '<tr><td class="num">'+esc(code)+'</td><td class="td-b">'+esc(nm)+'</td>'
+      h += '<tr><td class="num">'+esc(code)+'</td><td class="td-b">'+stockGo(code, nm)+'</td>'
         + '<td class="num">'+(q.price!=null?Number(q.price).toFixed(2):'-')+'</td>'
         + '<td class="num '+pctCls(q.pct)+'">'+fmtPct(q.pct)+'</td>'
         + '<td class="num">'+fmtMoney(q.amount)+'</td>'
@@ -2719,8 +2738,17 @@ loadNews();
 renderReports();
 /* 支持 hash 直链：vibe.html#sequoia / #news / #board ... */
 (function(){
-  var p = (location.hash||'').replace('#','');
-  if(p && document.getElementById('page-'+p)) switchPage(p, true);
+  var raw = (location.hash||'').replace('#','');
+  var parts = raw.split('/');
+  var p = parts[0];
+  if(p && document.getElementById('page-'+p)){
+    switchPage(p, true);
+    if(p==='stock' && parts[1]){
+      var el = document.getElementById('symInput');
+      if(el){ el.value = parts[1]; }
+      setTimeout(function(){ try{ loadStock(); }catch(e){} }, 60);
+    }
+  }
 })();
 </script>
 <script>
