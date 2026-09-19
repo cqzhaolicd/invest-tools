@@ -128,6 +128,11 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
 .ind-tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.72rem;font-weight:700;background:#e8f0fe;color:#2563eb;margin-left:6px}
 
 /* ===== 自选股/持仓 ===== */
+.tag-part{display:inline-block;font-size:.72rem;line-height:1.5;padding:1px 7px;border-radius:9px;cursor:pointer;white-space:nowrap;border:1px solid transparent;transition:.15s}
+.tag-part:hover{opacity:.75}
+.tag-part-div{background:#e8f1fd;color:#1e6fd9;border-color:#c5ddfb}
+.tag-part-cyc{background:#fdf0e0;color:#d47b1e;border-color:#f7ddb8}
+
 .stock-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #e0e6ee;border-radius:10px;margin-bottom:8px;background:#fbfcfe}
 .stock-row .code{font-size:.78rem;color:var(--text3);width:74px;flex-shrink:0}
 .stock-row .name{font-weight:700;font-size:.92rem;width:110px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -2375,6 +2380,27 @@ function backfillLogNames(map){
   });
   if(ch) lsSet('holdsLog', log);
 }
+/* ===== 持仓「所属部分」标记（股息低波 / 周期，两部分对应不同方法） ===== */
+function partMap(){ var m = lsGet('parts', {}); return (m && typeof m === 'object')? m : {}; }
+function partOf(code){
+  var m = partMap();
+  var v = m[String(code)];
+  return (v === 'cyc')? 'cyc' : 'div';   /* 默认股息低波（主组合） */
+}
+function partTag(code){
+  var isCyc = partOf(code) === 'cyc';
+  var txt = isCyc? '周期' : '股息低波';
+  var cls = isCyc? 'tag-part-cyc' : 'tag-part-div';
+  return '<span class="tag-part '+cls+'" title="所属部分：'+txt+'——点击切换为'+(isCyc?'股息低波':'周期')+'" '
+       + 'onclick="togglePart(\''+esc(code)+'\')">'+txt+'</span>';
+}
+function togglePart(code){
+  var m = partMap();
+  m[String(code)] = (partOf(code) === 'cyc')? 'div' : 'cyc';
+  lsSet('parts', m);
+  if(typeof renderHold === 'function' && $('boardTab-hold')) renderHold();
+}
+
 function renderHold(){
   var date = getHoldDate();
   var isToday = (date === todayStr());
@@ -2417,7 +2443,7 @@ function renderHold(){
     });
     cacheNames(nmMap);
     backfillLogNames(nmMap);
-    var html = '<div class="table-wrap"><table data-holds><tr><th>名称</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
+    var html = '<div class="table-wrap"><table data-holds><tr><th>名称</th><th title="所属部分：股息低波 / 周期。点击标签切换">部分</th><th>持股</th><th>成本价</th><th>'+(isToday?'现价':'收盘价')+'</th><th>市值</th>'+(isToday?'<th>当日成交量</th><th>主力净流入</th><th>当日盈利</th>':'')+'<th>浮动盈亏</th><th>收益率</th><th></th></tr>';
     var totalCost=0, totalVal=0, totalDay=0, hasDay=false;
     holds.forEach(function(h, i){
       var q = res[i];
@@ -2431,6 +2457,7 @@ function renderHold(){
       totalCost+=cost; totalVal+=val;
       if(dayPnl!=null){ totalDay+=dayPnl; hasDay=true; }
       html += '<tr data-code="'+esc(h.code)+'"><td class="td-b" style="white-space:nowrap">'+stockLink(h.code, nm)+stockGoIcon(h.code)+' <span class="ord" title="置顶（移到第一行）" onclick="moveHoldRow(\''+esc(h.code)+'\',0)">⤒</span><span class="ord" title="上移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',-1)">▲</span><span class="ord" title="下移一行" onclick="moveHoldRow(\''+esc(h.code)+'\',1)">▼</span></td>'
+        + '<td style="white-space:nowrap">'+partTag(h.code)+'</td>'
         + '<td class="num">'+h.shares+' <span class="rm" title="修改持股数（支持 +500 / -300）" style="cursor:pointer" onclick="editHoldShares(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+Number(h.price).toFixed(2)+' <span class="rm" title="修改成本价" style="cursor:pointer" onclick="editHoldCost(\''+esc(h.code)+'\')">✎</span></td>'
         + '<td class="num">'+(px!=null? Number(px).toFixed(2) : '-')+'</td>'
@@ -2441,9 +2468,9 @@ function renderHold(){
         + '<td><span class="rm" style="cursor:pointer" title="删除" onclick="rmHold(\''+esc(h.code)+'\')">✕</span></td></tr>';
     });
     var dayCells = isToday? ('<td class="num">-</td><td class="num">-</td><td class="num '+pctCls(hasDay?totalDay:null)+'">'+(hasDay?((totalDay>=0?'+':'')+fmtMoney(totalDay)):'-')+'</td>') : '';
-    html += '<tr class="total"><td colspan="4" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td>'+dayCells
+    html += '<tr class="total"><td colspan="5" style="text-align:right">合计</td><td class="num">'+fmtMoney(totalVal)+'</td>'+dayCells
       + '<td class="num '+pctCls(totalVal-totalCost)+'">'+((totalVal-totalCost)>=0?'+':'')+fmtMoney(totalVal-totalCost)+'</td>'
-      + '<td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td></tr>';
+      + '<td class="num '+pctCls(totalVal-totalCost)+'">'+(((totalVal-totalCost)/totalCost*100)>=0?'+':'')+((totalVal-totalCost)/totalCost*100).toFixed(2)+'%</td><td></td><td></td></tr>';
     html += '</table></div>';
     $('holdList').innerHTML = html;
   });
@@ -2454,7 +2481,7 @@ function holdForm(){
     + '<div><label>股数</label><input type="number" id="hShares" placeholder="1000"></div>'
     + '<div><label>成本价</label><input type="number" id="hPrice" placeholder="18.5" step="0.01"></div>'
     + '<div style="display:flex;align-items:flex-end"><button class="btn btn-blue" onclick="addHold()">＋ 添加/更新持仓</button></div>'
-    + '</div><div class="hint" style="margin:-2px 0 10px">变更按上方「查看日期」记入（默认今天）；同代码再次保存=覆盖当日持股与成本。</div>';
+    + '</div><div class="hint" style="margin:-2px 0 10px">变更按上方「查看日期」记入（默认今天）；同代码再次保存=覆盖当日持股与成本。<br>「部分」= 所属组合（<b style="color:#1e6fd9">股息低波</b> / <b style="color:#d47b1e">周期</b>），<b>点标签即可切换</b>，两部分各按各的方法执行（股息部分走股息率网格，周期部分走周期位置左侧布局）。</div>';
 }
 function addHold(){
   var code = $('hCode').value.trim();
