@@ -235,6 +235,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
       <a data-p="stock">🔍 个股数据</a>
       <a data-p="board">🗂️ 板块中心</a>
       <a data-p="sequoia">🌲 Sequoia-X 选股</a>
+      <a data-p="duant">🎯 短线做T</a>
       <a data-p="reports">📁 我的研报</a>
     </div>
     <div class="top-right">
@@ -329,6 +330,20 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
   <div class="hint" id="seqxTip">数据由本机每交易日 19:20 自动生成并部署；此按钮仅重新读取页面数据文件。</div>
   <div class="error-box" id="seqxErr"></div>
   <div id="seqxArea"><div class="card"><div class="hint">加载中…</div></div></div>
+</div>
+
+<!-- ============ 短线做T ============ -->
+<div class="page" id="page-duant">
+  <div class="page-head">
+    <div class="ico">🎯</div>
+    <h2>短线做T</h2>
+    <span class="desc">「三个数字」战法：<b>2.5%</b> 止盈 / <b>1.5%</b> 止损 / <b>1/2</b> 仓位 · 只看分时均价线 · 含本机回测（日K 800交易日 + 30分钟K 序列感知）</span>
+    <div class="spacer"></div>
+    <button class="btn btn-outline" onclick="scanDuanT()">🔍 扫描今日做T机会</button>
+    <button class="btn btn-outline" onclick="loadDuanT(true)">🔄 重新加载</button>
+  </div>
+  <div class="error-box" id="duantErr"></div>
+  <div id="duantArea"><div class="card"><div class="hint">加载中…</div></div></div>
 </div>
 
 <!-- ============ 我的研报 ============ -->
@@ -914,6 +929,252 @@ function jsonp(url, cbParam){
 function lsGet(k, def){ try{ var v=localStorage.getItem('vibe_'+k); return v?JSON.parse(v):def; }catch(e){ return def; } }
 function lsSet(k, v){ try{ localStorage.setItem('vibe_'+k, JSON.stringify(v)); }catch(e){} }
 function aiCfg(){ return lsGet('ai', {}); }
+
+/* ================= 短线做T模块（张哥看市·三个数字战法） ================= */
+var _duanT = null;
+function toSym(code){
+  code = String(code||'').trim();
+  if(/^(sh|sz|bj)/i.test(code)){ return code.toLowerCase(); }
+  return (/^(6|9)/.test(code) ? 'sh' : (/^(4|8)/.test(code) ? 'bj' : 'sz')) + code;
+}
+var DUANT_P = { TP: 0.025, SL: 0.015, DIP: 0.015, POS: 0.5, GAP_LO: [-0.02, -0.01], GAP_HI: 0.02 };
+
+function duantStrategyHTML(){
+  function tbl(title, tone, rows){
+    var h = '<table style="width:100%;border-collapse:collapse;font-size:.86rem"><thead><tr>'
+      + '<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #dbe4ee;color:var(--text3);font-weight:600">'+title+'</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      h += '<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7">'+r+'</td></tr>';
+    });
+    return h + '</tbody></table>';
+  }
+  var zt = [
+    '<b>适用</b>：低开、急跌、<b>分时在水下</b>（价格在均价线下方 = 弱势）',
+    '① <b>开盘观察 5 分钟</b>：低开 <b>1%–2%</b>、快速下杀 → 观察',
+    '② <b>买入点</b>：分时急跌 <b>1.5%–3%</b>、股价在白线下方 → 买入<b>底仓一半</b>的仓位',
+    '③ <b>止盈</b>：反弹差价 <b>≥2.5%</b> → 立刻卖出同等数量，不贪',
+    '④ <b>尾盘保底</b>：全天没反弹到 2.5% → <b>收盘前 10 分钟必须卖出</b>今天加的部分'
+  ];
+  var ft = [
+    '<b>适用</b>：高开、直线拉升、<b>远离均价线</b>',
+    '① 高开 <b>2% 以上</b>、分时直线冲高、远离均价线',
+    '② <b>直接卖出一半底仓</b>',
+    '③ 等股价<b>回落 2.5% 以上</b>，再接回同等数量',
+    '④ <b>尾盘保底</b>：全天不回落 → <b>尾盘必须买回</b>，防止踏空丢失底仓'
+  ];
+  var rules = [
+    '<b class="up">2.5%　止盈</b>　日内差价达 2.5% → 直接落袋，<b>不格局</b>',
+    '<b class="down">1.5%　止损</b>　做T加仓部分亏损达 1.5% → <b>无条件卖出</b>',
+    '<b>1/2　仓位</b>　单次做T只用底仓的 1/2 以内，<b>绝对不满仓加仓</b>'
+  ];
+  var time = [
+    '<b>9:30–10:00</b>　全天波动最大 → ⭐ <b>最佳做T窗口</b>',
+    '10:30–11:00　第二波震荡机会',
+    '<span style="color:var(--text3)">11:00–13:30　横盘 → <b>不动</b></span>',
+    '13:30–14:00　下午资金回流波动段',
+    '<span style="color:var(--text3)">14:00–14:30　横盘 → <b>不动</b></span>',
+    '<b>14:30–14:50</b>　尾盘修复窗口 → <b>用来平T仓</b>'
+  ];
+  var disc = [
+    '单次仓位永远只用底仓的 <b>1/2</b> 以内，绝不追加满仓',
+    '<b>当天T仓必须当日清</b>',
+    '<b>大盘暴跌当天，停止所有做T</b> —— 系统性风险下差价逻辑失效',
+    '当天做T失败亏损 → <b>立刻停止</b>，不加仓摊平',
+    '<b>不要满仓股票天天做T</b>，预留现金容错'
+  ];
+  return '<div class="card"><h3><span class="n">📐</span>策略规则（张哥看市 · 三数字战法）'
+    + '<span style="font-weight:400;font-size:.8rem;color:var(--text3)">　来源：抖音 @张哥看市 2026-09-16 图文帖 · 投顾资质 A1150626080045 · 仅供学习</span></h3>'
+    + '<div class="hint" style="margin-bottom:10px">核心：<b>只记三个数字 2.5% / 1.5% / 1/2</b>，判断只看<b>分时均价线</b>一条线（不看 MACD、不看 KDJ）。'
+    + 'A股是 T+1，<b>有底仓</b>才能与底仓对冲完成一次日内T。</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px">'
+    + '<div style="border:1px solid #e3ebf4;border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--navy);margin-bottom:6px">🟢 正T（先买后卖）</div>' + tbl('步骤', 'up', zt) + '</div>'
+    + '<div style="border:1px solid #e3ebf4;border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--navy);margin-bottom:6px">🔴 反T（先卖后买）</div>' + tbl('步骤', 'down', ft) + '</div>'
+    + '<div style="border:1px solid #e3ebf4;border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--navy);margin-bottom:6px">🔢 三个数字（铁律）</div>' + tbl('规则', '', rules) + '</div>'
+    + '<div style="border:1px solid #e3ebf4;border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--navy);margin-bottom:6px">⏰ 最佳时间窗口</div>' + tbl('时段', '', time) + '</div>'
+    + '</div>'
+    + '<div style="margin-top:12px;border:1px solid #f2d9d9;background:#fff8f8;border-radius:10px;padding:12px">'
+    + '<div style="font-weight:800;color:#b3261e;margin-bottom:6px">⚠️ 纪律（作者标注：很重要）</div><ul style="margin:0;padding-left:20px;font-size:.85rem;line-height:1.9">'
+    + disc.map(function(x){ return '<li>'+x+'</li>'; }).join('') + '</ul></div>'
+    + '<div class="hint" style="margin-top:10px">🎯 <b>分时均价线判断</b>：股价在均价线<b>下方</b> = 弱势 → <b>正T</b>；股价在均价线<b>上方</b> = 强势 → <b>反T</b>。</div>'
+    + '</div>';
+}
+
+function duantBTStats(label, st){
+  if(!st || !st.n) return '<tr><td colspan="7" style="padding:8px;color:var(--text3)">无交易</td></tr>';
+  var kinds = st.kinds || {};
+  var kd = Object.keys(kinds).map(function(k){ return k+' '+(kinds[k]||0); }).join(' · ');
+  return '<tr>'
+    + '<td style="padding:7px 8px;font-weight:600">'+label+'</td>'
+    + '<td style="padding:7px 8px;text-align:right">'+st.n+'</td>'
+    + '<td style="padding:7px 8px;text-align:right;font-weight:700" class="'+(st.winRate>=0.5?'up':'down')+'">'+(st.winRate*100).toFixed(1)+'%</td>'
+    + '<td style="padding:7px 8px;text-align:right;font-weight:800" class="'+(st.avg>=0?'up':'down')+'">'+(st.avg>=0?'+':'')+(st.avg*100).toFixed(3)+'%</td>'
+    + '<td style="padding:7px 8px;text-align:right" class="up">+'+(st.avgWin*100).toFixed(2)+'%</td>'
+    + '<td style="padding:7px 8px;text-align:right" class="down">'+(st.avgLoss*100).toFixed(2)+'%</td>'
+    + '<td style="padding:7px 8px;font-size:.76rem;color:var(--text3)">'+kd+'</td></tr>';
+}
+
+function duantBacktestHTML(d){
+  var h = '<div class="card"><h3><span class="n">🧪</span>本机回测验证'
+    + '<span style="font-weight:400;font-size:.8rem;color:var(--text3)">　单笔收益已扣<b>双边费用 0.1%</b>（佣金+印花税+过户费）· 生成于 '+esc(d.generatedAt||'')+'</span></h3>';
+  h += '<div class="hint" style="margin-bottom:10px">保守约定：止损与止盈<b>同日都被触及</b>时，视为<b>先触发止损</b>（避免高估）；'
+    + '大盘（上证）当日跌幅 <b>≥2%</b> 的交易日<b>跳过不做T</b>。'
+    + '日K口径样本大但<b>无法确知当日最高/最低先后</b>，30分钟K口径做了<b>逐根序列撮合</b>，两者互相对照。</div>';
+  [['A', d.A], ['B', d.B]].forEach(function(pair){
+    var k = pair[0], a = pair[1];
+    if(!a || !a.all || !a.all.n){ return; }
+    h += '<div style="margin-top:10px"><div style="font-weight:800;color:var(--navy);margin-bottom:4px">'
+      + (k === 'A' ? '📊 ' : '⏱ ') + esc(a.label) + '　<span style="font-weight:400;font-size:.8rem;color:var(--text3)">标的 ' + (a.stocks||0) + ' 只</span></div>';
+    h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.84rem">'
+      + '<thead><tr style="background:#f6f9fc">'
+      + ['类型','笔数','胜率','期望/笔','平均盈利','平均亏损','平仓构成'].map(function(t){
+          return '<th style="padding:7px 8px;text-align:left;border-bottom:2px solid #dbe4ee;color:var(--text3);font-weight:600">'+t+'</th>'; }).join('')
+      + '</tr></thead><tbody>'
+      + duantBTStats('🟢 正T（先买后卖）', a.zt)
+      + duantBTStats('🔴 反T（先卖后买）', a.ft)
+      + duantBTStats('<b>合计</b>', a.all)
+      + '</tbody></table></div></div>';
+  });
+  var A = (d.A && d.A.all) || {}, B = (d.B && d.B.all) || {};
+  var Azt = (d.A && d.A.zt) || {}, Aft = (d.A && d.A.ft) || {};
+  var verdict = [];
+  verdict.push('**单笔期望极薄**：日K口径合计期望 <b>'+(A.avg>=0?'+':'')+((A.avg||0)*100).toFixed(3)+'%</b>/笔，30分钟口径 <b>'
+    + (B.avg>=0?'+':'')+((B.avg||0)*100).toFixed(3)+'%</b>/笔 —— 扣除双边 0.1% 费用后，**接近盈亏平衡**。');
+  verdict.push('**方向选择很关键**：日K口径下 <b>正T 期望 '+(Azt.avg>=0?'+':'')+((Azt.avg||0)*100).toFixed(3)+'%</b>（胜率 '
+    + ((Azt.winRate||0)*100).toFixed(1)+'%），而 <b>反T '+(Aft.avg>=0?'+':'')+((Aft.avg||0)*100).toFixed(3)+'%</b>（胜率 '
+    + ((Aft.winRate||0)*100).toFixed(1)+'%）——反T在两个口径下结论不一致，**稳健性不足**。');
+  verdict.push('**止损占比很高**：合计 '+(A.kinds||{}).止损+' 次止损 vs '+(A.kinds||{}).止盈+' 次止盈 —— 1.5% 止损比 2.5% 止盈更容易被触及（赔率与胜率的经典取舍）。');
+  h += '<div style="margin-top:14px;border:1px solid #f0e2c0;background:#fffdf6;border-radius:10px;padding:12px;font-size:.86rem;line-height:1.95">'
+    + '<div style="font-weight:800;color:#8a6d1f;margin-bottom:6px">📌 回测结论（诚实版）</div>'
+    + '<ul style="margin:0;padding-left:20px">' + verdict.map(function(x){ return '<li>'+x.replace(/\*\*/g,'')+'</li>'; }).join('') + '</ul>'
+    + '<div style="margin-top:8px;color:#8a6d1f">👉 结论：这套方法<b>不是赚钱机器</b>，更像「用纪律把日内波动做成小额定投」。'
+    + '若没有低费率券商、没有严格纪律、没有充足看盘时间，<b>期望会被费用和情绪吃光</b>。'
+    + '你的高股息低波主组合<b>不建议</b>用它；如要做，请只用小仓位卫星账户。</div></div>';
+  h += '</div>';
+  return h;
+}
+
+async function loadDuanT(force){
+  var el = $('duantArea'), err = $('duantErr');
+  if(err) err.style.display = 'none';
+  if(_duanT && !force){ el.innerHTML = duantStrategyHTML() + duantBacktestHTML(_duanT) + '<div id="duantScan"></div>'; return; }
+  el.innerHTML = '<div class="card"><div class="hint">⏳ 加载回测数据…</div></div>';
+  try{
+    _duanT = await fetchJSON('./data/duanT.json?t=' + Date.now());
+  }catch(e){
+    _duanT = { generatedAt: '-', A: {}, B: {} };
+    if(err){ err.style.display = 'block'; err.textContent = '⚠️ 回测数据未就绪（' + e.message + '），仅显示策略规则。'; }
+  }
+  el.innerHTML = duantStrategyHTML() + duantBacktestHTML(_duanT) + '<div id="duantScan"></div>';
+}
+
+/* ---------- 实盘做T助手：扫描自选股 + 持仓的当日分时 ---------- */
+async function duantMinute(code){
+  var sym = toSym(code);
+  var j = await emJson('https://ifzq.gtimg.cn/appstock/app/minute/query?code=' + sym);
+  var box = (j && j.data && j.data[sym]) || null;
+  if(!box) return null;
+  var dd = box.data || {};
+  var pts = (dd.data || []).map(function(x){
+    var f = String(x).split(' ');
+    return { t: f[0], p: parseFloat(f[1]), v: parseFloat(f[2]) };
+  }).filter(function(x){ return isFinite(x.p); });
+  if(!pts.length) return null;
+  var qt = (box.qt && box.qt[sym]) || [];
+  var avg = null, ca = 0, cv = 0;
+  pts.forEach(function(x){ ca += x.p * x.v; cv += x.v; });
+  avg = cv ? ca / cv : pts[0].p;
+  var prices = pts.map(function(x){ return x.p; });
+  return {
+    code: code, date: dd.date || '', prevClose: parseFloat(qt[4]), open: parseFloat(qt[5]),
+    last: prices[prices.length - 1], high: Math.max.apply(null, prices),
+    low: Math.min.apply(null, prices), avg: avg, n: pts.length
+  };
+}
+
+async function scanDuanT(){
+  var area = $('duantScan');
+  if(!area){ await loadDuanT(); area = $('duantScan'); }
+  var codes = (lsGet('watch', []) || []).slice();
+  (lsGet('holds', []) || []).forEach(function(h){ if(h && h.code && codes.indexOf(h.code) < 0) codes.push(h.code); });
+  if(!codes.length){
+    area.innerHTML = '<div class="card"><div class="hint">未找到自选股/持仓。请先在「板块中心 → ⭐ 自选股」添加标的，或在下框直接输入代码：'
+      + '</div><div class="input-row"><input type="text" id="duantCodes" placeholder="600519,002714" style="width:280px">'
+      + '<button class="btn btn-blue btn-sm" onclick="scanDuanTCodes()">扫描</button></div></div>';
+    return;
+  }
+  area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">自选股 + 持仓 '
+    + codes.length + ' 只 · 数据：腾讯当日分时（1分钟）</span></h3><div id="duantScanList"><div class="loading">⏳ 拉取分时…</div></div></div>';
+  var rows = [];
+  for(var i = 0; i < codes.length; i++){
+    try{ var m = await duantMinute(codes[i]); if(m) rows.push(m); }catch(e){}
+  }
+  renderDuanTScan(rows);
+}
+
+async function scanDuanTCodes(){
+  var v = ($('duantCodes') || {}).value || '';
+  var codes = v.split(/[,，\s]+/).filter(function(x){ return /^\d{6}$/.test(x); });
+  if(!codes.length) return;
+  var area = $('duantScan');
+  area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描</h3><div id="duantScanList"><div class="loading">⏳ 拉取分时…</div></div></div>';
+  var rows = [];
+  for(var i = 0; i < codes.length; i++){
+    try{ var m = await duantMinute(codes[i]); if(m) rows.push(m); }catch(e){}
+  }
+  renderDuanTScan(rows);
+}
+
+function renderDuanTScan(rows){
+  var el = $('duantScanList');
+  if(!el){ return; }
+  if(!rows.length){ el.innerHTML = '<div class="hint">未能获取分时数据（非交易日或网络受限）。</div>'; return; }
+  var P = DUANT_P, out = [], stat = { zt: 0, ft: 0, none: 0, hit: 0 };
+  rows.forEach(function(m){
+    var gap = (m.open && m.prevClose) ? (m.open / m.prevClose - 1) : null;
+    var side = null, act = '', levels = '', cls = '';
+    var dipLow = m.open * (1 - P.DIP);
+    if(gap != null && gap <= P.GAP_LO[1] && gap >= P.GAP_LO[0] && m.low <= dipLow){
+      side = '正T（先买后卖）';
+      var buyP = dipLow, tpP = buyP * (1 + P.TP), slP = buyP * (1 - P.SL);
+      if(m.high >= tpP){ act = '✅ 已触及止盈档（'+tpP.toFixed(2)+'）→ 落袋'; stat.hit++; }
+      else if(m.last >= buyP){ act = '⏳ 已在买入档，等反弹到 ' + tpP.toFixed(2) + ' 止盈；否则尾盘 14:50 平'; }
+      else { act = '⏳ 仍在买入档下方，跌破 ' + slP.toFixed(2) + ' 无条件止损'; }
+      levels = '买 ' + buyP.toFixed(2) + ' ｜ 止盈 ' + tpP.toFixed(2) + ' ｜ 止损 ' + slP.toFixed(2);
+      cls = 'up'; stat.zt++;
+    } else if(gap != null && gap >= P.GAP_HI){
+      side = '反T（先卖后买）';
+      var sellP = m.open, bbP = sellP * (1 - P.TP), slP2 = sellP * (1 + P.SL);
+      if(m.low <= bbP){ act = '✅ 已触及回补档（'+bbP.toFixed(2)+'）→ 接回'; stat.hit++; }
+      else if(m.high >= slP2){ act = '⚠️ 已涨破 ' + slP2.toFixed(2) + ' → 止损买回，保住底仓'; }
+      else { act = '⏳ 等回落到 ' + bbP.toFixed(2) + ' 接回；否则尾盘必须买回'; }
+      levels = '卖 ' + sellP.toFixed(2) + ' ｜ 回补 ' + bbP.toFixed(2) + ' ｜ 止损买回 ' + slP2.toFixed(2);
+      cls = 'down'; stat.ft++;
+    } else {
+      side = '—'; cls = '';
+      act = '今日不符合做T前置条件（需低开1–2%且急跌，或高开≥2%）'; stat.none++;
+    }
+    var line = (m.last >= m.avg) ? '强势（均价线上）' : '弱势（均价线下）';
+    out.push('<tr>'
+      + '<td style="padding:7px 8px;font-weight:600">' + esc(m.code) + '</td>'
+      + '<td style="padding:7px 8px" class="' + (gap != null && gap >= 0 ? 'up' : 'down') + '">' + (gap != null ? (gap * 100).toFixed(2) + '%' : '-') + '</td>'
+      + '<td style="padding:7px 8px;text-align:right">' + m.open.toFixed(2) + '</td>'
+      + '<td style="padding:7px 8px;text-align:right;font-weight:700">' + m.last.toFixed(2) + '</td>'
+      + '<td style="padding:7px 8px;text-align:right">' + m.avg.toFixed(2) + '</td>'
+      + '<td style="padding:7px 8px;font-size:.8rem;color:var(--text3)">' + line + '</td>'
+      + '<td style="padding:7px 8px;font-weight:700" class="' + cls + '">' + side + '</td>'
+      + '<td style="padding:7px 8px;font-size:.82rem">' + act + '</td>'
+      + '<td style="padding:7px 8px;font-size:.78rem;color:var(--text3);white-space:nowrap">' + levels + '</td>'
+      + '</tr>');
+  });
+  el.innerHTML = '<div class="hint" style="margin-bottom:8px">数据日期 <b>' + esc(rows[0].date || '-') + '</b>　·　'
+    + '正T 机会 <b class="up">' + stat.zt + '</b>　反T 机会 <b class="down">' + stat.ft + '</b>　'
+    + '已触及目标档 <b>' + stat.hit + '</b>　不符合 <b>' + stat.none + '</b>'
+    + '<span style="margin-left:10px;color:var(--text3)">（<b>大盘暴跌当天请停止所有做T</b>；单次仓位 ≤ 底仓 1/2）</span></div>'
+    + '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.84rem"><thead><tr style="background:#f6f9fc">'
+    + ['代码','今开幅度','今开','现价','均价线','强弱','今日可做','建议动作','关键价位'].map(function(t){
+        return '<th style="padding:7px 8px;text-align:left;border-bottom:2px solid #dbe4ee;color:var(--text3);font-weight:600;white-space:nowrap">' + t + '</th>'; }).join('')
+    + '</tr></thead><tbody>' + out.join('') + '</tbody></table></div>';
+}
 
 /* ---------- 数据层：大盘指数 ---------- */
 async function getIndexes(){
@@ -2792,6 +3053,7 @@ function switchPage(p, noHash){
   if(p==='news' && !$('newsList').innerHTML.includes('加载')) loadNews();
   if(p==='board') renderBoardTab();
   if(p==='sequoia') loadSequoia();
+  if(p==='duant') loadDuanT();
   if(p==='reports') renderReports();
   if(!noHash){ try{ history.replaceState(null, '', '#'+p); }catch(e){} }
   window.scrollTo(0,0);
