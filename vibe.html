@@ -1275,8 +1275,11 @@ async function txBatchQuote(codes){
       if(!m) return;
       var f = m[2].split('~');
       if(f.length < 33) return;
-      out[m[1]] = { name:f[1], price:parseFloat(f[3]), preClose:parseFloat(f[4]),
-                    pct:parseFloat(f[32]), ts:f[30] || '' };
+      out[m[1]] = { name:f[1], price:parseFloat(f[3]), preClose:parseFloat(f[4]), open:parseFloat(f[5]),
+                    pct:parseFloat(f[32]), chg:parseFloat(f[31]), ts:f[30] || '',
+                    vol:parseFloat(f[6]), amountWan:parseFloat(f[37]), turnover:parseFloat(f[38]),
+                    peTTM:parseFloat(f[39]), pb:parseFloat(f[46]),
+                    floatMcapYi:parseFloat(f[44]), totalMcapYi:parseFloat(f[45]) };
     });
   }catch(e){}
   return out;
@@ -1479,6 +1482,30 @@ function toSecid(code){
   return code; // 兼容 sh600519 / 00700.HK 等
 }
 async function getStockQuote(secid){
+  /* 主源：东财 push2。被风控（浏览器表现为 'Failed to fetch'）时改用腾讯兜底，
+     否则自选股/持仓会整列显示「读取失败」。腾讯无「主力净流入」，该字段如实留 null。 */
+  try{
+    return await getStockQuoteEM(secid);
+  }catch(e){
+    var sym = txSymFromSecid(secid);
+    var q = (await txBatchQuote([sym]))[sym];
+    if(!q || !isFinite(q.price)) throw e;
+    var isHk = /^\d{5}$/.test(sym.replace(/^(sh|sz)/,''));
+    return {
+      code: sym.replace(/^(sh|sz|jp)/, ''), name: q.name, price: q.price, pct: q.pct, chg: q.chg,
+      open: q.open, high: null, low: null, preClose: q.preClose,
+      vol: q.vol, amount: isFinite(q.amountWan)? q.amountWan*10000 : null,
+      mainIn: null, volRatio: null, mainInNA: true,   /* 腾讯不提供主力净流入：如实标空 */
+      peTTM: (isFinite(q.peTTM) && q.peTTM > 0 && q.peTTM < 3000)? q.peTTM : null,
+      peStatic: null, pb: isFinite(q.pb)? q.pb : null, dv: null,
+      totalMcap: isFinite(q.totalMcapYi)? q.totalMcapYi*1e8 : null,
+      floatMcap: isFinite(q.floatMcapYi)? q.floatMcapYi*1e8 : null,
+      turnover: isFinite(q.turnover)? q.turnover : null,
+      industry: '', update: q.ts || '', src: '腾讯'
+    };
+  }
+}
+async function getStockQuoteEM(secid){
   var j = await emJson('https://push2.eastmoney.com/api/qt/stock/get?fltt=2&invt=2&secid='+secid+'&fields=f43,f44,f45,f46,f47,f48,f50,f57,f58,f60,f116,f117,f127,f137,f162,f163,f164,f167,f168,f169,f170,f171,f292,f152');
   var d = j.data; if(!d) throw new Error('未找到该股票');
   return {
@@ -2412,7 +2439,7 @@ function renderWatch(){
     var html = '';
     quotes.forEach(function(q, i){
       if(!q){ html += '<div class="stock-row"><span class="code">'+esc(watch[i])+'</span><span class="name">读取失败</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>'; return; }
-      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+stockLink(q.code, q.name)+stockGoIcon(q.code)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">量 '+fmtVol(q.vol)+' · 主力 '+(q.mainIn!=null?('<b class="'+(q.mainIn>=0?'up':'down')+'">'+fmtFlow(q.mainIn)+'</b>'):'-')+' · PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
+      html += '<div class="stock-row"><span class="code">'+esc(q.code)+'</span><span class="name">'+stockLink(q.code, q.name)+stockGoIcon(q.code)+'</span><span class="px '+(q.pct>=0?'up':'down')+'">'+q.price.toFixed(2)+'</span><span class="pct '+(q.pct>=0?'up':'down')+'">'+fmtPct(q.pct)+'</span><span class="extra">量 '+fmtVol(q.vol)+' · 主力 '+(q.mainIn!=null?('<b class="'+(q.mainIn>=0?'up':'down')+'">'+fmtFlow(q.mainIn)+'</b>'):'-')+' · PE '+(q.peTTM!=null?q.peTTM.toFixed(1):'-')+' · '+fmtMoney(q.totalMcap)+(q.src? ' · <span style="color:#b8860b" title="东财接口被风控，行情来自腾讯；腾讯不提供主力净流入">源:腾讯</span>':'')+'</span><span class="rm" onclick="rmWatch('+i+')">✕</span></div>';
     });
     listEl.innerHTML = html;
   });
