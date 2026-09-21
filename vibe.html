@@ -128,6 +128,13 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
 .ind-tag{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.72rem;font-weight:700;background:#e8f0fe;color:#2563eb;margin-left:6px}
 
 /* ===== 自选股/持仓 ===== */
+.data-fresh{max-width:1400px;margin:0 auto 10px;padding:6px 14px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:#3a4a5c;background:#f4f7fb;border:1px solid #dfe7f1;border-radius:8px;align-items:center}
+.data-fresh b{font-weight:600;color:#1a2b3c}
+.data-fresh .fok{color:#1e9e6a;font-weight:600}
+.data-fresh .fwarn{color:#c0392b;font-weight:700}
+.data-fresh .fstale{background:#fdecea;border-color:#f5c6c0}
+.data-fresh .fsep{color:#c4cfdb}
+
 .tag-part{display:inline-block;font-size:.72rem;line-height:1.5;padding:1px 7px;border-radius:9px;cursor:pointer;white-space:nowrap;border:1px solid transparent;transition:.15s}
 .tag-part:hover{opacity:.75}
 .tag-part-div{background:#e8f1fd;color:#1e6fd9;border-color:#c5ddfb}
@@ -249,6 +256,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
     </div>
   </div>
 </div>
+<div id="dataFresh" class="data-fresh" title="所有数据均来自真实数据源；此处显示每个数据源的最新数据日期与新鲜度">数据新鲜度加载中…</div>
 
 <div class="wrap">
 
@@ -2415,6 +2423,70 @@ function backfillLogNames(map){
   });
   if(ch) lsSet('holdsLog', log);
 }
+/* ===== 数据新鲜度看板：所有展示数据均来自真实数据源，这里标明每份数据的数据日 ===== */
+function lastTradingDay(from){
+  /* 最近"应当已有数据"的交易日。
+     关键：数据在收盘后 19:20 才更新 → 工作日 19:20 之前，基准回退到上一个交易日，
+     否则盘中会把当天当成应有数据日，导致全部数据被误判为陈旧。
+     （A股节假日无法纯前端判断，故仅作参考基准；实际以数据文件自带日期为准展示。） */
+  var d = from? new Date(from.getTime()) : new Date();
+  if(!from){
+    var hm = d.getHours() * 60 + d.getMinutes();
+    if(hm < 19 * 60 + 20){ d.setDate(d.getDate() - 1); }   /* 未到当日更新时刻 → 回退一天 */
+  }
+  for(var i = 0; i < 10; i++){
+    var w = d.getDay();
+    if(w !== 0 && w !== 6) return d;
+    d.setDate(d.getDate() - 1);
+  }
+  return d;
+}
+function fmtDay(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function daysBetween(a, b){ return Math.round((b - a) / 86400000); }
+
+async function renderFreshness(){
+  var el = $('dataFresh'); if(!el) return;
+  var expect = lastTradingDay();
+  var items = [];
+  try{
+    var sq = await fetchJSON('./data/sequoia.json');
+    items.push({name:'选股', date: sq.dataDate || (sq.generatedAt||'').slice(0,10), gen: sq.generatedAt,
+                extra: (sq.total? (sq.total+' 只') : '')});
+  }catch(e){ items.push({name:'选股', date:'', err:true}); }
+  try{
+    var ag = await fetchJSON('./data/agri.json');
+    var hd = ((ag.latest||{}).hog||{}).date || '';
+    var rt = (ag.latest||{}).ratio || {};
+    items.push({name:'行业景气', date: hd, gen: ag.generatedAt,
+                extra: (rt.value? ('猪粮比 '+rt.value) : '')});
+  }catch(e){ items.push({name:'行业景气', date:'', err:true}); }
+  try{
+    var dt = await fetchJSON('./data/duanT.json');
+    var q = dt.quality || {};
+    items.push({name:'做T回测', date: (dt.generatedAt||'').slice(0,10), gen: dt.generatedAt,
+                extra: (q.fullRate!=null? ('K线完整率 '+Math.round(q.fullRate*100)+'%') : '')});
+  }catch(e){ items.push({name:'做T回测', date:'', err:true}); }
+
+  var expStr = fmtDay(expect), stale = 0;
+  var html = '<span><b>数据新鲜度</b>（基准：最近交易日 <b>' + expStr + '</b>）</span><span class="fsep">|</span>';
+  items.forEach(function(it, i){
+    var tag, cls;
+    if(it.err || !it.date){ tag = '读取失败'; cls = 'fwarn'; }
+    else {
+      var gap = daysBetween(new Date(it.date + 'T00:00:00'), new Date(expStr + 'T00:00:00'));
+      if(gap <= 0){ tag = '✅ 最新'; cls = 'fok'; }
+      else { tag = '⚠️ 落后 ' + gap + ' 天'; cls = 'fwarn'; stale++; }
+    }
+    html += '<span>数据 ' + it.name + '：<b>' + (it.date || '—') + '</b> ' + (it.extra? '· '+it.extra+' ' : '') + '<span class="' + cls + '">' + tag + '</span></span>';
+    html += '<span class="fsep">|</span>';
+  });
+  html += '<span style="color:#7a8899">数据源：新浪 · 腾讯 · 东财（实时抓取，本地缓存）</span>';
+  el.innerHTML = html;
+  if(stale) el.classList.add('fstale'); else el.classList.remove('fstale');
+}
+document.addEventListener('DOMContentLoaded', function(){ try{ renderFreshness(); }catch(e){} });
+setTimeout(function(){ try{ renderFreshness(); }catch(e){} }, 1200);
+
 /* ===== 持仓「所属部分」标记（股息低波 / 周期，两部分对应不同方法） ===== */
 function partMap(){ var m = lsGet('parts', {}); return (m && typeof m === 'object')? m : {}; }
 function partOf(code){
