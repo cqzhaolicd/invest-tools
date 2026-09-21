@@ -1093,12 +1093,13 @@ async function duantMinute(code){
   }).filter(function(x){ return isFinite(x.p); });
   if(!pts.length) return null;
   var qt = (box.qt && box.qt[sym]) || [];
+  var nm = (qt && qt[1]) ? String(qt[1]) : '';   /* 腾讯分时 qt[1] = 股票名称 */
   var avg = null, ca = 0, cv = 0;
   pts.forEach(function(x){ ca += x.p * x.v; cv += x.v; });
   avg = cv ? ca / cv : pts[0].p;
   var prices = pts.map(function(x){ return x.p; });
   return {
-    code: code, date: dd.date || '', prevClose: parseFloat(qt[4]), open: parseFloat(qt[5]),
+    code: code, name: nm, date: dd.date || '', prevClose: parseFloat(qt[4]), open: parseFloat(qt[5]),
     last: prices[prices.length - 1], high: Math.max.apply(null, prices),
     low: Math.min.apply(null, prices), avg: avg, n: pts.length
   };
@@ -1204,6 +1205,7 @@ function renderDuanTScan(rows){
     var line = (m.last >= m.avg) ? '强势（均价线上）' : '弱势（均价线下）';
     out.push('<tr>'
       + '<td style="padding:7px 8px;font-weight:600">' + esc(m.code) + '</td>'
+      + '<td style="padding:7px 8px;white-space:nowrap">' + (m.name ? stockLink(m.code, m.name) : (typeof nameOf === 'function' ? esc(nameOf(m.code) || '-') : '-')) + '</td>'
       + '<td style="padding:7px 8px" class="' + (gap != null && gap >= 0 ? 'up' : 'down') + '">' + (gap != null ? (gap * 100).toFixed(2) + '%' : '-') + '</td>'
       + '<td style="padding:7px 8px;text-align:right">' + m.open.toFixed(2) + '</td>'
       + '<td style="padding:7px 8px;text-align:right;font-weight:700">' + m.last.toFixed(2) + '</td>'
@@ -1219,7 +1221,7 @@ function renderDuanTScan(rows){
     + '已触及目标档 <b>' + stat.hit + '</b>　不符合 <b>' + stat.none + '</b>'
     + '<span style="margin-left:10px;color:var(--text3)">（<b>大盘暴跌当天请停止所有做T</b>；单次仓位 ≤ 底仓 1/2）</span></div>'
     + '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.84rem"><thead><tr style="background:#f6f9fc">'
-    + ['代码','今开幅度','今开','现价','均价线','强弱','今日可做','建议动作','关键价位'].map(function(t){
+    + ['代码','名称','今开幅度','今开','现价','均价线','强弱','今日可做','建议动作','关键价位'].map(function(t){
         return '<th style="padding:7px 8px;text-align:left;border-bottom:2px solid #dbe4ee;color:var(--text3);font-weight:600;white-space:nowrap">' + t + '</th>'; }).join('')
     + '</tr></thead><tbody>' + out.join('') + '</tbody></table></div>';
 }
