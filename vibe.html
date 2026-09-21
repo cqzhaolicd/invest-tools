@@ -2424,19 +2424,37 @@ function backfillLogNames(map){
   if(ch) lsSet('holdsLog', log);
 }
 /* ===== 数据新鲜度看板：所有展示数据均来自真实数据源，这里标明每份数据的数据日 ===== */
-function lastTradingDay(from){
+var TRADECAL = null, TRADECAL_TRIED = false;
+async function loadTradeCal(){
+  /* 真实 A股交易日历（新浪源，服务端定期导出 data/tradecal.json）
+     —— 据此才能正确跳过周末【和】法定节假日（如 2026-09-25 中秋、10-01~10-07 国庆） */
+  if(TRADECAL_TRIED) return TRADECAL;
+  TRADECAL_TRIED = true;
+  try{
+    var d = await fetchJSON('./data/tradecal.json');
+    var arr = d && d.dates;
+    if(arr && arr.length > 100){
+      TRADECAL = {}; arr.forEach(function(x){ TRADECAL[String(x)] = 1; });
+    }
+  }catch(e){ TRADECAL = null; }
+  return TRADECAL;
+}
+function lastTradingDay(){
   /* 最近"应当已有数据"的交易日。
-     关键：数据在收盘后 19:20 才更新 → 工作日 19:20 之前，基准回退到上一个交易日，
-     否则盘中会把当天当成应有数据日，导致全部数据被误判为陈旧。
-     （A股节假日无法纯前端判断，故仅作参考基准；实际以数据文件自带日期为准展示。） */
-  var d = from? new Date(from.getTime()) : new Date();
-  if(!from){
-    var hm = d.getHours() * 60 + d.getMinutes();
-    if(hm < 19 * 60 + 20){ d.setDate(d.getDate() - 1); }   /* 未到当日更新时刻 → 回退一天 */
-  }
-  for(var i = 0; i < 10; i++){
-    var w = d.getDay();
-    if(w !== 0 && w !== 6) return d;
+     规则：① 数据在收盘后 19:20 才更新 → 未到该时刻则从【昨天】起找；
+           ② 按真实交易日历回溯 → 周末与法定节假日自动跳过（节假日前最后工作日的数据为准）；
+           ③ 日历不可用时退化为"跳过周末"（并在看板上标明，不假装精确）。 */
+  var d = new Date();
+  var hm = d.getHours() * 60 + d.getMinutes();
+  if(hm < 19 * 60 + 20){ d.setDate(d.getDate() - 1); }
+  for(var i = 0; i < 40; i++){
+    var ds = fmtDay(d);
+    if(TRADECAL){
+      if(TRADECAL[ds]) return d;
+    } else {
+      var w = d.getDay();
+      if(w !== 0 && w !== 6) return d;
+    }
     d.setDate(d.getDate() - 1);
   }
   return d;
@@ -2446,6 +2464,7 @@ function daysBetween(a, b){ return Math.round((b - a) / 86400000); }
 
 async function renderFreshness(){
   var el = $('dataFresh'); if(!el) return;
+  await loadTradeCal();
   var expect = lastTradingDay();
   var items = [];
   try{
@@ -2468,7 +2487,8 @@ async function renderFreshness(){
   }catch(e){ items.push({name:'做T回测', date:'', err:true}); }
 
   var expStr = fmtDay(expect), stale = 0;
-  var html = '<span><b>数据新鲜度</b>（基准：最近交易日 <b>' + expStr + '</b>）</span><span class="fsep">|</span>';
+  var calTag = TRADECAL ? '<span class="fok">真实交易日历</span>' : '<span class="fwarn">按周末推算（日历未加载）</span>';
+  var html = '<span><b>数据新鲜度</b>（基准：最近交易日 <b>' + expStr + '</b> · ' + calTag + '）</span><span class="fsep">|</span>';
   items.forEach(function(it, i){
     var tag, cls;
     if(it.err || !it.date){ tag = '读取失败'; cls = 'fwarn'; }
