@@ -1230,14 +1230,69 @@ function renderDuanTScan(rows){
 async function getIndexes(){
   var c = cacheGet('idx', 120000); if(c) return c;
   var secids = CFG.idxList.map(function(x){return x[0];}).join(',');
-  var j = await emJson('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids='+secids+'&fields=f2,f3,f4,f12,f14');
-  var diff = (j.data&&j.data.diff)||[];
-  var out = diff.map(function(d){
-    var name = d.f14;
-    var alias = {'上证指数':'sh','深证成指':'sz','创业板指':'cyb','沪深300':'hs300','中证500':'zz500','中证1000':'zz1000'}[name]||name;
-    return {name:name, code:d.f12, price:d.f2, pct:d.f3, chg:d.f4, alias:alias};
-  });
-  cacheSet('idx', out); return out;
+  var out = [];
+  /* 主源：东财 push2。⚠️ 此前这里没有 try/catch —— 东财限流时抛出的 'Failed to fetch'
+     会被 gatherReview 外层捕获，导致【整个复盘区】只显示一条原始报错。 */
+  try{
+    var j = await emJson('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids='+secids+'&fields=f2,f3,f4,f12,f14');
+    var diff = (j.data&&j.data.diff)||[];
+    out = diff.map(function(d){
+      var name = d.f14;
+      var alias = {'上证指数':'sh','深证成指':'sz','创业板指':'cyb','沪深300':'hs300','中证500':'zz500','中证1000':'zz1000'}[name]||name;
+      return {name:name, code:d.f12, price:d.f2, pct:d.f3, chg:d.f4, alias:alias};
+    });
+  }catch(e){ out = []; }
+  /* 备用源：腾讯批量行情（东财被风控时仍能出数） */
+  if(!out.length){
+    var txCodes = CFG.idxList.map(function(x){ return txSymFromSecid(x[0]); });
+    var tq = await txBatchQuote(txCodes);
+    out = CFG.idxList.map(function(x){
+      var sym = txSymFromSecid(x[0]);
+      var q = tq[sym];
+      if(!q) return null;
+      var alias = {'上证指数':'sh','深证成指':'sz','创业板指':'cyb','沪深300':'hs300','中证500':'zz500','中证1000':'zz1000'}[x[1]]||x[1];
+      return {name:x[1], code:String(x[0]).split('.')[1], price:q.price, pct:q.pct,
+              chg:(isFinite(q.price)&&isFinite(q.preClose))? (q.price-q.preClose) : null, alias:alias, src:'腾讯'};
+    }).filter(Boolean);
+  }
+  if(out.length) cacheSet('idx', out);
+  return out;
+}
+
+/* ---------- 腾讯批量行情（备用源）：CORS 通、不易限流 ----------
+ * 用途：东财 push2 主域/延迟域被风控（浏览器表现为 "Failed to fetch"）时兜底。
+ * codes 形如 ['sh000001','jp8306']；返回 {符号: {name, price, preClose, pct, ts}} */
+async function txBatchQuote(codes){
+  var out = {};
+  if(!codes || !codes.length) return out;
+  try{
+    var r = await fetch('https://qt.gtimg.cn/q=' + codes.join(','), {cache:'no-store'});
+    if(!r.ok) return out;
+    var buf = await r.arrayBuffer();
+    var txt = new TextDecoder('gbk').decode(buf);
+    txt.split('\n').forEach(function(line){
+      var m = line.match(/v_([A-Za-z0-9]+)="([^"]*)"/);
+      if(!m) return;
+      var f = m[2].split('~');
+      if(f.length < 33) return;
+      out[m[1]] = { name:f[1], price:parseFloat(f[3]), preClose:parseFloat(f[4]),
+                    pct:parseFloat(f[32]), ts:f[30] || '' };
+    });
+  }catch(e){}
+  return out;
+}
+/* 东财 secid → 腾讯符号（A股：1=沪 0=深；日股另加 jp 前缀） */
+function txSymFromSecid(secid){
+  var p = String(secid).split('.');
+  return (p[0] === '1' ? 'sh' : 'sz') + p[1];
+}
+/* 把浏览器/接口的原始错误文案换成人能看懂的话（不要把 'Failed to fetch' 甩给用户） */
+function friendlyErr(e){
+  var m = (e && e.message) ? String(e.message) : String(e || '');
+  if(/Failed to fetch|NetworkError|load failed|ERR_/i.test(m)){
+    return '数据源暂时不可达或被限流（多为东财接口风控，非本机故障）。页面上已显示的为本机缓存数据；稍后重试即可。';
+  }
+  return m;
 }
 
 /* ---------- 数据层：日本Top10银行（nkbnk） ----------
@@ -1266,11 +1321,24 @@ async function getNkbnk(){
   var c = cacheGet('nkbnk', 300000); if(c) return c;
   /* 1) 实时行情：东财 ulist 批量（一次请求） */
   var secids = CFG.nkbnk.map(function(x){ return '176.'+x.code; }).join(',');
-  var qmap = {};
+  var qmap = {}, quoteDate = '', quoteSrc = '东财';
   try{
-    var j = await emJson('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids='+secids+'&fields=f2,f3,f12,f14');
-    ((j.data&&j.data.diff)||[]).forEach(function(d){ qmap[d.f12] = d; });
+    var j = await emJson('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids='+secids+'&fields=f2,f3,f12,f14,f124');
+    ((j.data&&j.data.diff)||[]).forEach(function(d){
+      qmap[d.f12] = d;
+      if(d.f124 && !quoteDate){ try{ quoteDate = new Date(d.f124*1000).toLocaleDateString('sv-SE'); }catch(e){} }
+    });
   }catch(e){}
+  /* 备用源：腾讯按 10 只日股批量取（东财 push2 被风控时用；实测 CORS 通、含更新时间） */
+  if(!Object.keys(qmap).length){
+    var tq = await txBatchQuote(CFG.nkbnk.map(function(x){ return 'jp'+x.code; }));
+    Object.keys(tq).forEach(function(k){
+      var code = k.replace(/^jp/, '');
+      qmap[code] = {f2: tq[k].price, f3: tq[k].pct};
+      if(tq[k].ts && !quoteDate){ quoteDate = String(tq[k].ts).slice(0, 10); }
+    });
+    if(Object.keys(qmap).length) quoteSrc = '腾讯';
+  }
   /* 2) 区间K线：东财 push2his 逐只（串行 + 间隔降频），失败用 localStorage ≤7日 兜底 */
   var ls = lsGet('nkbnk_w', {t:0, byCode:{}});
   var rows = [];
@@ -1307,7 +1375,8 @@ async function getNkbnk(){
     var vals = rows.map(function(x){ return x[k]; }).filter(function(v){ return v!=null; });
     avg[k] = vals.length? vals.reduce(function(a,b){ return a+b; },0)/vals.length : null;
   });
-  var out = { rows: rows, avg: avg, time: new Date().toLocaleString('zh-CN',{hour12:false}), usedFallback: usedFallback, fbT: ls.t||0 };
+  var out = { rows: rows, avg: avg, time: new Date().toLocaleString('zh-CN',{hour12:false}), usedFallback: usedFallback, fbT: ls.t||0,
+              quoteDate: quoteDate, quoteSrc: quoteSrc };
   /* 4) 仅当本次有新拉到区间数据才写 5 分钟缓存；全空不缓存（下次点抓取可立即重试） */
   if(anyNew || usedFallback) cacheSet('nkbnk', out);
   return out;
@@ -1361,8 +1430,13 @@ async function getSectorsAll(fs){
   var c = cacheGet(key, 300000); if(c) return c;
   var out = [];
   for(var pn=1; pn<=6; pn++){
-    var j = await emJson('https://push2.eastmoney.com/api/qt/clist/get?pn='+pn+'&pz=100&po=1&np=1&fltt=2&invt=2&fid=f62&fs='+encodeURIComponent(fs)+'&fields=f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205');
-    var diff = (j.data&&j.data.diff)||[];
+    /* ⚠️ 必须 try：东财 push2 被风控时抛 'Failed to fetch'，此前会冒泡到 gatherReview 的 catch，
+       把整个复盘区变成一条原始报错。板块资金无腾讯等价接口，只能降级为空并给出提示。 */
+    var diff = [];
+    try{
+      var j = await emJson('https://push2.eastmoney.com/api/qt/clist/get?pn='+pn+'&pz=100&po=1&np=1&fltt=2&invt=2&fid=f62&fs='+encodeURIComponent(fs)+'&fields=f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205');
+      diff = (j.data&&j.data.diff)||[];
+    }catch(e){ break; }
     if(!diff.length) break;
     diff.forEach(function(d){
       out.push({code:d.f12, name:d.f14, pct:d.f3, net:d.f62, main:cleanNum(d.f184),
@@ -1371,7 +1445,8 @@ async function getSectorsAll(fs){
     });
     if(diff.length < 100) break;
   }
-  cacheSet(key, out); return out;
+  if(out.length) cacheSet(key, out);   /* 空结果不缓存，避免限流期间 5 分钟内一直空 */
+  return out;
 }
 async function getSectors(fs){
   var key = 'sec_'+fs;
@@ -1685,10 +1760,10 @@ async function gatherReview(){
   showErr('reviewErr','');
   try{
     var nkbnk = await getNkbnk().catch(function(){ return null; });
-    var idx = await getIndexes();
-    var sent = await getSentiment();
-    var secsAll = await getSectorsAll('m:90+t:2');
-    var concAll = await getSectorsAll('m:90+t:3');
+    var idx = await getIndexes().catch(function(){ return []; });
+    var sent = await getSentiment().catch(function(){ return {}; });
+    var secsAll = await getSectorsAll('m:90+t:2').catch(function(){ return []; });
+    var concAll = await getSectorsAll('m:90+t:3').catch(function(){ return []; });
     var turn = await getTurnoverTop().catch(function(){ return []; });
     /* 我的自选股 + 持仓行情 */
     var watch = lsGet('watch', []);
@@ -1779,7 +1854,7 @@ async function gatherReview(){
       time: new Date().toLocaleString('zh-CN',{hour12:false}) };
     renderReview();
   }catch(e){
-    showErr('reviewErr','❌ '+e.message);
+    showErr('reviewErr','❌ '+friendlyErr(e));
   }
   btn.disabled = false; btn.textContent='⏳ 抓取今日数据';
   return reviewData;
@@ -1839,7 +1914,15 @@ function renderReview(){
       var ageH = Math.max(1, Math.round((Date.now()-d.nkbnk.fbT)/3600000));
       fbNote = ' · <span style="color:#b8860b">区间为 '+ageH+' 小时前缓存（东财日股接口限流中，可稍后重试）</span>';
     }
-    html += '<div class="card"><h3><span class="n">🏦</span>日本Top10银行 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（nkbnk · 市值前十银行股 · 区间涨跌幅%）</span>'+fbNote+'</h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价(円)</th><th>当日</th><th>5日</th><th>30日</th><th>60日</th><th>90日</th></tr>';
+    /* 区间数据缺失时如实说明原因，别让 4 个 '-' 变成谜 */
+    var anyRange = d.nkbnk.rows.some(function(x){ return x.w90 != null; });
+    var rNote = anyRange ? '' : ' · <span style="color:#b8860b">区间数据暂不可得（东财日股K线接口持续风控，所有免费源均已验证不可用），现价与当日涨跌为实时</span>';
+    var qNote = '';
+    if(d.nkbnk.quoteDate){
+      qNote = ' · 行情日期 <b>' + esc(d.nkbnk.quoteDate) + '</b>（东京，即日股最近交易日）';
+      if(d.nkbnk.quoteSrc && d.nkbnk.quoteSrc !== '东财') qNote += ' · 行情源 ' + esc(d.nkbnk.quoteSrc);
+    }
+    html += '<div class="card"><h3><span class="n">🏦</span>日本Top10银行 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（nkbnk · 市值前十银行股 · 区间涨跌幅%）'+qNote+rNote+'</span>'+fbNote+'</h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价(円)</th><th>当日</th><th>5日</th><th>30日</th><th>60日</th><th>90日</th></tr>';
     d.nkbnk.rows.forEach(function(x){
       html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+esc(x.name)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(0):'-')+'</td>'
         + '<td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td>'
