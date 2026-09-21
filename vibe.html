@@ -344,7 +344,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
     <h2>短线做T</h2>
     <span class="desc">「三个数字」战法：<b>2.5%</b> 止盈 / <b>1.5%</b> 止损 / <b>1/2</b> 仓位 · 只看分时均价线 · 含本机回测（日K 800交易日 + 30分钟K 序列感知）</span>
     <div class="spacer"></div>
-    <button class="btn btn-outline" onclick="scanDuanT()">🔍 扫描今日做T机会</button>
+    <button class="btn btn-outline" data-duantscan onclick="scanDuanT()">🔍 扫描今日做T机会</button>
     <button class="btn btn-outline" onclick="loadDuanT(true)">🔄 重新加载</button>
   </div>
   <div class="error-box" id="duantErr"></div>
@@ -1096,24 +1096,59 @@ async function duantMinute(code){
   };
 }
 
+/* 并发拉取分时（限 5 并发，避免串行等待过久；带进度回调） */
+async function duantFetchAll(codes, onProgress){
+  var rows = [], idx = 0, done = 0, CONC = Math.min(5, codes.length || 1);
+  async function worker(){
+    while(idx < codes.length){
+      var i = idx++;
+      try{ var m = await duantMinute(codes[i]); if(m) rows.push(m); }catch(e){}
+      done++;
+      if(onProgress){ try{ onProgress(done, codes.length); }catch(e){} }
+    }
+  }
+  var ws = [];
+  for(var k = 0; k < CONC; k++){ ws.push(worker()); }
+  await Promise.all(ws);
+  /* 保持与输入顺序一致 */
+  var ord = {};
+  codes.forEach(function(c, i){ ord[String(c)] = i; });
+  rows.sort(function(a, b){ return (ord[String(a.code)]||0) - (ord[String(b.code)]||0); });
+  return rows;
+}
+function duantScrollTo(){
+  var a = $('duantScan');
+  if(a && a.scrollIntoView){ try{ a.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ a.scrollIntoView(); } }
+}
+function duantSetBtn(busy){
+  var b = document.querySelector('button[data-duantscan]');
+  if(!b) return;
+  if(busy){ b.disabled = true; if(!b.dataset.orig) b.dataset.orig = b.innerText; b.innerText = '⏳ 扫描中…'; }
+  else { b.disabled = false; b.innerText = b.dataset.orig || '🔍 扫描今日做T机会'; }
+}
+
 async function scanDuanT(){
   var area = $('duantScan');
   if(!area){ await loadDuanT(); area = $('duantScan'); }
+  if(!area) return;
   var codes = (lsGet('watch', []) || []).slice();
   (lsGet('holds', []) || []).forEach(function(h){ if(h && h.code && codes.indexOf(h.code) < 0) codes.push(h.code); });
   if(!codes.length){
-    area.innerHTML = '<div class="card"><div class="hint">未找到自选股/持仓。请先在「板块中心 → ⭐ 自选股」添加标的，或在下框直接输入代码：'
+    area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描</h3><div class="hint">未找到自选股/持仓。请先在「板块中心 → ⭐ 自选股」添加标的，或在下框直接输入代码（逗号分隔）：'
       + '</div><div class="input-row"><input type="text" id="duantCodes" placeholder="600519,002714" style="width:280px">'
       + '<button class="btn btn-blue btn-sm" onclick="scanDuanTCodes()">扫描</button></div></div>';
+    duantScrollTo();
     return;
   }
+  duantSetBtn(true);
   area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">自选股 + 持仓 '
-    + codes.length + ' 只 · 数据：腾讯当日分时（1分钟）</span></h3><div id="duantScanList"><div class="loading">⏳ 拉取分时…</div></div></div>';
-  var rows = [];
-  for(var i = 0; i < codes.length; i++){
-    try{ var m = await duantMinute(codes[i]); if(m) rows.push(m); }catch(e){}
-  }
+    + codes.length + ' 只 · 数据：腾讯当日分时（1分钟）</span></h3><div id="duantScanList"><div class="loading">⏳ 拉取分时 <span id="duantProg">0/' + codes.length + '</span>…</div></div></div>';
+  duantScrollTo();                       /* ← 关键：立刻把视口带到结果区，否则用户以为没反应 */
+  var rows = await duantFetchAll(codes, function(done, total){
+    var el = $('duantProg'); if(el) el.textContent = done + '/' + total;
+  });
   renderDuanTScan(rows);
+  duantSetBtn(false);
 }
 
 async function scanDuanTCodes(){
@@ -1121,11 +1156,11 @@ async function scanDuanTCodes(){
   var codes = v.split(/[,，\s]+/).filter(function(x){ return /^\d{6}$/.test(x); });
   if(!codes.length) return;
   var area = $('duantScan');
-  area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描</h3><div id="duantScanList"><div class="loading">⏳ 拉取分时…</div></div></div>';
-  var rows = [];
-  for(var i = 0; i < codes.length; i++){
-    try{ var m = await duantMinute(codes[i]); if(m) rows.push(m); }catch(e){}
-  }
+  area.innerHTML = '<div class="card"><h3><span class="n">🔍</span>今日做T机会扫描</h3><div id="duantScanList"><div class="loading">⏳ 拉取分时 <span id="duantProg">0/' + codes.length + '</span>…</div></div></div>';
+  duantScrollTo();
+  var rows = await duantFetchAll(codes, function(done, total){
+    var el = $('duantProg'); if(el) el.textContent = done + '/' + total;
+  });
   renderDuanTScan(rows);
 }
 
