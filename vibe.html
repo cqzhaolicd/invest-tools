@@ -1061,7 +1061,7 @@ function duantBacktestHTML(d){
 async function loadDuanT(force){
   var el = $('duantArea'), err = $('duantErr');
   if(err) err.style.display = 'none';
-  if(_duanT && !force){ el.innerHTML = duantStrategyHTML() + duantBacktestHTML(_duanT) + '<div id="duantScan"></div>'; return; }
+  if(_duanT && !force){ el.innerHTML = '<div id="duantScan"></div>' + duantStrategyHTML() + duantBacktestHTML(_duanT); return; }
   el.innerHTML = '<div class="card"><div class="hint">⏳ 加载回测数据…</div></div>';
   try{
     _duanT = await fetchJSON('./data/duanT.json?t=' + Date.now());
@@ -1069,7 +1069,7 @@ async function loadDuanT(force){
     _duanT = { generatedAt: '-', A: {}, B: {} };
     if(err){ err.style.display = 'block'; err.textContent = '⚠️ 回测数据未就绪（' + e.message + '），仅显示策略规则。'; }
   }
-  el.innerHTML = duantStrategyHTML() + duantBacktestHTML(_duanT) + '<div id="duantScan"></div>';
+  el.innerHTML = '<div id="duantScan"></div>' + duantStrategyHTML() + duantBacktestHTML(_duanT);
 }
 
 /* ---------- 实盘做T助手：扫描自选股 + 持仓的当日分时 ---------- */
@@ -1117,8 +1117,8 @@ async function duantFetchAll(codes, onProgress){
   return rows;
 }
 function duantScrollTo(){
-  var a = $('duantScan');
-  if(a && a.scrollIntoView){ try{ a.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ a.scrollIntoView(); } }
+  /* 结果区已固定在页头下方 → 滚回顶部即可看到，无需滚到页底 */
+  try{ window.scrollTo({top: 0, behavior: 'smooth'}); }catch(e){ window.scrollTo(0, 0); }
 }
 function duantSetBtn(busy){
   var b = document.querySelector('button[data-duantscan]');
