@@ -2165,7 +2165,7 @@ async function aiReview(){
     var t2 = box.innerHTML.replace(/<span class="thinking">.*?<\/span><br>/,'').replace('<span class="cursor"></span>','');
     box.innerHTML = renderMd(full) + '<div style="margin-top:12px;font-size:.76rem;color:#5b7b8f">— 以上由 '+esc(aiCfg().model)+' 生成，仅供参考，不构成投资建议</div>';
   }catch(e){
-    showErr('reviewErr','❌ '+e.message);
+    showErr('reviewErr','❌ '+friendlyErr(e));
     var b2 = $('aiReviewOut'); if(b2) b2.remove();
   }
   btn.disabled = false; btn.textContent='🤖 AI 生成复盘';
@@ -2226,7 +2226,7 @@ async function loadNews(){
       html += '<div class="news-item"><div class="time">'+esc((x.time||'').slice(5,16))+'</div><div><div class="title" onclick="window.open(\''+esc(x.url).replace(/'/g,'\\\'')+'\',\'_blank\')">'+esc(x.title)+'</div>'+(x.summary?'<div class="summary">'+esc(x.summary)+'</div>':'')+'</div></div>';
     });
     $('newsList').innerHTML = html || '<div class="hint">暂无快讯</div>';
-  }catch(e){ showErr('newsErr','❌ '+e.message); $('newsList').innerHTML=''; }
+  }catch(e){ showErr('newsErr','❌ '+friendlyErr(e)); $('newsList').innerHTML=''; }
 }
 async function aiKeypoints(){
   if(!aiReady()){ openAI(); return; }
@@ -2242,7 +2242,7 @@ async function aiKeypoints(){
       out.innerHTML = '<span class="thinking">🤔 提炼中…</span><br>' + esc(delta) + '<span class="cursor"></span>';
     });
     out.innerHTML = renderMd(full) + '<div style="margin-top:12px;font-size:.76rem;color:#6b7f92">— 以上由 '+esc(aiCfg().model)+' 生成，仅供参考</div>';
-  }catch(e){ showErr('newsErr','❌ '+e.message); }
+  }catch(e){ showErr('newsErr','❌ '+friendlyErr(e)); }
   btn.disabled = false; btn.textContent='🤖 AI 提炼今日要点';
 }
 
@@ -2266,7 +2266,7 @@ async function loadStock(){
     }
     renderStock(q, fin, ff, agri);
   }catch(e){
-    showErr('stockErr','❌ '+e.message+'（提示：请输入6位代码，如 600519 / 000001 / 00700 / AAPL）');
+    showErr('stockErr','❌ '+friendlyErr(e)+'（提示：请输入6位代码，如 600519 / 000001 / 00700 / AAPL）');
   }
   $('stockLoading').style.display = 'none';
 }
@@ -2396,7 +2396,7 @@ async function renderSectors(){
     });
     html += '</table></div></div>';
     el.innerHTML = html;
-  }catch(e){ showErr('boardErr','❌ '+e.message); el.innerHTML=''; }
+  }catch(e){ showErr('boardErr','❌ '+friendlyErr(e)); el.innerHTML=''; }
 }
 function renderWatch(){
   var watch = lsGet('watch', []);
@@ -2567,7 +2567,7 @@ async function renderFreshness(){
   try{
     var dt = await fetchJSON('./data/duanT.json');
     var q = dt.quality || {};
-    items.push({name:'做T回测', date: (dt.generatedAt||'').slice(0,10), gen: dt.generatedAt,
+    items.push({name:'做T回测', date: (dt.generatedAt||'').slice(0,10), gen: dt.generatedAt, slow:7,
                 extra: (q.fullRate!=null? ('K线完整率 '+Math.round(q.fullRate*100)+'%') : '')});
   }catch(e){ items.push({name:'做T回测', date:'', err:true}); }
 
@@ -2579,7 +2579,9 @@ async function renderFreshness(){
     if(it.err || !it.date){ tag = '读取失败'; cls = 'fwarn'; }
     else {
       var gap = daysBetween(new Date(it.date + 'T00:00:00'), new Date(expStr + 'T00:00:00'));
+      /* slow=N：非每日更新的数据（如 800 日回测）给 N 天宽限，避免天天误报为陈旧 */
       if(gap <= 0){ tag = '✅ 最新'; cls = 'fok'; }
+      else if(it.slow && gap <= it.slow){ tag = '✅ ' + gap + ' 天前生成（此类数据非每日更新）'; cls = 'fok'; }
       else { tag = '⚠️ 落后 ' + gap + ' 天'; cls = 'fwarn'; stale++; }
     }
     html += '<span>数据 ' + it.name + '：<b>' + (it.date || '—') + '</b> ' + (it.extra? '· '+it.extra+' ' : '') + '<span class="' + cls + '">' + tag + '</span></span>';
@@ -2847,7 +2849,7 @@ function renderReports(){
       html += '</div>';
     });
     $('reportList').innerHTML = html || '<div class="card"><div class="hint">还没有研报。拖拽 PDF 到上方区域，自动按行业归档。</div></div>';
-  }).catch(function(e){ showErr('reportsErr','❌ '+e.message); });
+  }).catch(function(e){ showErr('reportsErr','❌ '+friendlyErr(e)); });
 }
 function downloadReport(id){
   idbOpen().then(function(db){
@@ -2894,7 +2896,7 @@ function uploadReports(){
   Promise.all(ps).then(function(){
     pendingFiles = []; fi.value=''; dz.innerHTML = '📄 <b>拖拽 PDF 研报到此处</b>，或点击选择文件<br><span style="font-size:.78rem">自动按行业归档 · 只存本地（IndexedDB）· 不上传任何服务器</span>';
     renderReports();
-  }).catch(function(e){ showErr('reportsErr','❌ '+e.message); });
+  }).catch(function(e){ showErr('reportsErr','❌ '+friendlyErr(e)); });
 }
 
 /* =====================================================================
