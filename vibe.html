@@ -1465,6 +1465,70 @@ async function getSectors(fs){
 }
 
 /* ---------- 数据层：成交额榜 ---------- */
+/* ═══════════════════════════════════════════════════════════════════════
+   新浪兜底源（东财 clist 被风控时启用）
+   为什么需要：push2 / push2delay 的 clist 接口在部分网络与时段会被风控
+   （浏览器 TypeError: Failed to fetch、服务端 RemoteDisconnected），
+   会让「行业资金流」主表只剩表头、「成交额榜」整块消失 —— 用户看到的就是"内容没有了"。
+   口径差异必须显式标注：新浪**没有「主力净额」**，相关列不显示，绝不编造数值。
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* 新浪·全市场成交额榜（CORS: *，浏览器可直连）
+   字段：amount=成交额(元)、mktcap/nmc=总市值/流通市值(万元，需 ×1e4) */
+async function getSinaTurnoverTop(n){
+  n = n || 20;
+  var key = 'sinaTurn' + n;
+  var c = cacheGet(key, 300000); if(c) return c;
+  var u = 'https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData'
+        + '?page=1&num=' + n + '&sort=amount&asc=0&node=hs_a&symbol=&_s_r_a=page';
+  var arr = await fetchJSON(u);
+  if(!Array.isArray(arr) || !arr.length) throw new Error('新浪成交额榜返回空');
+  var n2 = function(v){ var f = parseFloat(v); return isFinite(f) ? f : null; };
+  var out = arr.map(function(x){
+    return { code:x.code, name:x.name, price:n2(x.trade), pct:n2(x.changepercent),
+             amount:n2(x.amount), mcap:(n2(x.mktcap)!=null? n2(x.mktcap)*1e4 : null),
+             floatCap:(n2(x.nmc)!=null? n2(x.nmc)*1e4 : null), industry:'', src:'新浪' };
+  });
+  cacheSet(key, out); return out;
+}
+
+/* 新浪·行业板块：返回 `var S_Finance_bankuai_sinaindustry = {...}`（GBK 编码、无 CORS 头）
+   → 只能走 <script> 标签（经典脚本不受同源策略约束），并声明 charset=gbk 让浏览器正确解码。
+   字段序：0=代码 1=名称 2=家数 3=均价 4=涨跌额 5=涨跌幅(小数) 6=成交量 7=成交额(元)
+           8=领涨股代码 9=领涨股涨幅 10=领涨股价 12=领涨股名称 */
+function loadSinaIndustries(){
+  return new Promise(function(res, rej){
+    if(window.S_Finance_bankuai_sinaindustry) return res(window.S_Finance_bankuai_sinaindustry);
+    var sc = document.createElement('script');
+    sc.charset = 'gbk';
+    sc.src = 'https://vip.stock.finance.sina.com.cn/q/view/newSinaHy.php';  /* 必须 https：https 页面加载 http 脚本会被 mixed-content 拦 */
+    var done = false;
+    var to = setTimeout(function(){ if(done) return; done = true; sc.remove(); rej(new Error('新浪行业板块加载超时')); }, 15000);
+    sc.onload = function(){
+      if(done) return; done = true; clearTimeout(to);
+      var d = window.S_Finance_bankuai_sinaindustry;
+      if(d) res(d); else rej(new Error('新浪行业板块变量未定义'));
+    };
+    sc.onerror = function(){ if(done) return; done = true; clearTimeout(to); rej(new Error('新浪行业板块加载失败')); };
+    document.head.appendChild(sc);
+  });
+}
+function parseSinaInd(obj){
+  var out = [];
+  var n2 = function(v){ var f = parseFloat(v); return isFinite(f) ? f : null; };
+  Object.keys(obj || {}).forEach(function(k){
+    var f = String(obj[k]).split(',');
+    if(f.length < 13) return;
+    var pct = n2(f[5]);
+    out.push({ code:f[0], name:f[1], count:n2(f[2]),
+               pct:pct,   /* ⚠️ 接口 [5] 本身就是百分数（实测全 49 行业均满足 [5] == [4]/[3]×100），
+                             曾错误 ×100 把 +0.384% 渲染成 +38.4%，并出现 -92%/-176% 这类不可能值 */
+               amount:n2(f[7]), net:null, main:null,       /* 新浪无主力净额 → 显式 null，渲染层不显示该列 */
+               lead:f[12], leadCode:f[8], leadPct:n2(f[9]), src:'新浪' });
+  });
+  return out;
+}
+
 async function getTurnoverTop(){
   var c = cacheGet('turn', 300000); if(c) return c;
   var fs = 'm:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23';
@@ -1792,6 +1856,21 @@ async function gatherReview(){
     var secsAll = await getSectorsAll('m:90+t:2').catch(function(){ return []; });
     var concAll = await getSectorsAll('m:90+t:3').catch(function(){ return []; });
     var turn = await getTurnoverTop().catch(function(){ return []; });
+    var turnSrc = '东财';
+    if(!turn.length){   /* 东财 clist 被风控 → 成交额榜切新浪（有 CORS，浏览器直连） */
+      try{ turn = await getSinaTurnoverTop(20); turnSrc = '新浪'; }catch(e){ turnSrc = '东财(不可用)'; }
+    }
+    /* 行业板块：东财 clist 拿不到时用新浪 newSinaHy.php（script 标签方式）。新浪按成交额降序，口径与东财不同 */
+    var secsSrc = '东财';
+    if(!secsAll.length){
+      try{
+        var sInd = parseSinaInd(await loadSinaIndustries());
+        if(sInd.length){
+          sInd.sort(function(a,b){ return (b.amount||0) - (a.amount||0); });
+          secsAll = sInd; concAll = secsAll; secsSrc = '新浪';
+        }
+      }catch(e){ secsSrc = '东财(不可用)'; }
+    }
     /* 我的自选股 + 持仓行情 */
     var watch = lsGet('watch', []);
     var watchStocks = [];
@@ -1876,7 +1955,7 @@ async function gatherReview(){
       }
       return null;
     }).filter(Boolean);
-    reviewData = { nkbnk:nkbnk, indexes:idx, sentiment:sent, sectors:secsAll.slice(0,12), sectorsBad:secsAll.slice(-5), turnover:turn,
+    reviewData = { nkbnk:nkbnk, indexes:idx, sentiment:sent, sectors:secsAll.slice(0,12), sectorsBad:secsAll.slice(-5), turnover:turn, turnSrc:turnSrc, secsSrc:secsSrc, sectorsAll:secsAll.slice(0,12),
       watchStocks:watchStocks, holdStocks:holdStocks, mySectors:mySectors, myFocus:myFocus, dimCtx:dimCtx,
       time: new Date().toLocaleString('zh-CN',{hour12:false}) };
     renderReview();
@@ -2036,30 +2115,49 @@ function renderReview(){
   }
   html += '</div>';
   /* 板块资金 */
-  html += '<div class="card"><h3><span class="n">💰</span>行业资金流 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（我的关注 · 净流入 Top12 / 净流出末5）</span></h3>';
-  if(d.myFocus && d.myFocus.length){
+  var _sina = (d.secsSrc === '新浪');
+  html += '<div class="card"><h3><span class="n">💰</span>行业资金流 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（我的关注 · ' + (_sina ? '新浪行业板块 · 成交额 Top12' : '净流入 Top12 / 净流出末5') + '）</span></h3>';
+  if(_sina){
+    html += '<div class="hint" style="margin-bottom:8px;color:#b8860b;background:rgba(184,134,11,.08);border-left:3px solid #b8860b;padding:6px 10px;border-radius:4px">';
+    html += '⚠️ 东财板块资金接口（push2/push2delay clist）当前<b>被风控</b>（浏览器 Failed to fetch），已自动切换 <b>新浪行业板块</b>口径。'
+         +  '新浪<b>不提供「主力净额 / 净占比」</b>，故这两列不显示；下表为<b>真实行情</b>（涨跌幅/成交额/领涨股）。东财恢复后自动切回。';
+    html += '</div>';
+  }
+  if(!_sina && d.myFocus && d.myFocus.length){
     html += '<div class="hint" style="margin-bottom:6px">⭐ 我的关注（农业/养殖业/银行/低波股息/消费）</div><div class="table-wrap"><table><tr><th>关注</th><th>板块</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
     d.myFocus.forEach(function(x){
       html += '<tr><td class="td-b">'+esc(x.label)+'</td><td>'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+fmtMain(x.main)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
     });
     html += '</table></div><div style="margin:10px 0;border-top:1px dashed var(--line)"></div>';
   }
-  html += '<div class="table-wrap"><table><tr><th>行业</th><th>涨跌幅</th><th>主力净额</th><th>净占比</th><th>领涨股</th></tr>';
+  html += '<div class="table-wrap"><table><tr><th>行业</th><th>涨跌幅</th>' + (_sina
+        ? '<th>成交额</th><th>领涨股</th><th>领涨股涨幅</th>'
+        : '<th>主力净额</th><th>净占比</th><th>领涨股</th>') + '</tr>';
   d.sectors.forEach(function(x){
-    html += '<tr><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+fmtMain(x.main)+'</td><td>'+esc(x.lead||'-')+'</td></tr>';
+    html += '<tr><td class="td-b">'+esc(x.name)+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td>' + (_sina
+          ? '<td class="num">'+fmtMoney(x.amount)+'</td><td>'+esc(x.lead||'-')+'</td>'
+            + '<td class="num '+pctCls(x.leadPct)+'">'+fmtPct(x.leadPct)+'</td>'
+          : '<td class="num '+(x.net>=0?'up':'down')+'">'+fmtMoney(x.net)+'</td><td class="num">'+fmtMain(x.main)+'</td>'
+            + '<td>'+esc(x.lead||'-')+'</td>') + '</tr>';
   });
   html += '</table>';
-  if(d.sectorsBad.length){
+  if(!_sina && d.sectorsBad.length){
     html += '<div style="margin-top:10px;font-size:.82rem;color:var(--text3)">净流出前5：';
     d.sectorsBad.forEach(function(x){ html += '<span style="margin-right:10px">'+esc(x.name)+' <b class="down">'+fmtMoney(x.net)+'</b></span>'; });
     html += '</div>';
   }
+  if(!d.sectors || !d.sectors.length){
+    html += '<div class="hint" style="color:#c0392b;margin-top:8px">❌ 东财板块资金接口被风控，新浪兜底也未能加载 —— 本板块暂无数据（是「取不到」，不是「0」）。稍后重试。</div>';
+  }
   html += '</div>';
   /* 成交额榜 */
   if(d.turnover && d.turnover.length){
-    html += '<div class="card"><h3><span class="n">💸</span>全市场成交额 Top20</h3><div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价</th><th>涨跌幅</th><th>成交额</th><th>总市值</th><th>行业</th></tr>';
+    var _turnSina = (d.turnSrc === '新浪');
+    html += '<div class="card"><h3><span class="n">💸</span>全市场成交额 Top20 <span style="font-weight:400;font-size:.8rem;color:var(--text3)">（'+(d.turnSrc||'东财')+'口径 · 按成交额降序 · 客观榜单）</span></h3>'
+         + (_turnSina ? '<div class="hint" style="margin-bottom:6px;color:#b8860b;background:rgba(184,134,11,.08);border-left:3px solid #b8860b;padding:6px 10px;border-radius:4px">⚠️ 东财接口被风控，已自动切换 <b>新浪</b>口径（金额/市值均为真实数据；新浪不提供所属行业，该列显示 -）。</div>' : '')
+         + '<div class="table-wrap"><table><tr><th>代码</th><th>名称</th><th>现价</th><th>涨跌幅</th><th>成交额</th><th>总市值</th><th>行业</th></tr>';
     d.turnover.forEach(function(x){
-      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+stockGoIcon(x.code)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(2):'-')+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td class="num">'+fmtMoney(x.mcap)+'</td><td>'+esc(x.industry)+'</td></tr>';
+      html += '<tr><td class="num">'+esc(x.code)+'</td><td class="td-b">'+stockLink(x.code, x.name)+stockGoIcon(x.code)+'</td><td class="num">'+(x.price!=null?x.price.toFixed(2):'-')+'</td><td class="num '+pctCls(x.pct)+'">'+fmtPct(x.pct)+'</td><td class="num">'+fmtMoney(x.amount)+'</td><td class="num">'+fmtMoney(x.mcap)+'</td><td>'+(x.industry? esc(x.industry) : '<span style="color:var(--text3)">-</span>')+'</td></tr>';
     });
     html += '</table></div></div>';
   }
