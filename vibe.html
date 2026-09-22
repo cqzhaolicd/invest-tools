@@ -340,7 +340,7 @@ tr.total td{background:#f2f5f9;font-weight:800;color:var(--navy);white-space:now
     <div class="spacer"></div>
     <button class="btn btn-outline" id="seqxRefreshBtn" onclick="loadSequoia(true)">🔄 重新加载数据</button>
   </div>
-  <div class="hint" id="seqxTip">数据由本机每交易日 19:20 自动生成并部署；此按钮仅重新读取页面数据文件。</div>
+  <div class="hint" id="seqxTip">数据由本机每交易日 <b>15:30</b>（A股 15:00 收盘后）自动生成并部署；此按钮仅重新读取页面数据文件。</div>
   <div class="error-box" id="seqxErr"></div>
   <div id="seqxArea"><div class="card"><div class="hint">加载中…</div></div></div>
 </div>
@@ -2553,12 +2553,12 @@ async function loadTradeCal(){
 }
 function lastTradingDay(){
   /* 最近"应当已有数据"的交易日。
-     规则：① 数据在收盘后 19:20 才更新 → 未到该时刻则从【昨天】起找；
+     规则：① A股 15:00 收盘、数据 15:30 可取 → 当日 15:30 之前一律从【昨天】起找；
            ② 按真实交易日历回溯 → 周末与法定节假日自动跳过（节假日前最后工作日的数据为准）；
            ③ 日历不可用时退化为"跳过周末"（并在看板上标明，不假装精确）。 */
   var d = new Date();
   var hm = d.getHours() * 60 + d.getMinutes();
-  if(hm < 19 * 60 + 20){ d.setDate(d.getDate() - 1); }
+  if(hm < 15 * 60 + 30){ d.setDate(d.getDate() - 1); }
   for(var i = 0; i < 40; i++){
     var ds = fmtDay(d);
     if(TRADECAL){
@@ -2976,12 +2976,19 @@ function renderMd(md){
 var seqxData = null, seqxLoadedAt = 0;
 /* 推算「当前应有的最新交易日」（忽略节假日，够用） */
 function seqxExpectDate(){
-  var d = new Date(), dow = d.getDay();
-  while(dow === 0 || dow === 6){ d.setDate(d.getDate()-1); dow = d.getDay(); }
-  if(dow >= 1 && dow <= 5 && new Date().getHours() < 16){
-    do { d.setDate(d.getDate()-1); dow = d.getDay(); } while(dow === 0 || dow === 6);
+  /* 「此刻本应已有哪些数据」的日期。口径与看板统一：
+     ① A股 15:00 收盘、数据 15:30 可取 → 当日 15:30 之前，最新可用交易日 = 上一个交易日；
+     ② 按真实交易日历回溯（周末 + 法定节假日自动跳过），日历不可用时退化为「跳周末」。 */
+  var now = new Date();
+  var d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if(now.getHours() * 60 + now.getMinutes() < 15 * 60 + 30){ d.setDate(d.getDate() - 1); }
+  for(var i = 0; i < 40; i++){
+    var ds = fmtDay(d);
+    if(typeof TRADECAL !== 'undefined' && TRADECAL){ if(TRADECAL[ds]) return ds; }
+    else { var w = d.getDay(); if(w !== 0 && w !== 6) return ds; }
+    d.setDate(d.getDate() - 1);
   }
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  return fmtDay(d);
 }
 function loadSequoia(force){
   var area = $('seqxArea'); if(!area) return;
@@ -3015,7 +3022,7 @@ function loadSequoia(force){
           tip.innerHTML = '⚠️ 数据文件缺少日期字段';
         }else if(stale){
           tip.innerHTML = '⚠️ 数据日期 <b>'+esc(j.dataDate)+'</b>，最新交易日应为 <b>'+esc(exp)+'</b> —— 本机任务可能尚未执行'
-            + '（每交易日 15:00–21:30 自动更新）· 读取耗时 '+t+'ms';
+            + '（每交易日 15:30 自动更新）· 读取耗时 '+t+'ms';
         }else{
           tip.innerHTML = '✅ 数据已是最新（'+esc(j.dataDate)+' 收盘）｜生成于 <b>'+esc(j.generatedAt||'-')+'</b>'
             + ' · 读取 '+t+'ms' + (slow? '（外网 CDN 首包较慢属正常）' : '')
