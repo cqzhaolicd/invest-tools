@@ -3,7 +3,7 @@
 import os, pexpect, sys
 
 LOCAL = "/home/administrator/invest-tools/index.html"
-PASS = "Zl150601"
+PASS = open(__import__('os').path.expanduser('~/.ssh/.qnap_pw')).read().strip()
 REMOTE_DIR = "/var/services/web/invest-tools"
 REMOTE_FILE = f"{REMOTE_DIR}/index.html"
 EXPECTED = os.path.getsize(LOCAL)

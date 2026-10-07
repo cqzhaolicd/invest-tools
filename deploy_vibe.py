@@ -4,16 +4,18 @@
 
 注意：群晖 SFTP 子系统被 chroot，scp 必须加 -O（传统协议），否则报 No such file or directory。
 """
-import ftplib, hashlib, os, re, subprocess, sys
+import ftplib, hashlib, os, re, shlex, subprocess, sys
 import pexpect
 
 REPO = '/home/administrator/invest-tools'
-PASS = 'Zl150601'
+PASS = open(__import__('os').path.expanduser('~/.ssh/.qnap_pw')).read().strip()
 SYNO_DIR = '/var/services/web/invest-tools'
 QNAP_DIR = '/Web/invest-tools'
 
 # 需要部署的文件（相对仓库路径）
-FILES = ['vibe.html', 'data/sequoia.json', 'data/agri.json', 'data/duanT.json', 'data/tradecal.json']
+FILES = ['vibe.html', 'data/sequoia.json', 'data/agri.json', 'data/duanT.json', 'data/tradecal.json',
+         'pig_cycle.html', 'lib/echarts.min.js']
+COMMIT_MSG = os.environ.get('DEPLOY_MSG', '更新投资中心页面')
 
 md5 = lambda p: hashlib.md5(open(p, 'rb').read()).hexdigest()
 
@@ -23,7 +25,7 @@ def synology():
     c = pexpect.spawn('ssh -o StrictHostKeyChecking=no hermes@192.168.3.190',
                       timeout=60, encoding='utf-8', codec_errors='replace')
     c.expect('[Pp]assword:', timeout=20); c.sendline(PASS); c.expect(r'[\$#]', timeout=20)
-    c.sendline(f'mkdir -p {SYNO_DIR}/data')
+    c.sendline(f'mkdir -p {SYNO_DIR}/data {SYNO_DIR}/lib')
     c.expect(r'[\$#]', timeout=20)
     for rel in FILES:
         local = os.path.join(REPO, rel)
@@ -52,10 +54,11 @@ def qnap():
     ftp = ftplib.FTP()
     ftp.connect('192.168.3.88', 21, timeout=90)
     ftp.login('hermes', PASS)
-    try:
-        ftp.mkd(f'{QNAP_DIR}/data')
-    except Exception:
-        pass
+    for _sub in ('data', 'lib'):
+        try:
+            ftp.mkd(f'{QNAP_DIR}/{_sub}')
+        except Exception:
+            pass
     for rel in FILES:
         local = os.path.join(REPO, rel)
         with open(local, 'rb') as f:
@@ -76,9 +79,7 @@ def github():
     rc, st = run('git status --short')
     print('[GitHub] 待提交:', st or '(无变化)')
     if st.strip():
-        rc, out = run('git -c user.name=hermes -c user.email=hermes@local commit -m '
-                      '"Sequoia-X 新增「维度位置选股」板块：全市场套用股票维度参考七维度，'
-                      '挑出磨底/左侧试仓/右侧确认/主升启动各10只"')
+        rc, out = run('git -c user.name=hermes -c user.email=hermes@local commit -m ' + shlex.quote(COMMIT_MSG))
         print('[GitHub] commit:', out[:160])
     rc, out = run('git push origin gh-pages 2>&1')
     print(f'[GitHub] push rc={rc}: {out[:220]}')

@@ -3,7 +3,7 @@
 import base64, ftplib, os, sys
 
 LOCAL = "/home/administrator/invest-tools/index.html"
-PASS = "Zl150601"
+PASS = open(__import__('os').path.expanduser('~/.ssh/.qnap_pw')).read().strip()
 
 # ---------- 1. Synology via SSH + base64 chunks ----------
 def deploy_synology():
