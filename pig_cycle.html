@@ -40,9 +40,9 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>猪周期五指标季度对照（2018Q1 → 2026Q3）
+  <h1>猪周期五指标季度对照 + 猪价/成本线（2018Q1 → 2026Q3）
     <small>能繁母猪存栏 · 猪肉价格 · 中证畜牧养殖指数(930707) · 牧原股份(002714) · 温氏股份(300498)
-    ｜ 生成 2026-09-29 06:11 ｜ 35 个季度</small>
+    ｜ 附猪价走势 vs 牧原成本线（周频）、五只标的日线 ｜ 35 个季度</small>
   </h1>
 
   <div class="card">
@@ -69,12 +69,25 @@
   </div>
 
   <div class="card">
-    <h2>④ 关键读数</h2>
+    <h2>④ 猪价走势 vs 牧原成本线（重点）</h2>
+    <div class="sub">红线=完全成本 11.6 元/kg，蓝虚线=现金成本 10.1 元/kg。猪价站上红线=行业全面盈利的拐点信号。底部滑块可缩放时间段</div>
+    <div id="c4" class="chart tall"></div>
+    <div class="note" id="n4"></div>
+  </div>
+
+  <div class="card">
+    <h2>⑤ 五只标的日线（归一化，起点=100）</h2>
+    <div class="sub">牧原/温氏/巨星农牧/东瑞股份/兴业银行 —— 近 7 年前复权日线，对比周期股的节奏差异</div>
+    <div id="c5" class="chart tall"></div>
+  </div>
+
+  <div class="card">
+    <h2>⑥ 关键读数</h2>
     <div class="grid" id="kpi"></div>
   </div>
 
   <div class="card">
-    <h2>⑤ 季度数据明细（真实值，可核对）</h2>
+    <h2>⑦ 季度数据明细（真实值，可核对）</h2>
     <div class="sub">存栏单位：万头；猪价单位：元/公斤（季末）；股价为前复权收盘价</div>
     <div class="scroll"><table id="tbl"></table></div>
   </div>
@@ -183,6 +196,96 @@ let tb = '<tbody>' + L.map((lab,i)=>{
   return `<tr><td>${lab}</td><td>${f(SOWS[i])}${g}</td><td>${f(PORK[i],2)}</td><td>${f(IDX[i])}</td><td>${f(MY[i],2)}</td><td>${f(WS[i],2)}</td></tr>`;
 }).join('') + '</tbody>';
 document.getElementById('tbl').innerHTML = th + tb;
+
+/* ═══════════════ 日频区块（④ 猪价vs成本线 / ⑤ 五只标的） ═══════════════ */
+const COST_FULL = 11.6, COST_CASH = 10.1;
+const SCOL = {'牧原股份':GREEN,'温氏股份':PURPLE,'巨星农牧':ORANGE,'东瑞股份':BLUE,'兴业银行':GOLD};
+
+fetch('data/pig_cycle/daily.json', {cache:'no-store'})
+  .then(r => r.json())
+  .then(D => {
+    /* ── ④ 猪价 vs 成本线 ── */
+    const hx = D.hog.map(p => p.date);
+    const hy = D.hog.map(p => p.price);
+    const last = D.hog[D.hog.length-1];
+    const lastP = last.price;
+    const gapF = (lastP - COST_FULL).toFixed(2);
+    const gapC = (lastP - COST_CASH).toFixed(2);
+
+    echarts.init(document.getElementById('c4')).setOption({
+      backgroundColor:'transparent',
+      tooltip:{trigger:'axis',backgroundColor:'#0d2440',borderColor:GOLD,borderWidth:1,
+               textStyle:{color:'#e8eef7',fontSize:12},axisPointer:{type:'cross',crossStyle:{color:GOLD}},
+               valueFormatter:v => v==null?'—':(+v).toFixed(2)+' 元/kg'},
+      legend:{data:['全国生猪成交均价','牧原完全成本','牧原现金成本'],
+              textStyle:{color:'#8fa8c8',fontSize:12},top:2,itemWidth:16,itemHeight:8},
+      grid:{left:56,right:56,top:44,bottom:52},
+      dataZoom:[{type:'inside',start:38,end:100},
+                {type:'slider',height:16,bottom:6,start:38,end:100,
+                 backgroundColor:'#12294a',borderColor:'#1e4270',
+                 textStyle:{color:'#8fa8c8',fontSize:10},handleStyle:{color:GOLD}}],
+      xAxis:Object.assign({type:'category',data:hx,boundaryGap:false},AX),
+      yAxis:Object.assign({type:'value',name:'元/公斤',min:8,
+                           nameTextStyle:{color:'#8fa8c8',fontSize:11}},AX),
+      series:[
+        {name:'全国生猪成交均价',type:'line',data:hy,smooth:true,symbol:'none',
+         color:ORANGE,lineStyle:{width:2.5,color:ORANGE},
+         areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[
+           {offset:0,color:'rgba(232,131,74,.28)'},{offset:1,color:'rgba(232,131,74,0)'}]}},
+         markLine:{silent:true,symbol:'none',
+           label:{color:'#cfe0f5',fontSize:11,position:'insideEndTop',
+                  formatter:p => p.name || ''},
+           data:[
+             {yAxis:COST_FULL,name:'完全成本 11.6',lineStyle:{color:RED,width:2,type:'solid'}},
+             {yAxis:COST_CASH,name:'现金成本 10.1',lineStyle:{color:BLUE,width:1.6,type:'dashed'}}
+           ]},
+         markPoint:{symbolSize:46,label:{fontSize:10,color:'#0a1930'},
+           data:[{type:'max',name:'周期高'},{type:'min',name:'周期低'}]}},
+        {name:'牧原完全成本',type:'line',data:[],color:RED,lineStyle:{color:RED,width:2}},
+        {name:'牧原现金成本',type:'line',data:[],color:BLUE,lineStyle:{color:BLUE,width:1.6,type:'dashed'}}
+      ]
+    });
+
+    document.getElementById('n4').innerHTML =
+      `<b>最新猪价 ${last.date}：${lastP.toFixed(2)} 元/kg</b>（${last.src==='monitor'?'监控实采':'akshare 官方源'}）<br>` +
+      `vs <b>完全成本 ${COST_FULL}</b> → <b style="color:${gapF<0?RED:GREEN}">${gapF>0?'+':''}${gapF} 元/kg</b>` +
+      `（${gapF<0?'会计口径亏损':'盈利'}）<br>` +
+      `vs <b>现金成本 ${COST_CASH}</b> → <b style="color:${gapC<0?RED:GREEN}">${gapC>0?'+':''}${gapC} 元/kg</b>` +
+      `（${gapC<0?'现金层面亏损':'现金打平/盈利'}）<br>` +
+      `<span style="color:#8fa8c8">${D.hog_note||''} ｜ 猪价共 ${D.hog.length} 点</span>`;
+
+    /* ── ⑤ 五只标的归一化 ── */
+    const names = Object.keys(D.stocks);
+    const baseDate = names.length ? D.stocks[names[0]].series[0].date : null;
+    const sx = baseDate ? D.stocks[names[0]].series.map(p => p.date) : [];
+
+    echarts.init(document.getElementById('c5')).setOption({
+      backgroundColor:'transparent',
+      tooltip:{trigger:'axis',backgroundColor:'#0d2440',borderColor:GOLD,borderWidth:1,
+               textStyle:{color:'#e8eef7',fontSize:12},axisPointer:{type:'cross',crossStyle:{color:GOLD}},
+               valueFormatter:v => v==null?'—':(+v).toFixed(1)},
+      legend:{data:names,textStyle:{color:'#8fa8c8',fontSize:12},top:2,itemWidth:16,itemHeight:8},
+      grid:{left:56,right:56,top:44,bottom:40},
+      dataZoom:[{type:'inside'},{type:'slider',height:18,bottom:8,
+                 backgroundColor:'#12294a',borderColor:'#1e4270',
+                 textStyle:{color:'#8fa8c8',fontSize:10},handleStyle:{color:GOLD}}],
+      xAxis:Object.assign({type:'category',data:sx,boundaryGap:false},AX),
+      yAxis:Object.assign({type:'value',name:'指数(起点=100)',
+                           nameTextStyle:{color:'#8fa8c8',fontSize:11}},AX),
+      series:names.map(n => {
+        const s = D.stocks[n].series;
+        const b = s[0].close;
+        return {name:n, type:'line', symbol:'none',
+                data:s.map(p => +(p.close/b*100).toFixed(1)),
+                lineStyle:{width:2,color:SCOL[n]||BLUE},
+                emphasis:{focus:'series'}};
+      })
+    });
+  })
+  .catch(e => {
+    document.getElementById('n4').innerHTML =
+      `<span style="color:${RED}">⚠️ 日频数据加载失败：${e.message}（请先运行 pig_daily_export.py）</span>`;
+  });
 </script>
 
 <script src="sq-settings.js"></script>
