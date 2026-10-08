@@ -225,7 +225,7 @@ fetch('data/pig_cycle/daily.json', {cache:'no-store'})
                  backgroundColor:'#12294a',borderColor:'#1e4270',
                  textStyle:{color:'#8fa8c8',fontSize:10},handleStyle:{color:GOLD}}],
       xAxis:Object.assign({type:'category',data:hx,boundaryGap:false},AX),
-      yAxis:Object.assign({type:'value',name:'元/公斤',min:8,
+      yAxis:Object.assign({type:'value',name:'元/公斤',scale:true,
                            nameTextStyle:{color:'#8fa8c8',fontSize:11}},AX),
       series:[
         {name:'全国生猪成交均价',type:'line',data:hy,smooth:true,symbol:'none',
